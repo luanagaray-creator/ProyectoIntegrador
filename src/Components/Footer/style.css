@@ -1,0 +1,31 @@
+.footer {
+  background-color: #BBE4FF;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.footer-text {
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.footer-social {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.footer-social-img {
+  width: 40px;
+  height: 35px;
+}
