@@ -22,20 +22,22 @@ function App() {
   return (
     <div className="app">
       <Header home={isHome} />
-      <Routes>
-        <Route path="/" element={<><Home /><About /></>} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/home" element={<><Home /><About /></>} />
-        <Route path="/available-packages" element={<AvailablePackages />} />
-        <Route path="/payment-page" element={<PaymentPage />} />
-        <Route path="/restore-password" element={<RestorePassword />} />
-        <Route path="/restore-password-code" element={<RestorePasswordCode />} />
-        <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
-        <Route path="/default-page" element={<DefaultPage />} />
-      </Routes>
+      <main className="app__main">
+        <Routes>
+          {/* <Route path="/" element={<><Home /><About /></>} /> */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/available-packages" element={<AvailablePackages />} />
+          <Route path="/payment-page" element={<PaymentPage />} />
+          <Route path="/restore-password" element={<RestorePassword />} />
+          <Route path="/restore-password-code" element={<RestorePasswordCode />} />
+          <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
+          <Route path="/default-page" element={<DefaultPage />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   )
