@@ -1,49 +1,48 @@
-.register {
+.restore-password {
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   width: 100%;
   box-sizing: border-box;
-  background: linear-gradient(to bottom, #bbe4ff, #ffffff);
-  justify-content: space-between;
+  background: linear-gradient(to bottom, #BBE4FF, #FFFFFF);
+  justify-content: center;
 }
 
-.register__content {
+.restore-password__content {
   display: flex;
   /* justify-content: center; */
   align-items: center;
-  margin-top: 100px;
-  padding-top: 20px;
-  height: 100%;
-  width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
-.register__content-form {
+.restore-password__content-form {
   background-color: #ffffff;
   padding: 40px;
   border-radius: 35px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  height: 65%;
+  gap: 50px;
+  height: 400px;
   margin-left: 60px;
   width: 18%;
 }
 
-.register__content-form-title {
+.restore-password__content-form-title {
   color: #5652fa;
   font-size: 30px;
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   margin: 0;
+  /* text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); */
   text-decoration: none;
   padding-bottom: 20px;
 }
 
-.register__content-form-input {
+.restore-password__content-form-input {
   padding: 10px;
   margin-bottom: 15px;
   border-radius: 10px;
@@ -54,16 +53,7 @@
   /* background-color: #f0f9ff; */
 }
 
-input:focus {
-  outline: none;
-  /* box-shadow: inset 0 1px 3px rgba(100, 200, 255, 0.4); */
-}
-
-input::placeholder {
-  color: #aaa;
-}
-
-.register__content-form-button {
+.restore-password__content-form-button {
   background-color: #8cc2ff;
   border: none;
   color: #ffffff;
@@ -72,13 +62,4 @@ input::placeholder {
   cursor: pointer;
   border-radius: 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.register__content-form-link {
-  color: #5652fa;
-  font-size: 14px;
-  text-decoration: none;
-  margin-top: 10px;
-  text-align: center;
-  margin-bottom: 20px;
 }

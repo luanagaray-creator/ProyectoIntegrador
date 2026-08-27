@@ -1,9 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import Footer from "../Footer";
-import Header from "../Header";
-
 import "./style.css";
 
 const Home = () => {
@@ -11,7 +8,6 @@ const Home = () => {
   
   return (
     <div className="home">
-      <Header home={true} />
       <div className="home__content">
         <button 
           className="home__content-button"
@@ -19,8 +15,13 @@ const Home = () => {
         >
           ¡Paquetes Disponibles!
         </button>
+                <button 
+          className="home__content-button"
+          onClick={() => navigate("/default-page")}
+        >
+          Ingresar
+        </button>
       </div>
-      <Footer />
     </div>
   );
 };

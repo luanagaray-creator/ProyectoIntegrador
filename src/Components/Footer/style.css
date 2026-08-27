@@ -1,10 +1,15 @@
 .footer {
   background-color: #BBE4FF;
   color: white;
-  padding: 10px;
+  /* padding: 10px; */
   display: flex;
   justify-content: start;
   align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
 }
 
 .footer-text {
@@ -28,4 +33,5 @@
 .footer-social-img {
   width: 40px;
   height: 35px;
+  margin: 10px;
 }

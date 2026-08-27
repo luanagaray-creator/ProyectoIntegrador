@@ -12,14 +12,15 @@
 .home__content {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
-  margin-top: -318px;
+  margin-top: -240px;
   position: relative;
   z-index: 10;
+  gap: 80px;
 }
 
 .home__content-button {
     background-color: #8CC2FF;
+    margin-top: 206px;
     border: none;
     color: #ffffff;
     padding: 20px 40px;

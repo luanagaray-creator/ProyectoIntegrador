@@ -1,0 +1,90 @@
+.restore-password-code {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(to bottom, #bbe4ff, #ffffff);
+  justify-content: center;
+}
+
+.restore-password-code__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  padding-top: 20px;
+  height: 100%;
+  width: 100%;
+}
+
+.restore-password-code__content-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color:#ffffff;
+  padding: 25px;
+  margin-bottom: 120px;
+  border-radius: 35px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 50px;
+  height: 100%;
+  /* margin-left: 60px; */
+  width: 30%;
+}
+
+.restore-password-code__content-box-textContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* gap: 10px; */
+}
+
+.restore-password-code__content-box-title {
+  color: #5652fa;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  margin: 0;
+  text-decoration: none;
+  /* padding-bottom: 20px; */
+}
+
+.restore-password-code__content-box-text {
+  color: #000000;
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+.restore-password-code__content-box-input {
+  padding: 25px 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  border: none;
+  box-shadow: inset 0 1px 3px #bdbebe4d;
+  width: 80%;
+  text-align: center;
+}
+
+.restore-password-code__content-box-button {
+  background-color: #8cc2ff;
+  border: none;
+  color: #ffffff;
+  padding: 8px;
+  width: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;  
+  justify-content: center;
+}

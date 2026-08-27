@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import Header from "../Header";
-import Footer from "../Footer";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./style.css";
 
@@ -87,7 +84,6 @@ const Register = () => {
     }
     */
 
-    // Simulación: si la validación pasó, redirige a login
     setTimeout(() => {
       navigate("/home");
       setLoading(false);
@@ -96,7 +92,6 @@ const Register = () => {
 
   return (
     <div className="register">
-      <Header home={false} />
       <div className="register__content">
         <form className="register__content-form" onSubmit={handleSubmit}>
           <h1 className="register__content-form-title">Sign Up</h1>
@@ -143,11 +138,13 @@ const Register = () => {
             {loading ? "Registrando..." : "Sign Up"}
             {/* {handleSubmit.response && <p className="register__content-form-success">{handleSubmit.response}</p> && navigate("/home")} */}
           </button>
+          <Link to="/login" className="register__content-form-link">
+            ¿Ya tenés una cuenta? Iniciá sesión
+          </Link>
         </form>
       </div>
-      <Footer />
     </div>
   );
-};
+}
 
 export default Register;
