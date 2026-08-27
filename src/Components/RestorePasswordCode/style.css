@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 100vh;
+  flex: 1;
   width: 100%;
   box-sizing: border-box;
   background: linear-gradient(to bottom, #bbe4ff, #ffffff);
@@ -13,9 +13,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
-  padding-top: 20px;
-  height: 100%;
+  flex: 1;
+  padding-top: 100px;
   width: 100%;
 }
 
@@ -30,7 +29,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   gap: 50px;
   height: 100%;
-  /* margin-left: 60px; */
   width: 30%;
 }
 
@@ -38,7 +36,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* gap: 10px; */
 }
 
 .restore-password-code__content-box-title {
@@ -49,7 +46,6 @@
   font-weight: 600;
   margin: 0;
   text-decoration: none;
-  /* padding-bottom: 20px; */
 }
 
 .restore-password-code__content-box-text {
@@ -87,4 +83,14 @@
   display: flex;
   align-items: center;  
   justify-content: center;
+    transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.restore-password-code__content-form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(12, 68, 124, 0.22);
+  color: #ffffff;
 }
