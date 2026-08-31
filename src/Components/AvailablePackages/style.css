@@ -5,7 +5,7 @@
   flex: 1;
   width: 100%;
   box-sizing: border-box;
-  background: linear-gradient(to bottom, #bbe4ff, #ffffff);
+  background: linear-gradient(to bottom, #ffffff, #bbe4ff);
   justify-content: center;
 }
 
@@ -35,7 +35,7 @@
 .available-packages__content-boxTitle {
   display: flex;
   justify-content: center;
-  color: #ffff;
+  color: var(--text-title);
   font-size: 24px;
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
@@ -50,7 +50,7 @@
 }
 
 .available-packages__content-boxText {
-  color: #ffffff;
+  color: var(--text-body);
   font-size: 18px;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;

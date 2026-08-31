@@ -99,10 +99,20 @@
   height: 28rem;
   width: 30%;
   margin-bottom: 20%;
+  opacity: 0;
+  transform: translateY(48px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+}
+
+.home-about__content-box--visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .home-about__content-box-title {
-  color: #5f5db4;
+  color: var(--text-title);
   font-size: 40px;
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
@@ -115,7 +125,7 @@
 }
 
 .home-about__content-box-text {
-  color: #000000;
+  color: var(--text-body);
   font-family: Arial;
   font-style: italic;
   width: 100%;

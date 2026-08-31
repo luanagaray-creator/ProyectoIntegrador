@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import visa from "../../assets/visa.png";
 import mercadoPago from "../../assets/mercadoPago.png";
@@ -8,6 +8,7 @@ import "./style.css";
 
 const PaymentPage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const selectedPlan = location.state?.plan;
 
@@ -59,7 +60,10 @@ const PaymentPage = () => {
               <input className="payment-page__content-boxBottom-input" type="text" placeholder="Código de seguridad (CVV)" />
             </div>
           </div>
-          <button className="payment-page__content-boxBottom-button">Pagar</button>
+          <button 
+            className="payment-page__content-boxBottom-button"
+            onClick={() => navigate("/receipt")}
+          >Pagar</button>
         </div>
       </div>
     </div>

@@ -1,4 +1,8 @@
 :root {
+  --text-title: #5f5db4;
+  --text-body: #48468f;
+  --text-muted: #8a88b8;
+  --text-link: #5f5db4;
   background-color: #f5f5f5;
 }
 
