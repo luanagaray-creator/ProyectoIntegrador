@@ -1,0 +1,28 @@
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile__icon {
+    width: 60px;
+    height: auto;
+}
+
+.profile__content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.profile__content-title {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-title);
+}
+
+.profile__content-text {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text-title);
+}
