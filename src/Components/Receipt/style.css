@@ -20,6 +20,11 @@
   width: 100%;
 }
 
+.receipt__content-img {
+  height: 30rem;
+  width: auto;
+}
+
 .receipt__content-button {
   background-color: #8cc2ff;
   border: none;
