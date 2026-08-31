@@ -31,7 +31,7 @@
 }
 
 .about__content-box-title {
-  color: #5652fa;
+  color: var(--text-title);
   font-size: 30px;
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
@@ -42,7 +42,7 @@
 }
 
 .about__content-box-text {
-  color: #000000;
+  color: var(--text-body);
   font-size: 16px;
   font-family: "Montserrat", sans-serif;
   width: 100%;

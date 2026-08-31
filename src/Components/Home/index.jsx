@@ -1,10 +1,65 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./style.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const aboutContentRef = useRef(null);
+  const boxRefs = useRef([]);
+  const timeoutIds = useRef([]);
+
+  useEffect(() => {
+    const clearTimeouts = () => {
+      timeoutIds.current.forEach(clearTimeout);
+      timeoutIds.current = [];
+    };
+
+    const hideBoxes = () => {
+      clearTimeouts();
+      boxRefs.current.forEach((box) => {
+        if (box) box.classList.remove("home-about__content-box--visible");
+      });
+    };
+
+    const showBoxes = () => {
+      clearTimeouts();
+      boxRefs.current.forEach((box, index) => {
+        if (box) {
+          const id = setTimeout(() => {
+            box.classList.add("home-about__content-box--visible");
+          }, index * 180);
+          timeoutIds.current.push(id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            showBoxes();
+          } else {
+            hideBoxes();
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    if (aboutContentRef.current) {
+      observer.observe(aboutContentRef.current);
+    }
+
+    return () => {
+      clearTimeouts();
+      observer.disconnect();
+    };
+  }, []);
+
+  const setBoxRef = (index) => (element) => {
+    boxRefs.current[index] = element;
+  };
 
   return (
     <div className="home">
@@ -24,8 +79,11 @@ const Home = () => {
       </div>
       <div className="home-about">
         <span className="home-about__title">Sobre nosotros...</span>
-        <div className="home-about__content">
-          <div className="home-about__content-box">
+        <div ref={aboutContentRef} className="home-about__content">
+          <div
+            ref={setBoxRef(0)}
+            className="home-about__content-box"
+          >
             <span className="home-about__content-box-title">Visión</span>
             <p className="home-about__content-box-text">
               Centralizar la comunicación en las instituciones educativas a
@@ -36,7 +94,10 @@ const Home = () => {
               desinformación en los estudiantes.
             </p>
           </div>
-          <div className="home-about__content-box">
+          <div
+            ref={setBoxRef(1)}
+            className="home-about__content-box"
+          >
             <span className="home-about__content-box-title">Misión</span>
             <p className="home-about__content-box-text">
               Ser la plataforma de comunicación institucional referente en el
@@ -46,7 +107,10 @@ const Home = () => {
               transparente, eficiente y trazable.
             </p>
           </div>
-          <div className="home-about__content-box">
+          <div
+            ref={setBoxRef(2)}
+            className="home-about__content-box"
+          >
             <span className="home-about__content-box-title">Valores</span>
             <p className="home-about__content-box-text">
               Formalidad y Claridad: Buscamos que toda comunicación tanto dentro

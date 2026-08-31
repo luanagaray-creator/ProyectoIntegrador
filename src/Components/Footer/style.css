@@ -9,8 +9,8 @@
   flex-shrink: 0;
   width: 100%;
   z-index: 2;
-  border-top: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 -12px 30px -18px rgba(72, 70, 143, 0.35);
+  border-top: 1px solid #ffffffb3;
+  box-shadow: 0 -12px 30px -18px #48468f59;
 }
 
 .footer-text {
