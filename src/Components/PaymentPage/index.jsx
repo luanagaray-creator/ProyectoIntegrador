@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
+import WaveBackground from "../WaveBackground";
+
 import visa from "../../assets/visa.png";
 import mercadoPago from "../../assets/mercadoPago.png";
 import mastercard from "../../assets/mastercard.png";
@@ -14,6 +16,7 @@ const PaymentPage = () => {
 
   return (
     <div className="payment-page">
+      <WaveBackground />
       <div className="payment-page__content">
         <div className="payment-page__content-box">
           <div className="payment-page__content-boxTop">

@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+import WaveBackground from "../WaveBackground";
 
 import "./style.css";
 
@@ -13,7 +16,6 @@ const login = () => {
     password: "",
   });
 
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -22,15 +24,10 @@ const login = () => {
   };
 
   const validate = () => {
-    const { name, password, passwordConfirmation, email } = formData;
+    const { name, password } = formData;
 
-    if (!name || !password || !passwordConfirmation || !email) {
+    if (!name || !password) {
       return "Completá todos los campos";
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return "El email no tiene un formato válido";
     }
 
     return "";
@@ -38,11 +35,10 @@ const login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     const validationError = validate();
     if (validationError) {
-      setError(validationError);
+      toast.error(validationError);
       return;
     }
 
@@ -68,12 +64,13 @@ const login = () => {
 
       navigate("/login");
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
     */
 
+    toast.success("¡Iniciaste sesión exitosamente!");
     setTimeout(() => {
       navigate("/home");
       setLoading(false);
@@ -82,21 +79,15 @@ const login = () => {
 
   return (
     <div className="login">
-      <div className="login__wave" aria-hidden="true">
-        <svg className="login__wave-svg" viewBox="0 0 500 900" preserveAspectRatio="none">
-          <g className="login__wave-path login__wave-path--back">
-            <path d="M210 0C70 140 340 250 150 400C-20 550 300 700 200 900H500V0Z" />
-          </g>
-          <g className="login__wave-path login__wave-path--front">
-            <path d="M290 0C150 160 400 290 230 440C70 590 360 740 270 900H500V0Z" />
-          </g>
-        </svg>
-      </div>
+      <WaveBackground />
       <div className="login__content">
         <form className="login__content-form" onSubmit={handleSubmit}>
-          <h1 className="login__content-form-title">Login</h1>
-
-          {error && <p className="login__content-form-error">{error}</p>}
+          <div className="login__content-form-header">
+            <h1 className="login__content-form-title">Iniciar Sesión</h1>
+            <Link to="/register" className="login__content-form-link">
+              Regístrate aquí
+            </Link>
+          </div>
 
           <input
             type="text"
@@ -129,6 +120,6 @@ const login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default login;

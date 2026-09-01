@@ -14,6 +14,7 @@ import DefaultPage from './Components/DefaultPage';
 import RestorePasswordConfirm from './Components/RestorePasswordConfirm';
 import Receipt from './Components/Receipt';
 import Chat from './Components/Chat';
+import AnswerMessage from './Components/AnswerMesagge';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 
@@ -21,6 +22,7 @@ function App() {
   const { pathname } = useLocation();
   const footerRef = useRef(null);
   const [socialPulse, setSocialPulse] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState('');
   const isHome = pathname === '/' || pathname === '/home';
   const isDefaultPage = pathname === '/default-page';
 
@@ -49,9 +51,10 @@ function App() {
           <Route path="/restore-password" element={<RestorePassword />} />
           <Route path="/restore-password-code" element={<RestorePasswordCode />} />
           <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
-          <Route path="/default-page" element={<DefaultPage />} />
+          <Route path="/default-page" element={<DefaultPage onSelectMessage={setSelectedMessage} />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="receipt" element={<Receipt />} />
+          <Route path="/answer-message" element={<AnswerMessage message={selectedMessage} />} />
         </Routes>
       </main>
       <Footer ref={footerRef} isActive={socialPulse} home={isHome} />
