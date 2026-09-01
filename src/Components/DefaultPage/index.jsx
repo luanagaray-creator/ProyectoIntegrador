@@ -26,12 +26,7 @@ const DefaultPage = () => {
                     >
                         <img src={chat} alt="chat" className="default-page__content-iconMenu" />
                     </button>
-                    <button
-                        className="default-page__content-menuButton"
-                        onClick={() => navigate("/")}
-                    >
-                        <img src={folder} alt="folder" className="default-page__content-iconMenu" />
-                    </button>
+                    <img src={folder} alt="folder" className="default-page__content-iconMenu" />
                 </div>
                 <div className="default-page__content-menuOptions">
                     <button
@@ -61,16 +56,16 @@ const DefaultPage = () => {
                     <div className="compose-modal-overlay">
                         <div className="compose-modal">
                             <div className="compose-modal__top">
-                            <button onClick={() => setIsComposeOpen(false)} className="compose-modal-overlay__button">
-                                Cerrar
-                            </button>
-                            <input type="text" placeholder="Destinatario" className="compose-modal__input" />
-                            <input type="text" placeholder="Asunto" className="compose-modal__input" />
+                                <button onClick={() => setIsComposeOpen(false)} className="compose-modal-overlay__button">
+                                    Cerrar
+                                </button>
+                                <input type="text" placeholder="Destinatario" className="compose-modal__input" />
+                                <input type="text" placeholder="Asunto" className="compose-modal__input" />
                             </div>
                             <textarea placeholder="Escribí tu mensaje..." className="compose-modal__textArea" />
 
                             <button type="submit"
-                            className="compose-modal-overlay__button">Enviar</button>
+                                className="compose-modal-overlay__button">Enviar</button>
                         </div>
                     </div>
                 )}
@@ -80,9 +75,7 @@ const DefaultPage = () => {
                         <div className="default-page__contet-messagesboxContent">
                             <img src={star} alt="start" className="default-page__content-icon" />
                             <p className="default-page__content-text">
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
+                                ¿Hola! ¿Podrías enviarme los apuntes de la clase de hoy? Me perdí la explicación sobre el tema de ecuaciones diferenciales. Gracias!
                             </p>
                         </div>
                     </div>
@@ -90,9 +83,7 @@ const DefaultPage = () => {
                         <div className="default-page__contet-messagesboxContent">
                             <img src={cloudDown} alt="start" className="default-page__content-icon" />
                             <p className="default-page__content-text">
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
+                                Adjunto están los apuntes del proyecto final. Por favor revisal y envíame tus comentarios para coordinar la presentación del viernes.
                             </p>
                         </div>
                     </div>
@@ -100,9 +91,7 @@ const DefaultPage = () => {
                         <div className="default-page__contet-messagesboxContent">
                             <img src={cloudDown} alt="start" className="default-page__content-icon" />
                             <p className="default-page__content-text">
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
+                                Recordatorio: La fecha límite para entrega del trabajo práctico es el próximo miércoles. No olvides incluir referencias bibliográficas y un resumen ejecutivo.
                             </p>
                         </div>
                     </div>
@@ -110,9 +99,7 @@ const DefaultPage = () => {
                         <div className="default-page__contet-messagesboxContent">
                             <img src={cloudUp} alt="start" className="default-page__content-icon" />
                             <p className="default-page__content-text">
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
+                                He completado mi parte del proyecto. ¿Podrías revisar si todo está correcto? Cualquier sugerencia es bienvenida antes de la presentación.
                             </p>
                         </div>
                     </div>
@@ -120,9 +107,7 @@ const DefaultPage = () => {
                         <div className="default-page__contet-messagesboxContent">
                             <img src={cloudUp} alt="start" className="default-page__content-icon" />
                             <p className="default-page__content-text">
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
-                                nslkawwjdñojjdwoñklñswodpoakjsnfjnijzckscksmdclsmcñlackmamcklskdmcñscls
+                                ¿Alguien sabe dónde se entrega el trabajo? Tengo dudas sobre el procedimiento y la plataforma a usar.
                             </p>
                         </div>
                     </div>

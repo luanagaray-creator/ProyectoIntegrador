@@ -1,10 +1,10 @@
+import { useRef, useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home';
 import Register from './Components/Register';
 import Login from './Components/Login';
 import About from './Components/About';
-import Contact from './Components/Contact';
 import AvailablePackages from './Components/AvailablePackages';
 import PaymentPage from './Components/PaymentPage';
 import RestorePassword from './Components/RestorePassword';
@@ -19,19 +19,30 @@ import Footer from './Components/Footer';
 
 function App() {
   const { pathname } = useLocation();
+  const footerRef = useRef(null);
+  const [socialPulse, setSocialPulse] = useState(false);
   const isHome = pathname === '/' || pathname === '/home';
   const isDefaultPage = pathname === '/default-page';
 
+  const triggerSocialPulse = () => {
+    setSocialPulse(true);
+    window.setTimeout(() => setSocialPulse(false), 500);
+  };
+
+  const handleContactClick = () => {
+    footerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    triggerSocialPulse();
+  };
+
   return (
     <div className={`app ${isDefaultPage ? 'app--no-scroll' : ''}`}>
-      <Header home={isHome} />
+      <Header home={isHome} onContactClick={handleContactClick} />
       <main className={`app__main ${isDefaultPage ? 'app__main--no-scroll' : ''}`}>
         <Routes>
           {/* <Route path="/" element={<><Home /><About /></>} /> */}
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/home" element={<Home />} />
           <Route path="/available-packages" element={<AvailablePackages />} />
           <Route path="/payment-page" element={<PaymentPage />} />
@@ -43,7 +54,7 @@ function App() {
           <Route path="receipt" element={<Receipt />} />
         </Routes>
       </main>
-      <Footer />
+      <Footer ref={footerRef} isActive={socialPulse} home={isHome} />
     </div>
   )
 }

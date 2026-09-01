@@ -12,7 +12,7 @@ import "./style.css";
 const bannerImages = [bannerAnima1, bannerAnima2, bannerAnima3];
 const BANNER_INTERVAL = 6000; // ms entre imágenes
 
-const Header = ({ home }) => {
+const Header = ({ home, onContactClick }) => {
   const navigate = useNavigate();
   const [bannerIndex, setBannerIndex] = useState(0);
   const timerRef = useRef(null);
@@ -33,6 +33,20 @@ const Header = ({ home }) => {
     return () => clearInterval(timerRef.current);
   }, [home]);
 
+  const handleContactNavigation = (event) => {
+    event.preventDefault();
+
+    if (onContactClick) {
+      onContactClick();
+      return;
+    }
+
+    navigate("/home");
+    setTimeout(() => {
+      document.getElementById("footer")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
   return (
   <header className={home === true ? "banner-container" : "header header--solid"}>
     {home === true && (
@@ -52,12 +66,18 @@ const Header = ({ home }) => {
       </>
     )}
     {home === false && (
-      <img
-        src={thotem}
-        alt="Thotem Ánima Campus"
-        className="thotem-img"
+      <button
+        type="button"
+        className="thotem-button"
         onClick={() => navigate("/home")}
-      />
+        aria-label="Ir a la página de inicio"
+      >
+        <img
+          src={thotem}
+          alt="Thotem Ánima Campus"
+          className="thotem-img"
+        />
+      </button>
     )}
     <nav className="header">
       <div className="header__sections">
@@ -65,7 +85,7 @@ const Header = ({ home }) => {
         <Link to="/login" className="header-sections-text">Iniciar sesión</Link>
         <Link to="/home" className="header-sections-text">Inicio</Link>
         {/* <Link to="/about" className="header-sections-text">Nosotros</Link> */}
-        <Link to="/contact" className="header-sections-text">Contacto</Link>
+        <Link to="/home#footer" onClick={handleContactNavigation} className="header-sections-text">Contacto</Link>
       </div>
     </nav>
   </header>
