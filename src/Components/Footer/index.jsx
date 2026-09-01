@@ -1,13 +1,14 @@
+import { forwardRef } from "react";
 import instagram from "../../assets/instagram.png";
 import facebook from "../../assets/facebook.png";
 import tiktok from "../../assets/tiktok.png";
 
 import "./style.css";
 
-const Footer = () => {
+const Footer = forwardRef(({ isActive = false }, ref) => {
   return (
-    <div className="footer">
-      <div className="footer-social">
+    <footer id="footer" ref={ref} className="footer">
+      <div className={`footer-social ${isActive ? "is-active" : ""}`}>
         <a
           href="https://www.instagram.com/animadual/?hl=es"
           target="_blank"
@@ -19,7 +20,7 @@ const Footer = () => {
           Instagram
         </a>
       </div>
-      <div className="footer-social">
+      <div className={`footer-social ${isActive ? "is-active" : ""}`}>
         <a
           href="https://www.facebook.com/tu_empresa"
           target="_blank"
@@ -31,7 +32,7 @@ const Footer = () => {
           Facebook
         </a>
       </div>
-      <div className="footer-social">
+      <div className={`footer-social ${isActive ? "is-active" : ""}`}>
         <a
           href="https://www.tiktok.com/@anima_dual"
           target="_blank"
@@ -43,8 +44,10 @@ const Footer = () => {
           TikTok
         </a>
       </div>
-    </div>
+    </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";
 
 export default Footer;

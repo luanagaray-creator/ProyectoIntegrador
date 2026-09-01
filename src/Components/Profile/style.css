@@ -13,16 +13,19 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    margin-left: 10px;
 }
 
 .profile__content-title {
-    font-size: 14px;
+    font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--text-title);
+    margin: 0;
 }
 
 .profile__content-text {
     font-size: 12px;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--text-title);
+    margin: 0;
 }
