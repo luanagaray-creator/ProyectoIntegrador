@@ -92,6 +92,16 @@ const Register = () => {
 
   return (
     <div className="register">
+      <div className="register__wave" aria-hidden="true">
+        <svg className="register__wave-svg" viewBox="0 0 500 900" preserveAspectRatio="none">
+          <g className="register__wave-path register__wave-path--back">
+            <path d="M210 0C70 140 340 250 150 400C-20 550 300 700 200 900H500V0Z" />
+          </g>
+          <g className="register__wave-path register__wave-path--front">
+            <path d="M290 0C150 160 400 290 230 440C70 590 360 740 270 900H500V0Z" />
+          </g>
+        </svg>
+      </div>
       <div className="register__content">
         <form className="register__content-form" onSubmit={handleSubmit}>
           <h1 className="register__content-form-title">Sign Up</h1>

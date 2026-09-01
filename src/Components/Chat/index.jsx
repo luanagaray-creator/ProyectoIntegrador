@@ -26,7 +26,7 @@ const Chat = () => {
                 <div className="chat__content-box">
                     <div className="chat__content-boxHeader">
                         <p className="chat__content-boxTitle">3ro TIC</p>
-                        <Profile />
+                        <Profile name="user" typeUser="userType"/>
                     </div>
 
                     <hr className="divider" />

@@ -82,6 +82,16 @@ const login = () => {
 
   return (
     <div className="login">
+      <div className="login__wave" aria-hidden="true">
+        <svg className="login__wave-svg" viewBox="0 0 500 900" preserveAspectRatio="none">
+          <g className="login__wave-path login__wave-path--back">
+            <path d="M210 0C70 140 340 250 150 400C-20 550 300 700 200 900H500V0Z" />
+          </g>
+          <g className="login__wave-path login__wave-path--front">
+            <path d="M290 0C150 160 400 290 230 440C70 590 360 740 270 900H500V0Z" />
+          </g>
+        </svg>
+      </div>
       <div className="login__content">
         <form className="login__content-form" onSubmit={handleSubmit}>
           <h1 className="login__content-form-title">Login</h1>
