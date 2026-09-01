@@ -66,12 +66,18 @@ const Header = ({ home, onContactClick }) => {
       </>
     )}
     {home === false && (
-      <img
-        src={thotem}
-        alt="Thotem Ánima Campus"
-        className="thotem-img"
+      <button
+        type="button"
+        className="thotem-button"
         onClick={() => navigate("/home")}
-      />
+        aria-label="Ir a la página de inicio"
+      >
+        <img
+          src={thotem}
+          alt="Thotem Ánima Campus"
+          className="thotem-img"
+        />
+      </button>
     )}
     <nav className="header">
       <div className="header__sections">

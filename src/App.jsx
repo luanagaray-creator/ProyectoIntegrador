@@ -54,7 +54,7 @@ function App() {
           <Route path="receipt" element={<Receipt />} />
         </Routes>
       </main>
-      <Footer ref={footerRef} isActive={socialPulse} />
+      <Footer ref={footerRef} isActive={socialPulse} home={isHome} />
     </div>
   )
 }

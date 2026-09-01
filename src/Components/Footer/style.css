@@ -13,6 +13,19 @@
   box-shadow: 0 -12px 30px -18px #48468f59;
 }
 
+.footer__content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.footer__content-social {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
 .footer-text {
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
@@ -96,4 +109,11 @@
   .footer-text {
     font-size: 13px;
   }
+}
+
+.footer-thotem-img {
+  width: auto;
+  height: 40px;
+  padding: 6px;
+  margin: 0;
 }
