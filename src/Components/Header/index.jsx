@@ -83,7 +83,7 @@ const Header = ({ home, onContactClick }) => {
       <div className="header__sections">
         <Link to="/register" className="header-sections-text">Registrate</Link>
         <Link to="/login" className="header-sections-text">Iniciar sesión</Link>
-        <Link to="/home" className="header-sections-text">Inicio</Link>
+        {/* <Link to="/home" className="header-sections-text">Inicio</Link> */}
         {/* <Link to="/about" className="header-sections-text">Nosotros</Link> */}
         <Link to="/home#footer" onClick={handleContactNavigation} className="header-sections-text">Contacto</Link>
       </div>

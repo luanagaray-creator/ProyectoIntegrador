@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import WaveBackground from "../WaveBackground";
+
 import "./style.css";
 
 const API_URL = "http://localhost:3000/api/register"; // TODO: reemplazar con el endpoint real
@@ -92,19 +94,10 @@ const Register = () => {
 
   return (
     <div className="register">
-      <div className="register__wave" aria-hidden="true">
-        <svg className="register__wave-svg" viewBox="0 0 500 900" preserveAspectRatio="none">
-          <g className="register__wave-path register__wave-path--back">
-            <path d="M210 0C70 140 340 250 150 400C-20 550 300 700 200 900H500V0Z" />
-          </g>
-          <g className="register__wave-path register__wave-path--front">
-            <path d="M290 0C150 160 400 290 230 440C70 590 360 740 270 900H500V0Z" />
-          </g>
-        </svg>
-      </div>
+      <WaveBackground />
       <div className="register__content">
         <form className="register__content-form" onSubmit={handleSubmit}>
-          <h1 className="register__content-form-title">Sign Up</h1>
+          <h1 className="register__content-form-title">Registrarse</h1>
 
           {error && <p className="register__content-form-error">{error}</p>}
 
@@ -145,7 +138,7 @@ const Register = () => {
             className="register__content-form-button"
             disabled={loading}
           >
-            {loading ? "Registrando..." : "Sign Up"}
+            {loading ? "Registrando..." : "Registrarse"}
             {/* {handleSubmit.response && <p className="register__content-form-success">{handleSubmit.response}</p> && navigate("/home")} */}
           </button>
           <Link to="/login" className="register__content-form-link">
