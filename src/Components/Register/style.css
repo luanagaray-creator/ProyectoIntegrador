@@ -149,7 +149,9 @@ input::placeholder {
   color: var(--text-link);
   font-size: 14px;
   text-decoration: none;
-  margin-top: 10px;
   text-align: center;
-  margin-bottom: 20px;
+}
+
+.register__content-form-link:hover {
+  text-decoration: underline;
 }

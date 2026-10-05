@@ -11,7 +11,6 @@
   overflow: hidden;
 }
 
-
 .default-page__content {
   display: flex;
   width: min(100%, 1400px);
@@ -38,7 +37,7 @@
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 300;
   font-style: italic;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-body);
   margin-left: 20px;
 }
@@ -72,7 +71,6 @@
   align-self: flex-start;
 }
 
-
 .default-page__content-menuOptions {
   display: flex;
   flex-direction: column;
@@ -81,7 +79,6 @@
   flex-shrink: 0;
   align-self: flex-start;
 }
-
 
 .default-page__content-button {
   display: flex;
@@ -111,11 +108,9 @@
 
 .default-page__content-menuButton {
   border: none;
-  /* color: transparent; */
   background-color: transparent;
   margin: 0;
 }
-
 
 .default-page__content-link {
   display: flex;
@@ -133,7 +128,6 @@
   box-sizing: border-box;
 }
 
-
 .default-page__content-messages {
   display: flex;
   flex-direction: column;
@@ -142,8 +136,11 @@
   min-width: 0;
   min-height: 0;
   overflow-y: auto;
+  background: rgba(0, 153, 255, 0.2);
+  opacity: 0.8;
+  padding: 10px 20px;
+  border-radius: 30px;
 }
-
 
 .default-page__content-messages-box {
   display: flex;
@@ -153,10 +150,22 @@
   color: var(--text-body);
   border-radius: 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px 25px;
+  padding: 10px 20px;
   min-height: 50px;
   max-height: 50px;
   text-wrap: wrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.default-page__content-messages-box:hover {
+  background-color: #e6f4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(12, 68, 124, 0.22);
 }
 
 .default-page__contet-messagesboxContent {
@@ -186,7 +195,6 @@
   cursor: pointer;
   border-radius: 30px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* align-self: flex-start; */
   transition:
     background-color 0.2s ease,
     transform 0.2s ease,
@@ -249,12 +257,11 @@
   max-width: 100%;
   min-height: 100px;
   max-height: 100px;
-  /* text-align: center; */
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .compose-modal__textArea:focus {
-    outline: none;
+  outline: none;
 }
 
 @media (max-width: 800px) {

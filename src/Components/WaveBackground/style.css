@@ -1,0 +1,61 @@
+.auth-wave {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.auth-wave__svg {
+  width: 130%;
+  height: 115%;
+  display: block;
+  animation: auth-wave-drift 9s ease-in-out infinite;
+}
+
+.auth-wave__path--back path {
+  fill: rgba(255, 255, 255, 0.45);
+}
+
+.auth-wave__path--front path {
+  fill: #ffffff;
+}
+
+.auth-wave__path--back {
+  animation: auth-wave-shift 11s ease-in-out infinite;
+}
+
+.auth-wave__path--front {
+  animation: auth-wave-shift 7.5s ease-in-out infinite reverse;
+}
+
+@keyframes auth-wave-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-3%, 1.5%, 0);
+  }
+}
+
+@keyframes auth-wave-shift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-wave__svg,
+  .auth-wave__path--back,
+  .auth-wave__path--front {
+    animation: none;
+  }
+}

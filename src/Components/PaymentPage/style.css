@@ -7,6 +7,69 @@
   box-sizing: border-box;
   background: linear-gradient(to bottom, #ffffff, #bbe4ff);
   justify-content: center;
+  overflow: hidden;
+}
+
+.payment-page__wave {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 50%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.payment-page__wave-svg {
+  width: 130%;
+  height: 115%;
+  display: block;
+  animation: auth-wave-drift 9s ease-in-out infinite;
+}
+
+.payment-page__wave-path--back path {
+  fill: rgba(255, 255, 255, 0.45);
+}
+
+.payment-page__wave-path--front path {
+  fill: #ffffff;
+}
+
+.payment-page__wave-path--back {
+  animation: auth-wave-shift 11s ease-in-out infinite;
+}
+
+.payment-page__wave-path--front {
+  animation: auth-wave-shift 7.5s ease-in-out infinite reverse;
+}
+
+@keyframes auth-wave-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-3%, 1.5%, 0);
+  }
+}
+
+@keyframes auth-wave-shift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .payment-page__wave-svg,
+  .payment-page__wave-path--back,
+  .payment-page__wave-path--front {
+    animation: none;
+  }
 }
 
 .payment-page__content {
@@ -16,6 +79,8 @@
   padding-top: 20px;
   height: 100%;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .payment-page__content-box {

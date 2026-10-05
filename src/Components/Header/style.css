@@ -8,6 +8,15 @@
   align-items: center;
 }
 
+.thotem-button {
+  position: relative;
+  z-index: 3;
+  background: transparent;
+  border: none;
+  padding: 10px 0 0 40px;
+  cursor: pointer;
+}
+
 .header__sections {
   background-color: transparent;
   padding: 35px 40px;
@@ -70,9 +79,8 @@
 }
 
 .thotem-img {
+  display: block;
   height: 70px;
-  padding-top: 10px;
-  padding-left: 40px;
 }
 
 @media (prefers-reduced-motion: reduce) {

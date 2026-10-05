@@ -66,18 +66,24 @@ const Header = ({ home, onContactClick }) => {
       </>
     )}
     {home === false && (
-      <img
-        src={thotem}
-        alt="Thotem Ánima Campus"
-        className="thotem-img"
+      <button
+        type="button"
+        className="thotem-button"
         onClick={() => navigate("/home")}
-      />
+        aria-label="Ir a la página de inicio"
+      >
+        <img
+          src={thotem}
+          alt="Thotem Ánima Campus"
+          className="thotem-img"
+        />
+      </button>
     )}
     <nav className="header">
       <div className="header__sections">
         <Link to="/register" className="header-sections-text">Registrate</Link>
         <Link to="/login" className="header-sections-text">Iniciar sesión</Link>
-        <Link to="/home" className="header-sections-text">Inicio</Link>
+        {/* <Link to="/home" className="header-sections-text">Inicio</Link> */}
         {/* <Link to="/about" className="header-sections-text">Nosotros</Link> */}
         <Link to="/home#footer" onClick={handleContactNavigation} className="header-sections-text">Contacto</Link>
       </div>
