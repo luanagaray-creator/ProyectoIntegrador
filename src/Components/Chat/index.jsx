@@ -1,32 +1,22 @@
-import { useNavigate } from "react-router-dom";
-
 import Profile from "../Profile";
 
-import chat from "../../assets/chat.png";
-import folder from "../../assets/folder.png";
+import ViewNavigation from "../ViewNavigation";
+import { useAuth } from "../../auth/AuthContext";
 
 import "./style.css";
 
 const Chat = () => {
-    const navigate = useNavigate();
+    const { user } = useAuth();
 
     return (
         <div className="chat">
             <div className="chat__content">
-                <div className="chat__content-menu">
-                    <img src={chat} alt="chat" className="chat__content-iconMenu" />
-                    <button
-                        className="chat__content-menuButton"
-                        onClick={() => navigate("/default-page")}
-                    >
-                        <img src={folder} alt="folder" className="chat__content-iconMenu" />
-                    </button>
-                </div>
+                <ViewNavigation />
 
                 <div className="chat__content-box">
                     <div className="chat__content-boxHeader">
                         <p className="chat__content-boxTitle">3ro TIC</p>
-                        <Profile name="user" typeUser="userType"/>
+                        {user && <Profile name={user.name} typeUser={user.typeUser} />}
                     </div>
 
                     <hr className="divider" />

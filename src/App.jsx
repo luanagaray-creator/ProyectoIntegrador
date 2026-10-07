@@ -41,7 +41,7 @@ function App() {
       <Header home={isHome} onContactClick={handleContactClick} />
       <main className={`app__main ${isDefaultPage ? 'app__main--no-scroll' : ''}`}>
         <Routes>
-          {/* <Route path="/" element={<><Home /><About /></>} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />

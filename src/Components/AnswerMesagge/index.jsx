@@ -48,7 +48,7 @@ const AnswerMessage = ({ message }) => {
                             value={responseText}
                             onChange={(e) => setResponseText(e.target.value)}
                             onKeyPress={handleKeyPress}
-                            rows={3}
+                            rows={1}
                         />
                         <button 
                             type="button" 
@@ -56,7 +56,7 @@ const AnswerMessage = ({ message }) => {
                             onClick={handleSendResponse}
                             aria-label="Enviar respuesta"
                         >
-                            <span className="answer-message__content-send-text">Send</span>
+                            <span className="answer-message__content-send-text">→</span>
                         </button>
                     </div>
                 </div>

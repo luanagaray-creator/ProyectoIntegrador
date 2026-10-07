@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import bannerAnima1 from "../../assets/banner-anima-1.png";
 import bannerAnima2 from "../../assets/banner-anima-2.png";
 import bannerAnima3 from "../../assets/banner-anima-3.png";
 import thotem from "../../assets/thotem.png";
+import Profile from "../Profile";
+import { useAuth } from "../../auth/AuthContext";
 
 import "./style.css";
 
@@ -14,6 +16,9 @@ const BANNER_INTERVAL = 6000; // ms entre imágenes
 
 const Header = ({ home, onContactClick }) => {
   const navigate = useNavigate();
+  const { user, authLoading, logout } = useAuth();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
   const [bannerIndex, setBannerIndex] = useState(0);
   const timerRef = useRef(null);
 
@@ -45,6 +50,19 @@ const Header = ({ home, onContactClick }) => {
     setTimeout(() => {
       document.getElementById("footer")?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 50);
+  };
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    setLogoutError("");
+    try {
+      await logout();
+      navigate("/home");
+    } catch (err) {
+      setLogoutError(err.message);
+    } finally {
+      setLoggingOut(false);
+    }
   };
 
   return (
@@ -81,11 +99,23 @@ const Header = ({ home, onContactClick }) => {
     )}
     <nav className="header">
       <div className="header__sections">
-        <Link to="/register" className="header-sections-text">Registrate</Link>
-        <Link to="/login" className="header-sections-text">Iniciar sesión</Link>
+        {authLoading ? (
+          <span className="header-sections-text" role="status">Cargando sesión…</span>
+        ) : user ? (
+          <button type="button" className="header-sections-text header__logout" onClick={handleLogout} disabled={loggingOut}>
+            {loggingOut ? "Cerrando sesión…" : "Cerrar sesión"}
+          </button>
+        ) : (
+          <>
+            <Link to="/register" className="header-sections-text">Registrate</Link>
+            <Link to="/login" className="header-sections-text">Iniciar sesión</Link>
+          </>
+        )}
         {/* <Link to="/home" className="header-sections-text">Inicio</Link> */}
         {/* <Link to="/about" className="header-sections-text">Nosotros</Link> */}
         <Link to="/home#footer" onClick={handleContactNavigation} className="header-sections-text">Contacto</Link>
+        {user && <Profile name={user.name} typeUser={user.typeUser} />}
+        {logoutError && <p className="header__session-error" role="alert">{logoutError}</p>}
       </div>
     </nav>
   </header>

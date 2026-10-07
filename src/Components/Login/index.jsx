@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
 
 import WaveBackground from "../WaveBackground";
 
 import "./style.css";
 
-const API_URL = "http://localhost:3000/api/register"; // TODO: reemplazar con el endpoint real
 
-const login = () => {
+const Login = () => {
   const navigate = useNavigate();
+  const { login, user, authLoading, sessionError } = useAuth();
+  const [error, setError] = useState('');
 
   const [formData, setFormData] = useState({
     name: "",
@@ -35,47 +36,27 @@ const login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
 
     const validationError = validate();
     if (validationError) {
-      toast.error(validationError);
+      setError(validationError);
       return;
     }
 
     setLoading(true);
 
-    // TODO: Descomentar cuando el backend esté disponible
-    /*
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          password: formData.password,
-          email: formData.email,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        throw new Error(data?.message || "No se pudo completar el registro");
-      }
-
-      navigate("/login");
+      await login(formData);
+      navigate("/home");
     } catch (err) {
-      toast.error(err.message);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
-    */
-
-    toast.success("¡Iniciaste sesión exitosamente!");
-    setTimeout(() => {
-      navigate("/home");
-      setLoading(false);
-    }, 500);
   };
+
+  if (!authLoading && user) return <Navigate to="/home" replace />;
 
   return (
     <div className="login">
@@ -89,10 +70,13 @@ const login = () => {
             </Link>
           </div>
 
+          {(error || sessionError) && <p className="login__content-form-error" role="alert">{error || sessionError}</p>}
           <input
             type="text"
             name="name"
-            placeholder="Name"
+            autoComplete="username"
+            required
+            placeholder="Usuario o email"
             className="login__content-form-input"
             value={formData.name}
             onChange={handleChange}
@@ -100,7 +84,10 @@ const login = () => {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            autoComplete="current-password"
+            required
+            maxLength={128}
+            placeholder="Contraseña"
             className="login__content-form-input"
             value={formData.password}
             onChange={handleChange}
@@ -108,10 +95,9 @@ const login = () => {
           <button
             type="submit"
             className="login__content-form-button"
-            disabled={loading}
+            disabled={loading || authLoading}
           >
             {loading ? "Iniciando sesión..." : "Login"}
-            {/* {handleSubmit.response && <p className="login__content-form-success">{handleSubmit.response}</p> && navigate("/home")} */}
           </button>
           <Link to="/restore-password" className="login__content-form-link">
             ¿Olvidaste tu contraseña? Restaura tu contraseña
@@ -122,4 +108,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;
