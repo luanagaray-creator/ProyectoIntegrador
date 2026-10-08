@@ -68,10 +68,14 @@
   color: #5f5db4;
 }
 
-.footer-social-img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
+.footer-social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  box-sizing: border-box;
+  flex-shrink: 0;
   padding: 6px;
   margin: 0;
   background: #ffffff;
@@ -80,7 +84,20 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.footer-social.is-active .footer-social-img {
+.footer-social-img {
+  display: block;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.footer-social-img--tiktok {
+  width: 26px;
+  height: 26px;
+}
+
+.footer-social.is-active .footer-social-icon {
   transform: scale(1.08);
   box-shadow: 0 0 0 3px rgba(95, 93, 180, 0.16), 0 8px 16px -8px rgba(72, 70, 143, 0.52);
 }

@@ -27,6 +27,11 @@
     "vite": "^8.2.0",
     "watch": "^0.13.0"
   },
+  "planPrices": {
+    "smallPlan": 250,
+    "mediumPlan": 500,
+    "largePlan": 750
+  },
   "planName": {
     "smallPlan": "Small Plan",
     "mediumPlan": "Medium Plan",

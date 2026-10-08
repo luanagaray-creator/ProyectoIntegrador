@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
 import WaveBackground from "../WaveBackground";
@@ -9,6 +9,9 @@ import "./style.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = location.state?.from === '/payment-page' ? '/payment-page' : '/home';
+  const destinationState = destination === '/payment-page' ? { plan: location.state.plan } : undefined;
   const { login, user, authLoading, sessionError } = useAuth();
   const [error, setError] = useState('');
 
@@ -48,7 +51,7 @@ const Login = () => {
 
     try {
       await login(formData);
-      navigate("/home");
+      navigate(destination, { replace: true, state: destinationState });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -56,7 +59,7 @@ const Login = () => {
     }
   };
 
-  if (!authLoading && user) return <Navigate to="/home" replace />;
+  if (!authLoading && user) return <Navigate to={destination} state={destinationState} replace />;
 
   return (
     <div className="login">
@@ -65,11 +68,12 @@ const Login = () => {
         <form className="login__content-form" onSubmit={handleSubmit}>
           <div className="login__content-form-header">
             <h1 className="login__content-form-title">Iniciar Sesión</h1>
-            <Link to="/register" className="login__content-form-link">
+            <Link to="/register" state={location.state} className="login__content-form-link">
               Regístrate aquí
             </Link>
           </div>
 
+          {location.state?.sessionExpired && <p className="login__content-form-error" role="status">Tu sesión venció. Volvé a iniciar sesión para continuar.</p>}
           {(error || sessionError) && <p className="login__content-form-error" role="alert">{error || sessionError}</p>}
           <input
             type="text"

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import WaveBackground from "../WaveBackground";
 import { useAuth } from "../../auth/AuthContext";
@@ -9,6 +9,9 @@ import "./style.css";
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = location.state?.from === '/payment-page' ? '/payment-page' : '/home';
+  const destinationState = destination === '/payment-page' ? { plan: location.state.plan } : undefined;
   const { register, user, authLoading } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -63,7 +66,7 @@ const Register = () => {
 
     try {
       await register({ name: formData.name, email: formData.email, password: formData.password });
-      navigate("/home", { replace: true });
+      navigate(destination, { replace: true, state: destinationState });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -71,7 +74,7 @@ const Register = () => {
     }
   };
 
-  if (!authLoading && user) return <Navigate to="/home" replace />;
+  if (!authLoading && user) return <Navigate to={destination} state={destinationState} replace />;
 
   return (
     <div className="register">
@@ -134,7 +137,7 @@ const Register = () => {
           >
             {loading ? "Registrando..." : "Registrarse"}
           </button>
-          <Link to="/login" className="register__content-form-link">
+          <Link to="/login" state={location.state} className="register__content-form-link">
             ¿Ya tenés una cuenta? Iniciá sesión
           </Link>
         </form>
