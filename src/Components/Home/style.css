@@ -70,65 +70,82 @@
 }
 
 .home-about__title {
-  color: #ffffff;
-  font-family: "Playfair Display", serif;
-  font-style: italic;
+  color: var(--text-title);
+  font-family: "Montserrat", sans-serif;
   font-weight: 700;
-  font-size: 65px;
-  margin-top: 12rem;
-  margin-bottom: 4rem;
-  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 1.2;
+  letter-spacing: -0.7px;
+  text-align: center;
+  margin: 12rem 20px 3rem;
+}
+
+.home-about__title::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 4px;
+  margin: 18px auto 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, transparent 0%, rgba(140, 194, 255, 0.55) 20%, var(--text-title) 50%, rgba(140, 194, 255, 0.55) 80%, transparent 100%);
 }
 
 .home-about__content {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
   position: relative;
   z-index: 10;
-  gap: 80px;
-  margin: 0 80px 0;
+  gap: 24px;
+  width: min(1280px, calc(100% - 80px));
+  margin: 0 auto 100px;
 }
 
-.home-about__content-box {
-  background-color: #ffffff;
-  padding: 40px;
-  border-radius: 35px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  height: 28rem;
-  width: 30%;
-  margin-bottom: 20%;
-  opacity: 0;
-  transform: translateY(48px);
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-
-.home-about__content-box--visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.home-about__content-box-title {
-  color: var(--text-title);
-  font-size: 40px;
-  font-weight: bold;
+.home-about__card {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(141, 197, 255, 0.4);
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(72, 70, 143, 0.06);
+  overflow: hidden;
   font-family: "Montserrat", sans-serif;
-  font-weight: 600;
-  margin: 0;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  text-decoration: none;
-  text-align: center;
-  margin-bottom: 20px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.home-about__content-box-text {
-  color: var(--text-body);
-  font-family: Arial;
-  font-style: italic;
-  width: 100%;
-  margin: 0;
-  text-align: center;
+.home-about__card-trigger {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 28px;
+  cursor: pointer;
+  list-style: none;
+  min-height: 88px;
+  box-sizing: border-box;
 }
+.home-about__card-trigger::-webkit-details-marker { display: none; }
+.home-about__card-trigger:focus-visible { outline: 2px solid var(--text-title); outline-offset: -5px; border-radius: 24px; }
+
+.home-about__card-title { color: var(--text-title); font-size: 23px; font-weight: 600; line-height: 1.25; }
+
+.home-about__card-chevron {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: 4px;
+  border-right: 2px solid var(--text-title);
+  border-bottom: 2px solid var(--text-title);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.home-about__card[open] .home-about__card-chevron { transform: rotate(225deg); }
+.home-about__card[open] { border-color: rgba(95, 93, 180, 0.3); box-shadow: 0 12px 28px rgba(72, 70, 143, 0.12); }
+.home-about__card[open] .home-about__card-trigger { background: #f5faff; }
+.home-about__card-body { padding: 24px 28px 28px; border-top: 1px solid rgba(95, 93, 180, 0.12); }
+.home-about__card[open] .home-about__card-body { animation: home-card-reveal 0.25s ease-out; }
+.home-about__content-box-text { color: var(--text-body); font-size: 15px; line-height: 1.75; margin: 0; text-align: left; }
+.home-about__content-box-text + .home-about__content-box-text { margin-top: 18px; }
+
+@keyframes home-card-reveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+@media (hover: hover) { .home-about__card:hover { border-color: #8cc2ff; box-shadow: 0 12px 28px rgba(72, 70, 143, 0.12); } }
+@media (max-width: 900px) { .home-about__content { grid-template-columns: 1fr; width: min(560px, calc(100% - 32px)); gap: 16px; margin-bottom: 64px; } }
+@media (prefers-reduced-motion: reduce) { .home-about__card, .home-about__card-chevron { transition: none; } .home-about__card[open] .home-about__card-body { animation: none; } }

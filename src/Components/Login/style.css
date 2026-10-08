@@ -162,3 +162,10 @@ input::placeholder {
 .login__content-form-link:hover {
   text-decoration: underline;
 }
+.login__content-form-error {
+  color: var(--text-body);
+  background: #edf7ff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin: 0;
+}

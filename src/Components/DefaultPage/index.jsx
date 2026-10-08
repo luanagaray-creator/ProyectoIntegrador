@@ -4,8 +4,7 @@ import star from "../../assets/star.png";
 import cloudUp from "../../assets/cloudUp.png";
 import cloudDown from "../../assets/cloudDown.png"
 import clock from "../../assets/clock.png";
-import chat from "../../assets/chat.png";
-import folder from "../../assets/folder.png";
+import ViewNavigation from "../ViewNavigation";
 
 
 import "./style.css";
@@ -24,15 +23,7 @@ const DefaultPage = ({ onSelectMessage }) => {
     return (
         <div className="default-page">
             <div className="default-page__content">
-                <div className="default-page__content-menu">
-                    <button
-                        className="default-page__content-menuButton"
-                        onClick={() => navigate("/chat")}
-                    >
-                        <img src={chat} alt="chat" className="default-page__content-iconMenu" />
-                    </button>
-                    <img src={folder} alt="folder" className="default-page__content-iconMenu" />
-                </div>
+                <ViewNavigation />
                 <div className="default-page__content-menuOptions">
                     <button
                         className="default-page__content-button"

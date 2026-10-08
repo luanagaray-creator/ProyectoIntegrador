@@ -17,6 +17,7 @@ import Chat from './Components/Chat';
 import AnswerMessage from './Components/AnswerMesagge';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import RequirePurchase from './auth/RequirePurchase';
 
 function App() {
   const { pathname } = useLocation();
@@ -41,7 +42,7 @@ function App() {
       <Header home={isHome} onContactClick={handleContactClick} />
       <main className={`app__main ${isDefaultPage ? 'app__main--no-scroll' : ''}`}>
         <Routes>
-          {/* <Route path="/" element={<><Home /><About /></>} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
@@ -51,10 +52,10 @@ function App() {
           <Route path="/restore-password" element={<RestorePassword />} />
           <Route path="/restore-password-code" element={<RestorePasswordCode />} />
           <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
-          <Route path="/default-page" element={<DefaultPage onSelectMessage={setSelectedMessage} />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="receipt" element={<Receipt />} />
-          <Route path="/answer-message" element={<AnswerMessage message={selectedMessage} />} />
+          <Route path="/default-page" element={<RequirePurchase><DefaultPage onSelectMessage={setSelectedMessage} /></RequirePurchase>} />
+          <Route path="/chat" element={<RequirePurchase><Chat /></RequirePurchase>} />
+          <Route path="receipt" element={<RequirePurchase><Receipt /></RequirePurchase>} />
+          <Route path="/answer-message" element={<RequirePurchase><AnswerMessage message={selectedMessage} /></RequirePurchase>} />
         </Routes>
       </main>
       <Footer ref={footerRef} isActive={socialPulse} home={isHome} />

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node ./node_modules/vite/bin/vite.js",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -26,6 +26,11 @@
     "globals": "^17.7.0",
     "vite": "^8.2.0",
     "watch": "^0.13.0"
+  },
+  "planPrices": {
+    "smallPlan": 250,
+    "mediumPlan": 500,
+    "largePlan": 750
   },
   "planName": {
     "smallPlan": "Small Plan",

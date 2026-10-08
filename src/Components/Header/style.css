@@ -49,11 +49,13 @@
 
 .banner-container {
   position: relative;
+  z-index: 1;
   width: 100%;
   aspect-ratio: 1024 / 425;
   overflow: hidden;
   display: block;
   background: #eee;
+  box-shadow: 0 14px 28px -12px rgba(72, 115, 150, 0.28);
 }
 
 .banner-img {
@@ -86,5 +88,107 @@
 @media (prefers-reduced-motion: reduce) {
   .banner-img {
     transition: none;
+  }
+}
+
+.header__logout {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.header__logout:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.header__sections .profile {
+  flex-shrink: 0;
+  text-shadow: none;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 8px 18px 8px 8px;
+  border-radius: 30px;
+  border: 1px solid rgba(141, 197, 255, 0.35);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 10px rgba(72, 70, 143, 0.08);
+}
+
+.header__sections .profile__icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.header__sections .profile__content {
+  margin-left: 0;
+  gap: 3px;
+  min-width: 0;
+  align-items: flex-start;
+}
+
+.header__sections .profile__content-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header__sections .profile__content-text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text-body);
+}
+
+.header__session-error {
+  position: absolute;
+  top: 80px;
+  right: 40px;
+  max-width: 320px;
+  background: #ffffff;
+  color: var(--text-body);
+  padding: 12px;
+  border-radius: 12px;
+}
+
+@media (max-width: 800px) {
+  .header__sections {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+
+  .header-sections-text {
+    font-size: 14px;
+  }
+
+  .header__sections .profile__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .header__sections .profile {
+    padding: 6px 12px 6px 6px;
+    gap: 8px;
+  }
+
+  .header__sections .profile__content-title {
+    max-width: 100px;
+    font-size: 14px;
+  }
+
+  .thotem-button {
+    padding-left: 16px;
+  }
+
+  .thotem-img {
+    height: 44px;
   }
 }

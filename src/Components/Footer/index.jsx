@@ -13,6 +13,7 @@ const Footer = forwardRef(({ isActive = false, home = false }, ref) => {
         <div className="footer__content-social">
           <div className={`footer-social ${isActive ? "is-active" : ""}`}>
             <a
+              className="footer-social-icon"
               href="https://www.instagram.com/animadual/?hl=es"
               target="_blank"
               rel="noopener noreferrer"
@@ -25,6 +26,7 @@ const Footer = forwardRef(({ isActive = false, home = false }, ref) => {
           </div>
           <div className={`footer-social ${isActive ? "is-active" : ""}`}>
             <a
+              className="footer-social-icon"
               href="https://www.facebook.com/tu_empresa"
               target="_blank"
               rel="noopener noreferrer"
@@ -37,11 +39,12 @@ const Footer = forwardRef(({ isActive = false, home = false }, ref) => {
           </div>
           <div className={`footer-social ${isActive ? "is-active" : ""}`}>
             <a
+              className="footer-social-icon"
               href="https://www.tiktok.com/@anima_dual"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={tiktok} alt="TikTok" className="footer-social-img" />
+              <img src={tiktok} alt="TikTok" className="footer-social-img footer-social-img--tiktok" />
             </a>
             <a className="footer-text" href="https://www.tiktok.com/@anima_dual" target="_blank" rel="noopener noreferrer">
               TikTok

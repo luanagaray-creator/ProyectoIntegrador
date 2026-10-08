@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import WaveBackground from "../WaveBackground";
+import { useAuth } from "../../auth/AuthContext";
 
 import "./style.css";
 
-const API_URL = "http://localhost:3000/api/register"; // TODO: reemplazar con el endpoint real
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const destination = location.state?.from === '/payment-page' ? '/payment-page' : '/home';
+  const destinationState = destination === '/payment-page' ? { plan: location.state.plan } : undefined;
+  const { register, user, authLoading } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -60,37 +64,17 @@ const Register = () => {
 
     setLoading(true);
 
-    // TODO: Descomentar cuando el backend esté disponible
-    /*
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          password: formData.password,
-          email: formData.email,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-        throw new Error(data?.message || "No se pudo completar el registro");
-      }
-
-      navigate("/login");
+      await register({ name: formData.name, email: formData.email, password: formData.password });
+      navigate(destination, { replace: true, state: destinationState });
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-    */
-
-    setTimeout(() => {
-      navigate("/home");
-      setLoading(false);
-    }, 500);
   };
+
+  if (!authLoading && user) return <Navigate to={destination} state={destinationState} replace />;
 
   return (
     <div className="register">
@@ -104,7 +88,10 @@ const Register = () => {
           <input
             type="text"
             name="name"
-            placeholder="Name"
+            required
+            maxLength={30}
+            autoComplete="username"
+            placeholder="Nombre de usuario"
             className="register__content-form-input"
             value={formData.name}
             onChange={handleChange}
@@ -112,7 +99,11 @@ const Register = () => {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            required
+            minLength={6}
+            maxLength={128}
+            autoComplete="new-password"
+            placeholder="Contraseña"
             className="register__content-form-input"
             value={formData.password}
             onChange={handleChange}
@@ -120,7 +111,10 @@ const Register = () => {
           <input
             type="password"
             name="passwordConfirmation"
-            placeholder="Password Confirmation"
+            required
+            maxLength={128}
+            autoComplete="new-password"
+            placeholder="Confirmá tu contraseña"
             className="register__content-form-input"
             value={formData.passwordConfirmation}
             onChange={handleChange}
@@ -128,7 +122,10 @@ const Register = () => {
           <input
             type="email"
             name="email"
-            placeholder="Email Recuperation"
+            required
+            maxLength={30}
+            autoComplete="email"
+            placeholder="Email"
             className="register__content-form-input"
             value={formData.email}
             onChange={handleChange}
@@ -136,12 +133,11 @@ const Register = () => {
           <button
             type="submit"
             className="register__content-form-button"
-            disabled={loading}
+            disabled={loading || authLoading}
           >
             {loading ? "Registrando..." : "Registrarse"}
-            {/* {handleSubmit.response && <p className="register__content-form-success">{handleSubmit.response}</p> && navigate("/home")} */}
           </button>
-          <Link to="/login" className="register__content-form-link">
+          <Link to="/login" state={location.state} className="register__content-form-link">
             ¿Ya tenés una cuenta? Iniciá sesión
           </Link>
         </form>
