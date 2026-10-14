@@ -118,5 +118,22 @@ export default function AuthProvider({ children }) {
     return data.user.purchase;
   }
 
-  return <AuthContext.Provider value={{ user, authLoading, sessionError, refreshSession, login, register, logout, simulatePayment }}>{children}</AuthContext.Provider>;
+  async function joinGroup(groupCode) {
+    const current = ++version.current;
+    let data;
+    try {
+      data = await apiRequest('/users/group', { method: 'POST', body: JSON.stringify({ groupCode }) });
+    } catch (err) {
+      if (err.status === 401 && current === version.current) expireSession();
+      throw err;
+    }
+    if (current !== version.current) throw new Error('La sesión cambió. Volvé a intentar unirte al grupo.');
+    ++version.current;
+    setUser(data.user);
+    setSessionError('');
+    notifyTabs();
+    return data.user;
+  }
+
+  return <AuthContext.Provider value={{ user, authLoading, sessionError, refreshSession, login, register, logout, simulatePayment, joinGroup }}>{children}</AuthContext.Provider>;
 }

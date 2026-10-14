@@ -195,3 +195,14 @@
     max-width: 85%;
   }
 }
+
+.answer-message__content-header { justify-content: space-between; gap: 20px; }
+.answer-message__conversation-heading { text-align: right; min-width: 0; color: var(--text-body); font-family: "Montserrat", sans-serif; }
+.answer-message__conversation-heading h1 { margin: 0 0 4px; font-size: 18px; overflow-wrap: anywhere; }
+.answer-message__conversation-heading span { font-size: 12px; }
+.answer-message__message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; font-size: 12px; opacity: 0.85; }
+.answer-message__message-meta time { font-size: 11px; }
+.answer-message__content-message p { white-space: pre-wrap; }
+.answer-message__content-message--outgoing { align-self: flex-end; background: #8cc2ff; color: white; }
+.answer-message__content-send:disabled { opacity: 0.5; cursor: default; }
+.answer-message__feedback { color: var(--text-body); font-size: 14px; font-family: "Montserrat", sans-serif; }

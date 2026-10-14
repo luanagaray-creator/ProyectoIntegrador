@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import WaveBackground from "../WaveBackground";
 import { useAuth } from "../../auth/AuthContext";
+import { GROUPS } from "../../auth/groups";
 
 import "./style.css";
 
@@ -19,6 +20,7 @@ const Register = () => {
     password: "",
     passwordConfirmation: "",
     email: "",
+    groupCode: "",
   });
 
   const [error, setError] = useState("");
@@ -48,6 +50,7 @@ const Register = () => {
     if (password !== passwordConfirmation) {
       return "Las contraseñas no coinciden";
     }
+    if (!GROUPS.includes(formData.groupCode)) return "Seleccioná tu grupo";
 
     return "";
   };
@@ -65,7 +68,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      await register({ name: formData.name, email: formData.email, password: formData.password });
+      await register({ name: formData.name, email: formData.email, password: formData.password, groupCode: formData.groupCode });
       navigate(destination, { replace: true, state: destinationState });
     } catch (err) {
       setError(err.message);
@@ -130,6 +133,11 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
           />
+          <label htmlFor="registrationGroup" className="register__group-label">Tu grupo</label>
+          <select id="registrationGroup" name="groupCode" className="register__content-form-input" required value={formData.groupCode} onChange={handleChange}>
+            <option value="" disabled>Seleccioná tu grupo</option>
+            {GROUPS.map(group => <option key={group} value={group}>{group}</option>)}
+          </select>
           <button
             type="submit"
             className="register__content-form-button"

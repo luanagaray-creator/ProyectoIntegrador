@@ -74,6 +74,7 @@ const Login = () => {
           </div>
 
           {location.state?.sessionExpired && <p className="login__content-form-error" role="status">Tu sesión venció. Volvé a iniciar sesión para continuar.</p>}
+          {location.state?.passwordReset && <p role="status">Contraseña actualizada. Iniciá sesión con tu nueva contraseña.</p>}
           {(error || sessionError) && <p className="login__content-form-error" role="alert">{error || sessionError}</p>}
           <input
             type="text"

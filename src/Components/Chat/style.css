@@ -186,3 +186,17 @@
     max-width: 85%;
   }
 }
+
+.chat__content-boxBody { min-height: 0; }
+.chat__content-boxMessage p { white-space: pre-wrap; }
+.chat__message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; font-size: 12px; margin-bottom: 8px; opacity: 0.85; }
+.chat__message-meta time { font-size: 11px; }
+.chat__content-boxSend:disabled { opacity: 0.5; cursor: default; }
+.chat__feedback { color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; line-height: 1.6; }
+.chat__join { display: flex; flex-direction: column; align-self: center; gap: 16px; max-width: 460px; width: 100%; padding: 32px 0; color: var(--text-body); font-family: "Montserrat", sans-serif; }
+.chat__join p { line-height: 1.6; margin: 0; }
+.chat__join label { font-size: 14px; font-weight: 600; }
+.chat__join select { color: var(--text-body); background: #f5faff; padding: 14px; border: 1px solid rgba(141, 197, 255, 0.5); border-radius: 12px; font: inherit; }
+.chat__join button { color: var(--text-body); background: #8cc2ff; border: 0; padding: 14px; border-radius: 14px; font: inherit; font-weight: 600; cursor: pointer; }
+.chat__join button:disabled { opacity: 0.6; cursor: default; }
+.chat__join :is(select, button):focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
