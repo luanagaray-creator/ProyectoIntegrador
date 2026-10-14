@@ -1,0 +1,1 @@
+export const GROUPS = ['1ro TIC', '2do TIC', '3ro TIC', '1ro ADM', '2do ADM', '3ro ADM'];

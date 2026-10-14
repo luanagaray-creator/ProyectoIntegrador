@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home';
 import Register from './Components/Register';
@@ -23,9 +23,9 @@ function App() {
   const { pathname } = useLocation();
   const footerRef = useRef(null);
   const [socialPulse, setSocialPulse] = useState(false);
-  const [selectedMessage, setSelectedMessage] = useState('');
   const isHome = pathname === '/' || pathname === '/home';
   const isDefaultPage = pathname === '/default-page';
+  const isMessagesPage = isDefaultPage || pathname === '/chat' || pathname.startsWith('/answer-message/');
 
   const triggerSocialPulse = () => {
     setSocialPulse(true);
@@ -38,9 +38,9 @@ function App() {
   };
 
   return (
-    <div className={`app ${isDefaultPage ? 'app--no-scroll' : ''}`}>
+    <div className={`app ${isMessagesPage ? 'app--no-scroll' : ''}`}>
       <Header home={isHome} onContactClick={handleContactClick} />
-      <main className={`app__main ${isDefaultPage ? 'app__main--no-scroll' : ''}`}>
+      <main className={`app__main ${isMessagesPage ? 'app__main--no-scroll' : ''}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
@@ -52,10 +52,11 @@ function App() {
           <Route path="/restore-password" element={<RestorePassword />} />
           <Route path="/restore-password-code" element={<RestorePasswordCode />} />
           <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
-          <Route path="/default-page" element={<RequirePurchase><DefaultPage onSelectMessage={setSelectedMessage} /></RequirePurchase>} />
+          <Route path="/default-page" element={<RequirePurchase><DefaultPage /></RequirePurchase>} />
           <Route path="/chat" element={<RequirePurchase><Chat /></RequirePurchase>} />
           <Route path="receipt" element={<RequirePurchase><Receipt /></RequirePurchase>} />
-          <Route path="/answer-message" element={<RequirePurchase><AnswerMessage message={selectedMessage} /></RequirePurchase>} />
+          <Route path="/answer-message" element={<Navigate to="/default-page" replace />} />
+          <Route path="/answer-message/:threadId" element={<RequirePurchase><AnswerMessage /></RequirePurchase>} />
         </Routes>
       </main>
       <Footer ref={footerRef} isActive={socialPulse} home={isHome} />
