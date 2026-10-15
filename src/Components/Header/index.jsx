@@ -114,7 +114,9 @@ const Header = ({ home, onContactClick }) => {
         {/* <Link to="/home" className="header-sections-text">Inicio</Link> */}
         {/* <Link to="/about" className="header-sections-text">Nosotros</Link> */}
         <Link to="/home#footer" onClick={handleContactNavigation} className="header-sections-text">Contacto</Link>
-        {user && <Profile name={user.name} typeUser={user.groupCode || user.typeUser} />}
+        {user?.canPurchase && <Link to="/admin-plan" className="header-sections-text">Administrar</Link>}
+        {user?.typeUser === 'superadmin' && <Link to="/platform" className="header-sections-text">Instituciones</Link>}
+        {user && <Profile name={user.name} typeUser={user.typeUser === 'superadmin' ? 'Super admin' : user.typeUser === 'admin' ? 'Administrador' : 'Usuario'} />}
         {logoutError && <p className="header__session-error" role="alert">{logoutError}</p>}
       </div>
     </nav>

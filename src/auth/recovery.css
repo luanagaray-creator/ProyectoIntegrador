@@ -13,3 +13,5 @@
 .recovery-card [role="alert"] { margin: 0; }
 .recovery-card .recovery-code { font-size: 24px; letter-spacing: 8px; text-align: center; }
 @media (max-width: 520px) { .recovery-page { padding: 96px 16px 24px; } .recovery-card { padding: 24px; } }
+
+.recovery-card select { font: inherit; font-size: 15px; padding: 13px 16px; border: 1px solid rgba(141,197,255,0.6); border-radius: 12px; background: #f5faff; color: var(--text-body); }

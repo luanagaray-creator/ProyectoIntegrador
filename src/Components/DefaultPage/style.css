@@ -307,7 +307,7 @@
   .default-page__content-link { padding: 12px; }
   .default-page__content-textOptions { font-size: 15px; }
   .compose-dialog .compose-modal__top { flex-direction: column; }
-  .message-preview__heading { flex-direction: column; gap: 4px; }
+  .message-preview__heading { flex-direction: column; gap: 6px; }
 }
 
 .default-page__content-link { cursor: pointer; text-align: left; transition: background-color 0.2s ease, border-color 0.2s ease; }
@@ -322,3 +322,4 @@
 .message-star:focus-visible { outline: 2px solid var(--text-title); outline-offset: 2px; }
 .message-star:disabled { cursor: wait; opacity: 0.65; }
 @media (hover: hover) { .default-page__content-link:hover { background: #edf7ff; } .message-star:hover { background: #f5faff; } }
+

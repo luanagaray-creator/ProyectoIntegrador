@@ -4,7 +4,7 @@ import { apiRequest } from './api';
 
 export function useLiveMessages(path) {
   const { user, refreshSession } = useAuth();
-  const key = `${user?.idUser}:${path}:${path === '/group-chat' ? user?.groupCode : ''}`;
+  const key = `${user?.idUser}:${path}:${user?.spaces?.filter(space => space.isActive).map(space => space.id).join('|') || ''}`;
   const [state, setState] = useState({ key: '', data: null, error: '' });
   const [revision, setRevision] = useState(0);
   const refresh = useCallback(() => setRevision(value => value + 1), []);
@@ -21,8 +21,8 @@ export function useLiveMessages(path) {
         if (active) setState({ key, data, error: '' });
       } catch (err) {
         if (active) {
-          setState(previous => ({ key, data: previous.key === key ? previous.data : null, error: err.message }));
-          if (err.status === 401) refreshSession();
+          setState(previous => ({ key, data: ![401, 403, 404].includes(err.status) && previous.key === key ? previous.data : null, error: err.message }));
+          if (err.status === 401 || err.status === 403) refreshSession();
         }
       } finally { running = false; }
     }

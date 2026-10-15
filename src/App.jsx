@@ -18,6 +18,9 @@ import AnswerMessage from './Components/AnswerMesagge';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import RequirePurchase from './auth/RequirePurchase';
+import AdminPlan from './Components/AdminPlan';
+import Spaces from './Components/Spaces';
+import InstitutionPlatform from './Components/InstitutionPlatform';
 
 function App() {
   const { pathname } = useLocation();
@@ -49,6 +52,10 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/available-packages" element={<AvailablePackages />} />
           <Route path="/payment-page" element={<PaymentPage />} />
+          <Route path="/admin-plan" element={<AdminPlan />} />
+          <Route path="/select-group" element={<Navigate to="/spaces" replace />} />
+          <Route path="/spaces" element={<Spaces />} />
+          <Route path="/platform" element={<InstitutionPlatform />} />
           <Route path="/restore-password" element={<RestorePassword />} />
           <Route path="/restore-password-code" element={<RestorePasswordCode />} />
           <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
