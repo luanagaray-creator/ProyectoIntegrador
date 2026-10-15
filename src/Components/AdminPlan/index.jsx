@@ -32,7 +32,8 @@ export default function AdminPlan() {
   const [error, setError] = useState('');
   const [feedback, setFeedback] = useState('');
   const managed = user?.managedSpaces || [];
-  const selected = managed.some(space => space.id === selectedId) ? selectedId : managed[0]?.id;
+  const selectedSpace = managed.find(space => space.id === selectedId);
+  const selected = selectedSpace?.id;
   const { data, error: loadError, refresh } = useLiveMessages(user?.canPurchase && selected ? `/admin/spaces/${selected}/members` : null);
   const options = managed.map(space => ({ id: space.id, label: `${space.institutionName} · ${space.name}` }));
   async function run(task, message) {
@@ -54,14 +55,16 @@ export default function AdminPlan() {
           <EditSpaces key={user.purchase.spaceIds.join('|')} purchase={user.purchase} options={options} onSaved={setFeedback} />
           <Link to="/available-packages">Cambiar de plan</Link></> : <><p>Podés contratar un plan para los espacios que Thotem te autorizó a administrar.</p><Link to="/available-packages">Elegir un plan</Link></>}
       </section>
-      <section className="admin-plan__card"><h2>Acceso de usuarios</h2>
-        <label htmlFor="managedSpace">Espacio</label><select id="managedSpace" value={selected || ''} onChange={event => { setSelectedId(event.target.value); setTarget(''); setError(''); setFeedback(''); }} disabled={pending}>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select>
-        <form onSubmit={event => { event.preventDefault(); run(() => apiRequest(`/admin/spaces/${selected}/members`, { method: 'POST', body: JSON.stringify({ user: target }) }), 'Usuario habilitado en el espacio.'); }}>
+      <section className="admin-plan__card"><h2>Asignar espacio a un usuario</h2>
+        <p>Elegí el curso y escribí el usuario al que querés asignárselo. Ese será su único chat grupal. Para cambiarlo de curso, retirá primero su acceso anterior.</p>
+        <label htmlFor="managedSpace">Espacio que le vas a asignar</label><select id="managedSpace" value={selected || ''} onChange={event => { setSelectedId(event.target.value); setTarget(''); setError(''); setFeedback(''); }} disabled={pending}><option value="" disabled>Elegí un espacio, por ejemplo 1ro TIC</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select>
+        <form onSubmit={event => { event.preventDefault(); if (!selected) return; run(() => apiRequest(`/admin/spaces/${selected}/members`, { method: 'POST', body: JSON.stringify({ user: target }) }), `Espacio ${selectedSpace.name} asignado a ${target.trim()}.`); }}>
           <label htmlFor="memberUser">Usuario o email registrado</label><input id="memberUser" value={target} onChange={event => setTarget(event.target.value)} placeholder="Ej.: Juanito" required maxLength={30} disabled={pending} />
-          <button className="admin-plan__primary" disabled={pending || !selected}>Habilitar usuario</button>
+          <button className="admin-plan__primary" disabled={pending || !selected || !target.trim()}>{pending ? 'Guardando…' : 'Asignar espacio'}</button>
         </form>
+        {selectedSpace && <h3>Usuarios de {selectedSpace.name}</h3>}
         {data?.members.length === 0 && <p>Todavía no hay usuarios habilitados en este espacio.</p>}
-        {data?.members.map(member => <div className="admin-member-row" key={member.idUser}><span><strong>{member.name}</strong><small>{member.email}</small></span><button disabled={pending} onClick={() => run(() => apiRequest(`/admin/spaces/${selected}/members/${member.idUser}`, { method: 'DELETE' }), 'Acceso del usuario retirado.')}>Retirar acceso</button></div>)}
+        {data?.members.map(member => <div className="admin-member-row" key={member.idUser}><span><strong>{member.name}</strong><small>{member.email}</small><small>Chat asignado: {selectedSpace.name}</small></span><button disabled={pending} onClick={() => run(() => apiRequest(`/admin/spaces/${selected}/members/${member.idUser}`, { method: 'DELETE' }), 'Acceso del usuario retirado.')}>Retirar acceso</button></div>)}
       </section>
     </div>
   </div>;
