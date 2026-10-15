@@ -7,6 +7,8 @@ import visa from '../../assets/visa.png';
 import mercadoPago from '../../assets/mercadoPago.png';
 import mastercard from '../../assets/mastercard.png';
 import './style.css';
+import GroupChoices from '../AdminPlan/GroupChoices';
+import '../AdminPlan/style.css';
 
 const methods = [{ name: 'Visa', image: visa }, { name: 'Mercado Pago', image: mercadoPago }, { name: 'Mastercard', image: mastercard }];
 
@@ -21,15 +23,18 @@ export default function PaymentPage() {
   const [method, setMethod] = useState('Visa');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [chosenGroups, setGroupCodes] = useState(null);
+  const spaceIds = chosenGroups ?? user?.purchase?.spaceIds ?? [];
+  const spaceOptions = (user?.managedSpaces || []).map(space => ({ id: space.id, label: `${space.institutionName} · ${space.name}` }));
   const continuation = { from: '/payment-page', plan: selectedPlan };
 
   async function pay(event) {
     event.preventDefault();
-    if (!user || !validPlan || loading) return;
+    if (!user?.canPurchase || !validPlan || loading || !spaceIds.length) return;
     setLoading(true);
     setError('');
     try {
-      await simulatePayment({ plan: selectedPlan, method });
+      await simulatePayment({ plan: selectedPlan, method, spaceIds });
       navigate('/receipt', { replace: true });
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
@@ -38,7 +43,7 @@ export default function PaymentPage() {
   return <div className="payment-page">
     <WaveBackground />
     <div className="payment-page__content">
-      <form className="payment-page__content-box" onSubmit={pay}>
+      <form className={`payment-page__content-box${user?.typeUser === 'admin' ? ' payment-page__content-box--admin' : ''}`} onSubmit={pay}>
         <div className="payment-page__content-boxTop">
           <h1 className="payment-page__content-boxTop-text">Seleccioná un método de pago</h1>
           {validPlan && <span className="payment-page__content-boxTop-planName">{selectedPlan}</span>}
@@ -47,7 +52,8 @@ export default function PaymentPage() {
           <p className="payment-page__notice">Pago simulado: no se realizará ningún cobro.</p>
           {validPlan && <span className="payment-page__total">Total <strong>{price}</strong></span>}
         </div>
-        {!validPlan ? <Link to="/available-packages">Elegir un paquete</Link> : <>
+        {user && !user.canPurchase ? <p className="payment-page__notice">Los planes los pagan los administradores. Necesitás que Thotem te autorice como administrador de un espacio para contratarlo. <Link to="/home">Volver al inicio</Link></p> : !validPlan ? <Link to="/available-packages">Elegir un paquete</Link> : <>
+          {user?.canPurchase && <GroupChoices value={spaceIds} onChange={setGroupCodes} options={spaceOptions} disabled={loading} />}
           <div className="payment-page__content-boxCenter" role="group" aria-label="Método de pago">
             {methods.map(item => <button key={item.name} type="button" className="payment-page__method" aria-pressed={method === item.name} onClick={() => setMethod(item.name)} disabled={loading}>
               <img src={item.image} alt={item.name} />
@@ -62,13 +68,12 @@ export default function PaymentPage() {
           </div>}
           {method === 'Mercado Pago' && <p className="payment-page__notice">Se simulará un pago aprobado con Mercado Pago.</p>}
           {(error || sessionError) && <p role="alert">{error || sessionError}</p>}
-          {authLoading ? <p role="status">Cargando sesión…</p> : user ? <button className="payment-page__content-boxBottom-button" disabled={loading || !!sessionError}>
+          {authLoading ? <p role="status">Cargando sesión…</p> : user ? <button className="payment-page__content-boxBottom-button" disabled={loading || !!sessionError || !spaceIds.length}>
             {loading ? 'Procesando…' : 'Simular pago'}
           </button> : <div className="payment-page__notice payment-page__account">
-            <p>Para completar el pago simulado, iniciá sesión o creá tu cuenta.</p>
+            <p>Para contratar un plan e incluir grupos, iniciá sesión con una cuenta administradora.</p>
             <div className="payment-page__account-actions">
               <Link to="/login" state={continuation}>Iniciar sesión</Link>
-              <Link to="/register" state={continuation}>Registrarse</Link>
             </div>
           </div>}
         </>}

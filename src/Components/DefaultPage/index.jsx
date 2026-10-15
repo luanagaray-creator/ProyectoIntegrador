@@ -52,6 +52,7 @@ export default function DefaultPage() {
         {data?.threads.map(thread => {
           const outgoing = thread.latestSenderId === user.idUser;
           const other = thread.senderId === user.idUser ? thread.recipientName : thread.senderName;
+          const space = user.spaces.find(item => item.id === thread.spaceId);
           return <div key={thread.id} className="default-page__content-messages-box message-row">
             <button className={`message-star${thread.isStarred ? ' message-star--active' : ''}`} type="button" aria-label={thread.isStarred ? 'Quitar de destacados' : 'Marcar como destacado'} aria-pressed={thread.isStarred} disabled={!!savingStar} onClick={() => markStar(thread)}>
               <span aria-hidden="true">{thread.isStarred ? '★' : '☆'}</span>
@@ -60,7 +61,7 @@ export default function DefaultPage() {
               <img src={outgoing ? cloudUp : cloudDown} alt={outgoing ? 'Enviado' : 'Recibido'} className="default-page__content-icon" />
               <div className="message-preview">
                 <div className="message-preview__heading"><strong>{thread.subject}</strong><time dateTime={thread.sentAt}>{new Date(thread.sentAt).toLocaleString('es-UY', { dateStyle: 'short', timeStyle: 'short' })}</time></div>
-                <span className="message-preview__participant">Con: {other}</span>
+                <span className="message-preview__participant">{space?.institutionName} · {space?.name} · Con: {other}</span>
                 <p className="default-page__content-text message-preview__text">{thread.content}</p>
               </div>
             </Link>

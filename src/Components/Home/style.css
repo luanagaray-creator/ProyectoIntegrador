@@ -149,3 +149,8 @@
 @media (hover: hover) { .home-about__card:hover { border-color: #8cc2ff; box-shadow: 0 12px 28px rgba(72, 70, 143, 0.12); } }
 @media (max-width: 900px) { .home-about__content { grid-template-columns: 1fr; width: min(560px, calc(100% - 32px)); gap: 16px; margin-bottom: 64px; } }
 @media (prefers-reduced-motion: reduce) { .home-about__card, .home-about__card-chevron { transition: none; } .home-about__card[open] .home-about__card-body { animation: none; } }
+
+.home__plan-link { text-decoration: none; display: flex; align-items: center; }
+.home__access-notice { margin-top: 13rem; max-width: 560px; padding: 18px 24px; background: rgba(255,255,255,0.94); border: 1px solid rgba(141,197,255,0.4); border-radius: 20px; color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; line-height: 1.6; box-shadow: 0 4px 16px rgba(72,70,143,0.08); }
+.home__access-notice p { margin: 0; }
+.home__access-notice a { color: var(--text-title); }

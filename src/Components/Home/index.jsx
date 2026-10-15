@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import "./style.css";
 import { useAuth } from "../../auth/AuthContext";
@@ -6,21 +6,27 @@ import { useAuth } from "../../auth/AuthContext";
 const Home = () => {
   const navigate = useNavigate();
   const { user, authLoading, sessionError } = useAuth();
+  const activeSpaces = user?.spaces?.filter(space => space.isActive) || [];
   return (
     <div className="home">
       <div className="home__content">
-        <button
+        {(!user || user.canPurchase) && <button
           className="home__content-button"
           onClick={() => navigate("/available-packages")}
         >
           ¡Paquetes Disponibles!
-        </button>
-        {!authLoading && !sessionError && user?.purchase && <button
+        </button>}
+        {!authLoading && !sessionError && user?.hasAccess && <button
           className="home__content-button"
-          onClick={() => navigate("/default-page")}
+          onClick={() => navigate(activeSpaces.length === 1 ? '/default-page' : '/spaces')}
         >
           Ingresar
         </button>}
+        {!authLoading && user?.canPurchase && <Link className="home__content-button home__plan-link" to="/admin-plan">Administrar espacios</Link>}
+        {!authLoading && user?.typeUser === 'superadmin' && <Link className="home__content-button home__plan-link" to="/platform">Administrar instituciones</Link>}
+        {!authLoading && user && user.typeUser !== 'superadmin' && !user.hasAccess && <div className="home__access-notice">
+          <p>Tu institución debe habilitarte en un espacio y activar su plan para que puedas ingresar.</p><Link to="/spaces">Ver mis espacios</Link>
+        </div>}
       </div>
       <div className="home-about">
         <h2 className="home-about__title">Sobre nosotros</h2>

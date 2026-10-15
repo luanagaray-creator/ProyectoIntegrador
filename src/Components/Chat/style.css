@@ -1,8 +1,11 @@
 .chat {
+  font-family: "Montserrat", sans-serif;
   display: flex;
   flex-direction: column;
   position: relative;
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
   width: 100%;
   box-sizing: border-box;
   background: linear-gradient(to bottom, #ffffff, #bbe4ff);
@@ -14,7 +17,8 @@
   display: flex;
   align-items: stretch;
   justify-content: flex-start;
-  flex: 1;
+  flex: 1 1 0;
+  overflow: hidden;
   min-height: 0;
   width: 100%;
   box-sizing: border-box;
@@ -40,7 +44,10 @@
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  min-height: 420px;
+  min-height: 0;
+  height: 100%;
+  max-height: 560px;
+  overflow: hidden;
   border: 1px solid rgba(141, 197, 255, 0.35);
 }
 
@@ -60,6 +67,7 @@
   justify-content: space-between;
   gap: 16px;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .chat__content-boxTitle {
@@ -72,25 +80,33 @@
 
 .chat__content-boxBody {
   display: flex;
-  flex: 1;
-  min-height: 180px;
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 248px;
   overflow-y: auto;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   background: rgba(140, 194, 255, 0.08);
   border-radius: 22px;
-  padding: 20px;
+  padding: 16px;
+  box-sizing: border-box;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #8cc2ff #f5faff;
 }
 
 .chat__content-boxMessage {
   max-width: 70%;
   overflow-wrap: anywhere;
-  padding: 14px 18px;
+  padding: 8px 14px;
+  min-height: 64px;
+  box-sizing: border-box;
+  flex-shrink: 0;
   border-radius: 18px;
   margin: 0;
   font-family: "Montserrat", sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 14px;
+  line-height: 1.4;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
 }
 
@@ -118,6 +134,7 @@
   padding: 0;
   box-sizing: border-box;
   min-height: 52px;
+  flex-shrink: 0;
 }
 
 .chat__content-boxTextarea {
@@ -189,7 +206,7 @@
 
 .chat__content-boxBody { min-height: 0; }
 .chat__content-boxMessage p { white-space: pre-wrap; }
-.chat__message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; font-size: 12px; margin-bottom: 8px; opacity: 0.85; }
+.chat__message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; font-size: 12px; margin-bottom: 4px; opacity: 0.85; }
 .chat__message-meta time { font-size: 11px; }
 .chat__content-boxSend:disabled { opacity: 0.5; cursor: default; }
 .chat__feedback { color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; line-height: 1.6; }
@@ -200,3 +217,9 @@
 .chat__join button { color: var(--text-body); background: #8cc2ff; border: 0; padding: 14px; border-radius: 14px; font: inherit; font-weight: 600; cursor: pointer; }
 .chat__join button:disabled { opacity: 0.6; cursor: default; }
 .chat__join :is(select, button):focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
+
+.chat__admin-group { display: flex; align-items: center; gap: 12px; color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; }
+.chat__admin-group select { border: 1px solid rgba(141,197,255,0.5); border-radius: 12px; background: #f5faff; color: var(--text-title); font: inherit; font-size: 20px; font-weight: 600; padding: 10px; }
+
+.chat__institution { display: block; font-family: "Montserrat",sans-serif; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
+.chat__space-select { font: inherit; font-size: 18px; font-weight: 600; color: var(--text-title); padding: 10px; border: 1px solid rgba(141,197,255,0.5); border-radius: 12px; background: #f5faff; max-width: 100%; }

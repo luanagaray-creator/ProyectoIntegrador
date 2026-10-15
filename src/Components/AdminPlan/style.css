@@ -1,0 +1,35 @@
+.admin-plan { flex: 1; padding: 112px clamp(24px, 6vw, 112px) 32px; box-sizing: border-box; background: linear-gradient(to bottom, #ffffff, #bbe4ff); font-family: "Montserrat", sans-serif; color: var(--text-body); }
+.admin-plan__card { background: white; padding: 30px; border-radius: 28px; border: 1px solid rgba(141, 197, 255, 0.4); box-shadow: 0 8px 24px rgba(72, 70, 143, 0.08); max-width: 640px; }
+.admin-plan h1 { color: var(--text-title); font-size: 26px; margin-top: 0; }
+.admin-plan p { line-height: 1.6; font-size: 14px; }
+.admin-plan form { display: flex; flex-direction: column; gap: 20px; margin-bottom: 24px; }
+.admin-plan a { color: var(--text-title); }
+.plan-group-choices { margin: 0; padding: 16px; border: 1px solid rgba(141, 197, 255, 0.5); border-radius: 16px; color: var(--text-body); font-family: "Montserrat", sans-serif; }
+.plan-group-choices legend { padding: 0 8px; font-size: 14px; font-weight: 600; }
+.plan-group-choices__options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.plan-group-choices label { display: flex; align-items: center; gap: 8px; font-size: 14px; cursor: pointer; }
+.plan-group-choices input { accent-color: var(--text-title); width: 16px; height: 16px; }
+.plan-group-choices button { display: block; border: none; background: transparent; color: var(--text-title); cursor: pointer; font: inherit; font-size: 13px; padding: 14px 0 8px; text-decoration: underline; }
+.plan-group-choices span { font-size: 12px; line-height: 1.6; display: block; }
+.admin-plan__primary { background: #8cc2ff; border: 0; border-radius: 14px; padding: 14px; color: var(--text-body); font: inherit; font-weight: 600; cursor: pointer; }
+.admin-plan__primary:disabled { opacity: 0.6; cursor: default; }
+.plan-group-choices :is(input, button):focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
+@media (max-width: 520px) { .admin-plan { padding: 96px 16px 24px; } .admin-plan__card { padding: 24px; } .plan-group-choices__options { grid-template-columns: repeat(2, 1fr); } }
+
+.institution-platform h1 { font-size: 28px; color: var(--text-title); }
+.institution-platform h2 { font-size: 21px; color: var(--text-title); margin-top: 0; }
+.institution-platform h3 { font-size: 16px; color: var(--text-title); }
+.institution-platform__grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,360px),1fr)); gap: 24px; max-width: 1200px; margin-top: 24px; align-items: start; }
+.institution-platform__grid .admin-plan__card { max-width: none; }
+.admin-plan__card :is(input:not([type="checkbox"]),select) { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid rgba(141,197,255,0.5); border-radius: 12px; background: #f5faff; color: var(--text-body); font: inherit; font-size: 14px; }
+.admin-plan__card label { font-size: 14px; }
+.admin-plan__card form { margin-top: 16px; }
+.admin-space-row { border-top: 1px solid rgba(141,197,255,0.4); padding-top: 16px; margin-top: 16px; }
+.admin-member-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid rgba(141,197,255,0.4); padding: 14px 0; font-size: 14px; overflow-wrap: anywhere; }
+.admin-member-row small { display: block; font-size: 12px; margin-top: 4px; }
+.admin-member-row button { border: 0; color: var(--text-title); background: #edf7ff; border-radius: 10px; padding: 9px 12px; cursor: pointer; flex-shrink: 0; }
+.admin-member-row button:disabled { opacity: 0.5; cursor: default; }
+.admin-plan__link { display: block; text-align: center; text-decoration: none; margin-bottom: 16px; }
+.plan-group-choices__options { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.plan-group-choices label { line-height: 1.5; align-items: flex-start; }
+.plan-group-choices input { flex-shrink: 0; }

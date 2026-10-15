@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 
 import WaveBackground from "../WaveBackground";
 
@@ -10,6 +10,7 @@ import { useAuth } from "../../auth/AuthContext";
 const Receipt = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  if (user?.typeUser !== 'admin' || !user.purchase) return <Navigate to="/home" replace />;
 
   return (
     <div className="receipt">
@@ -17,6 +18,7 @@ const Receipt = () => {
       <div className="receipt__content">
         <img src={receipt} alt="receipt" className="receipt__content-img" />
         <p style={{ color: 'var(--text-body)', textAlign: 'center' }}>¡Pago simulado completado!<br />{user?.purchase?.plan} · {user?.purchase?.method}<br />{user?.purchase?.amount != null && <>Total simulado: {user.purchase.amount}<br /></>}Ya podés ingresar a Thotem. No se realizó ningún cobro.</p>
+        <p style={{ color: 'var(--text-body)', textAlign: 'center' }}>Espacios incluidos: {user.managedSpaces.filter(space => user.purchase.spaceIds.includes(space.id)).map(space => `${space.institutionName} · ${space.name}`).join(', ')}</p>
         <button
           className="receipt__content-button"
           onClick={() => navigate("/home")}

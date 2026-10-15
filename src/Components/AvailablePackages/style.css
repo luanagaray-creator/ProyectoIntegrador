@@ -132,3 +132,5 @@
   .available-packages__content-box, .available-packages__content-boxButton { transition: none; }
   .available-packages__content-box:hover, .available-packages__content-boxButton:hover { transform: none; }
 }
+
+.available-packages__content-boxButton:disabled { opacity: 0.5; cursor: default; transform: none; }

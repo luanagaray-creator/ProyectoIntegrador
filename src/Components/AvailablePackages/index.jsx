@@ -1,19 +1,23 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import packageJson from "../../../package.json";
 
 import "./style.css";
+import { useAuth } from "../../auth/AuthContext";
 
 const AvailablePackages = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const canBuy = !user || user.canPurchase;
 
   const planName = packageJson.planName;
+  if (user && !user.canPurchase) return <Navigate to={user.typeUser === 'superadmin' ? '/platform' : '/spaces'} replace />;
 
   return (
     <div className="available-packages">
       <div className="available-packages__heading">
         <h1>Elegí tu paquete</h1>
-        <p>Encontrá la opción para vos y continuá con el pago simulado.</p>
+        <p>Planes para administradores: incluí tus espacios autorizados y habilitá a sus usuarios.</p>
       </div>
       <div className="available-packages__content">
 
@@ -28,6 +32,7 @@ const AvailablePackages = () => {
           </p>
 
           <button
+            disabled={!canBuy}
             className="available-packages__content-boxButton"
             onClick={() =>
               navigate("/payment-page", {
@@ -50,6 +55,7 @@ const AvailablePackages = () => {
           </p>
 
           <button
+            disabled={!canBuy}
             className="available-packages__content-boxButton"
             onClick={() =>
               navigate("/payment-page", {
@@ -72,6 +78,7 @@ const AvailablePackages = () => {
           </p>
 
           <button
+            disabled={!canBuy}
             className="available-packages__content-boxButton"
             onClick={() =>
               navigate("/payment-page", {

@@ -14,6 +14,7 @@ export default function AuthProvider({ children }) {
   const [authLoading, setAuthLoading] = useState(true);
   const [sessionError, setSessionError] = useState('');
   const version = useRef(0);
+  const refreshVersion = useRef(0);
   const hadSession = useRef(false);
   const navigate = useNavigate();
 
@@ -28,12 +29,13 @@ export default function AuthProvider({ children }) {
   }, [navigate]);
 
   const refreshSession = useCallback(async () => {
-    const current = ++version.current;
+    const current = version.current;
+    const request = ++refreshVersion.current;
     try {
       const data = await apiRequest('/users/profile');
-      if (current === version.current) { hadSession.current = true; setUser(data.user); setSessionError(''); }
+      if (current === version.current && request === refreshVersion.current) { hadSession.current = true; setUser(data.user); setSessionError(''); }
     } catch (err) {
-      if (current === version.current) {
+      if (current === version.current && request === refreshVersion.current) {
         if (err.status === 401) {
           if (hadSession.current) expireSession();
           else { setUser(null); setSessionError(''); }
@@ -41,7 +43,7 @@ export default function AuthProvider({ children }) {
         else setSessionError(err.message);
       }
     } finally {
-      if (current === version.current) setAuthLoading(false);
+      if (current === version.current && request === refreshVersion.current) setAuthLoading(false);
     }
   }, [expireSession]);
 
@@ -65,6 +67,14 @@ export default function AuthProvider({ children }) {
       window.removeEventListener('focus', refreshSession);
     };
   }, [refreshSession]);
+
+  useEffect(() => {
+    if (!user?.idUser) return;
+    const sync = () => { if (!document.hidden) refreshSession(); };
+    const timer = window.setInterval(sync, 15000);
+    document.addEventListener('visibilitychange', sync);
+    return () => { window.clearInterval(timer); document.removeEventListener('visibilitychange', sync); };
+  }, [user?.idUser, refreshSession]);
 
   async function login(credentials) {
     ++version.current;
@@ -135,5 +145,16 @@ export default function AuthProvider({ children }) {
     return data.user;
   }
 
-  return <AuthContext.Provider value={{ user, authLoading, sessionError, refreshSession, login, register, logout, simulatePayment, joinGroup }}>{children}</AuthContext.Provider>;
+  async function updatePlanGroups(spaceIds) {
+    const current = ++version.current;
+    const data = await apiRequest('/admin/plan/groups', { method: 'POST', body: JSON.stringify({ spaceIds }) });
+    if (current !== version.current) throw new Error('La sesión cambió. Volvé a intentar guardar los grupos.');
+    ++version.current;
+    setUser(data.user);
+    setSessionError('');
+    notifyTabs();
+    return data.user;
+  }
+
+  return <AuthContext.Provider value={{ user, authLoading, sessionError, refreshSession, login, register, logout, simulatePayment, joinGroup, updatePlanGroups }}>{children}</AuthContext.Provider>;
 }
