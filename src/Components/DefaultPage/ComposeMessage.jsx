@@ -5,7 +5,7 @@ import { useAuth } from '../../auth/AuthContext';
 export default function ComposeMessage({ onClose, onSent }) {
   const dialogRef = useRef(null);
   const { user, refreshSession } = useAuth();
-  const spaces = (user?.spaces || []).filter(space => space.isActive);
+  const spaces = (user?.spaces || []).filter((space, index, all) => space.isActive && all.findIndex(item => item.isActive && item.institutionId === space.institutionId) === index);
   const [spaceId, setSpaceId] = useState(spaces[0]?.id || '');
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
@@ -31,7 +31,7 @@ export default function ComposeMessage({ onClose, onSent }) {
   return <dialog ref={dialogRef} className="compose-dialog" aria-labelledby="composeTitle" onCancel={event => { if (sending) event.preventDefault(); }} onClose={onClose}>
     <form className="compose-modal" onSubmit={send}>
       <div className="compose-modal__heading"><h2 id="composeTitle">Redactar mensaje</h2><button type="button" disabled={sending} className="compose-modal-overlay__button" onClick={onClose}>Cerrar</button></div>
-      <label>Espacio<select className="compose-modal__input" value={spaceId} onChange={event => setSpaceId(event.target.value)} required disabled={sending}>{spaces.map(space => <option key={space.id} value={space.id}>{space.institutionName} · {space.name}</option>)}</select></label>
+      {spaces.length > 1 ? <label>Institución<select className="compose-modal__input" value={spaceId} onChange={event => setSpaceId(event.target.value)} required disabled={sending}>{spaces.map(space => <option key={space.id} value={space.id}>{space.institutionName}</option>)}</select></label> : <p className="message-feedback">Podés escribir a usuarios de {spaces[0]?.institutionName || 'tu institución'}, aunque estén en otro curso.</p>}
       <div className="compose-modal__top">
         <label>Destinatario<input className="compose-modal__input" placeholder="Usuario o email" required disabled={sending} maxLength={30} value={recipient} onChange={event => setRecipient(event.target.value)} /></label>
         <label>Asunto<input className="compose-modal__input" placeholder="Asunto del mensaje" required disabled={sending} maxLength={120} value={subject} onChange={event => setSubject(event.target.value)} /></label>
