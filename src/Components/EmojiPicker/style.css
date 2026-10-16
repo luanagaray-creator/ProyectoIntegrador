@@ -1,0 +1,13 @@
+.message-tool { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 7px; flex-shrink: 0; border: 0; border-radius: 10px; background: transparent; color: var(--text-body); cursor: pointer; box-sizing: border-box; }
+.message-tool svg { width: 22px; height: 22px; }
+.message-tool:hover, .message-tool[aria-expanded="true"] { background: #edf7ff; }
+.message-tool:disabled { opacity: .5; cursor: default; }
+.message-tool:focus-visible, .emoji-picker button:focus-visible { outline: 2px solid var(--text-title); outline-offset: 2px; }
+.emoji-picker { position: fixed; inset: auto; margin: 0; padding: 12px; width: 280px; max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); overflow-y: auto; box-sizing: border-box; border: 1px solid rgba(141,197,255,.4); border-radius: 16px; background: #fff; color: var(--text-body); box-shadow: 0 8px 28px rgba(72,70,143,.18); font-family: "Montserrat", sans-serif; }
+.emoji-picker > p { margin: 0 0 8px; font-size: 12px; font-weight: 600; }
+.emoji-picker__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 3px; }
+.emoji-picker__grid button { display: flex; justify-content: center; align-items: center; min-width: 0; height: 28px; padding: 0; border: 0; border-radius: 7px; background: transparent; font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif; font-size: 21px; cursor: pointer; }
+.emoji-picker__grid button:hover { background: #edf7ff; }
+.compose-modal__actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
+.compose-modal__tools { display: flex; gap: 4px; align-items: center; }
+.compose-dialog .compose-modal__actions .compose-modal-overlay__button { align-self: center; }
