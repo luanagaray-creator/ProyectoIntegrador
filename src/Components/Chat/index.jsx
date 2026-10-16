@@ -5,12 +5,15 @@ import ViewNavigation from '../ViewNavigation';
 import { useAuth } from '../../auth/AuthContext';
 import { useLiveMessages } from '../../auth/useLiveMessages';
 import { apiRequest } from '../../auth/api';
+import EmojiPicker from '../EmojiPicker';
+import { useMessageEditor } from '../../auth/useMessageEditor';
 import './style.css';
 
 function Conversation({ space, options, changeSpace }) {
   const { user, refreshSession } = useAuth();
   const { data, loading, error, refresh } = useLiveMessages(`/group-chat?spaceId=${space.id}`);
   const [content, setContent] = useState('');
+  const { inputRef, insertEmoji } = useMessageEditor(content, setContent);
   const [pending, setPending] = useState(false);
   const [actionError, setActionError] = useState('');
   const bodyRef = useRef(null);
@@ -36,7 +39,7 @@ function Conversation({ space, options, changeSpace }) {
       {loading && <p role="status">Cargando chat…</p>}{data?.messages.length === 0 && <p className="chat__feedback">Todavía no hay mensajes en este espacio.</p>}
       {data?.messages.map(message => <div key={message.id} className={`chat__content-boxMessage chat__content-boxMessage--${message.senderId === user.idUser ? 'outgoing' : 'incoming'}`}><div className="chat__message-meta"><strong>{message.senderName}</strong><time dateTime={message.sentAt}>{new Date(message.sentAt).toLocaleString('es-UY', { dateStyle: 'short', timeStyle: 'short' })}</time></div><p>{message.content}</p></div>)}
     </div>
-    <form className="chat__content-boxComposer" onSubmit={send}><textarea className="chat__content-boxTextarea" aria-label="Mensaje para el espacio" placeholder="Escribir…" required maxLength={5000} disabled={pending || !data} value={content} onChange={event => setContent(event.target.value)} rows={1} onKeyDown={event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) send(event); }} /><button className="chat__content-boxSend" aria-label={pending ? 'Enviando mensaje' : 'Enviar mensaje'} disabled={pending || !data || !content.trim()}><span>→</span></button></form>
+    <form className="chat__content-boxComposer" onSubmit={send}><textarea ref={inputRef} className="chat__content-boxTextarea" aria-label="Mensaje para el espacio" placeholder="Escribir…" required maxLength={5000} disabled={pending || !data} value={content} onChange={event => setContent(event.target.value)} rows={1} onKeyDown={event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) send(event); }} /><EmojiPicker onSelect={insertEmoji} disabled={pending || !data} /><button className="chat__content-boxSend" aria-label={pending ? 'Enviando mensaje' : 'Enviar mensaje'} disabled={pending || !data || !content.trim()}><span>→</span></button></form>
   </div>;
 }
 export default function Chat() {

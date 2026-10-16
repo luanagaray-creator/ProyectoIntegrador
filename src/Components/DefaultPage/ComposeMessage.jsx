@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { apiRequest } from '../../auth/api';
 import { useAuth } from '../../auth/AuthContext';
+import EmojiPicker from '../EmojiPicker';
+import { useMessageEditor } from '../../auth/useMessageEditor';
 
 export default function ComposeMessage({ onClose, onSent }) {
   const dialogRef = useRef(null);
@@ -10,6 +12,7 @@ export default function ComposeMessage({ onClose, onSent }) {
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
+  const { inputRef, insertEmoji } = useMessageEditor(content, setContent);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   useEffect(() => {
@@ -36,9 +39,17 @@ export default function ComposeMessage({ onClose, onSent }) {
         <label>Destinatario<input className="compose-modal__input" placeholder="Usuario o email" required disabled={sending} maxLength={30} value={recipient} onChange={event => setRecipient(event.target.value)} /></label>
         <label>Asunto<input className="compose-modal__input" placeholder="Asunto del mensaje" required disabled={sending} maxLength={120} value={subject} onChange={event => setSubject(event.target.value)} /></label>
       </div>
-      <label className="compose-modal__body-label">Mensaje<textarea className="compose-modal__textArea" placeholder="Escribí tu mensaje…" required disabled={sending} maxLength={5000} value={content} onChange={event => setContent(event.target.value)} /></label>
+      <label className="compose-modal__body-label">Mensaje<textarea ref={inputRef} className="compose-modal__textArea" placeholder="Escribí tu mensaje…" required disabled={sending} maxLength={5000} value={content} onChange={event => setContent(event.target.value)} /></label>
       {error && <p role="alert" className="message-feedback">{error}</p>}
-      <button disabled={sending || !content.trim() || !spaces.some(space => space.id === spaceId)} className="compose-modal-overlay__button">{sending ? 'Enviando…' : 'Enviar'}</button>
+      <div className="compose-modal__actions">
+        <div className="compose-modal__tools">
+          <EmojiPicker onSelect={insertEmoji} disabled={sending} />
+          <a className="message-tool" href="https://meet.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Abrir Google Meet" title="Abrir Google Meet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="6" width="12" height="12" rx="3" /><path d="m15 10 6-3v10l-6-3Z" /></svg>
+          </a>
+        </div>
+        <button disabled={sending || !content.trim() || !spaces.some(space => space.id === spaceId)} className="compose-modal-overlay__button">{sending ? 'Enviando…' : 'Enviar'}</button>
+      </div>
     </form>
   </dialog>;
 }

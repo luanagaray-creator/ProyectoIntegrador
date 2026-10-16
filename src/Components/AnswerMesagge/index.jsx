@@ -3,6 +3,8 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import { apiRequest } from '../../auth/api';
 import { useLiveMessages } from '../../auth/useLiveMessages';
+import EmojiPicker from '../EmojiPicker';
+import { useMessageEditor } from '../../auth/useMessageEditor';
 import './style.css';
 
 export default function AnswerMessage() {
@@ -13,6 +15,7 @@ export default function AnswerMessage() {
   const { user, refreshSession } = useAuth();
   const { data, loading, error, refresh } = useLiveMessages(`/messages/${threadId}`);
   const [responseText, setResponseText] = useState('');
+  const { inputRef, insertEmoji } = useMessageEditor(responseText, setResponseText);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState('');
   const bodyRef = useRef(null);
@@ -54,8 +57,8 @@ export default function AnswerMessage() {
           </div>)}
         </div>
         <form className="answer-message__content-composer" onSubmit={sendResponse}>
-          <textarea className="answer-message__content-textarea" aria-label="Tu respuesta" placeholder="Escribir tu respuesta…" value={responseText} onChange={event => setResponseText(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) sendResponse(event); }} required maxLength={5000} disabled={sending || !data} rows={1} />
-          <button type="submit" className="answer-message__content-send" disabled={sending || !data || !responseText.trim()} aria-label={sending ? 'Enviando respuesta' : 'Enviar respuesta'}><span>→</span></button>
+          <textarea ref={inputRef} className="answer-message__content-textarea" aria-label="Tu respuesta" placeholder="Escribir tu respuesta…" value={responseText} onChange={event => setResponseText(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) sendResponse(event); }} required maxLength={5000} disabled={sending || !data} rows={1} />
+          <EmojiPicker onSelect={insertEmoji} disabled={sending || !data} /><button type="submit" className="answer-message__content-send" disabled={sending || !data || !responseText.trim()} aria-label={sending ? 'Enviando respuesta' : 'Enviar respuesta'}><span>→</span></button>
         </form>
       </div>
     </div>
