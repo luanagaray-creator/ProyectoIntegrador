@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 
 import WaveBackground from "../WaveBackground";
+import PasswordInput from "../PasswordInput";
 
 import "./style.css";
 
@@ -86,8 +87,7 @@ const Login = () => {
             value={formData.name}
             onChange={handleChange}
           />
-          <input
-            type="password"
+          <PasswordInput
             name="password"
             autoComplete="current-password"
             required
