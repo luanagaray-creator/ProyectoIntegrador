@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import WaveBackground from "../WaveBackground";
+import PasswordInput from "../PasswordInput";
 import { useAuth } from "../../auth/AuthContext";
 
 import "./style.css";
@@ -96,8 +97,7 @@ const Register = () => {
             value={formData.name}
             onChange={handleChange}
           />
-          <input
-            type="password"
+          <PasswordInput
             name="password"
             required
             minLength={6}
@@ -108,8 +108,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
           />
-          <input
-            type="password"
+          <PasswordInput
             name="passwordConfirmation"
             required
             maxLength={128}

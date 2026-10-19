@@ -3,6 +3,7 @@ import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { apiRequest } from '../../auth/api';
 import { useAuth } from '../../auth/AuthContext';
 import RecoveryLayout from '../../auth/RecoveryLayout';
+import PasswordInput from '../PasswordInput';
 
 export default function RestorePasswordConfirm() {
   const location = useLocation();
@@ -31,9 +32,9 @@ export default function RestorePasswordConfirm() {
     <p>Elegí una contraseña de entre 6 y 128 caracteres. Después deberás volver a iniciar sesión.</p>
     <form onSubmit={submit}>
       <label htmlFor="newPassword">Nueva contraseña</label>
-      <input id="newPassword" type="password" autoComplete="new-password" required minLength={6} maxLength={128} value={password} onChange={event => setPassword(event.target.value)} />
+      <PasswordInput id="newPassword" autoComplete="new-password" required minLength={6} maxLength={128} value={password} onChange={event => setPassword(event.target.value)} />
       <label htmlFor="confirmPassword">Confirmá la contraseña</label>
-      <input id="confirmPassword" type="password" autoComplete="new-password" required minLength={6} maxLength={128} value={confirmation} onChange={event => setConfirmation(event.target.value)} />
+      <PasswordInput id="confirmPassword" autoComplete="new-password" required minLength={6} maxLength={128} value={confirmation} onChange={event => setConfirmation(event.target.value)} />
       {error && <p role="alert">{error}</p>}
       <button disabled={loading}>{loading ? 'Guardando…' : 'Cambiar contraseña'}</button>
       <Link to="/restore-password">Solicitar un código nuevo</Link>

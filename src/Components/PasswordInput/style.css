@@ -1,0 +1,60 @@
+.password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.password-input .password-input__field {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding-right: 44px;
+}
+
+.password-input__toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  place-items: center;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #48468f;
+  cursor: pointer;
+}
+
+.password-input__toggle:hover {
+  background: rgba(72, 70, 143, 0.08);
+}
+
+.password-input__toggle:focus-visible {
+  outline: 2px solid var(--text-title, #5f5db4);
+  outline-offset: 2px;
+}
+
+.password-input__toggle svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.login__content-form .password-input {
+  margin-bottom: 55px;
+}
+
+.login__content-form .password-input__field,
+.register__content-form .password-input__field {
+  margin-bottom: 0;
+}
+
+.register__content-form .password-input {
+  margin-bottom: 15px;
+}
