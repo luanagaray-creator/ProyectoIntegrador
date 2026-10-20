@@ -12,7 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const destination = location.state?.from === '/payment-page' ? '/payment-page' : '/home';
-  const destinationState = destination === '/payment-page' ? { plan: location.state.plan } : undefined;
+  const destinationState = destination === '/payment-page' ? { plan: location.state.plan, institutionId: location.state.institutionId } : undefined;
   const { register, user, authLoading } = useAuth();
 
   const [formData, setFormData] = useState({

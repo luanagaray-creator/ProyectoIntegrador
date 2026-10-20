@@ -145,6 +145,17 @@ export default function AuthProvider({ children }) {
     return data.user;
   }
 
+  async function cancelPlan(institutionId) {
+    const current = ++version.current;
+    const data = await apiRequest('/admin/plan', { method: 'DELETE', body: JSON.stringify({ institutionId }) });
+    if (current !== version.current) throw new Error('La sesión cambió. Volvé a consultar tu plan.');
+    ++version.current;
+    setUser(data.user);
+    setSessionError('');
+    notifyTabs();
+    return data.user;
+  }
+
   async function updatePlanGroups(spaceIds) {
     const current = ++version.current;
     const data = await apiRequest('/admin/plan/groups', { method: 'POST', body: JSON.stringify({ spaceIds }) });
@@ -156,5 +167,5 @@ export default function AuthProvider({ children }) {
     return data.user;
   }
 
-  return <AuthContext.Provider value={{ user, authLoading, sessionError, refreshSession, login, register, logout, simulatePayment, joinGroup, updatePlanGroups }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, authLoading, sessionError, refreshSession, login, register, logout, simulatePayment, joinGroup, updatePlanGroups, cancelPlan }}>{children}</AuthContext.Provider>;
 }

@@ -1,4 +1,5 @@
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate, Navigate, useLocation } from "react-router-dom";
+import packageJson from '../../../package.json';
 
 import WaveBackground from "../WaveBackground";
 
@@ -7,11 +8,13 @@ import { useAuth } from "../../auth/AuthContext";
 
 const Receipt = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, authLoading } = useAuth();
   if (authLoading) return <div className="receipt"><p className="receipt__loading" role="status">Cargando comprobante…</p></div>;
-  if (user?.typeUser !== 'admin' || !user.purchase) return <Navigate to="/home" replace />;
-  const { purchase } = user;
-  const includedSpaces = user.managedSpaces.filter(space => purchase.spaceIds.includes(space.id));
+  const institution = user?.managedInstitutions?.find(item => item.id === location.state?.institutionId);
+  const purchase = institution?.plan ? institution : user?.purchase;
+  if (user?.typeUser !== 'admin' || !purchase) return <Navigate to="/home" replace />;
+  const includedSpaces = user.managedSpaces.filter(space => institution ? space.institutionId === institution.id : purchase.spaceIds.includes(space.id));
 
   return (
     <div className="receipt">
@@ -27,15 +30,15 @@ const Receipt = () => {
             {purchase.paidAt && <div className="receipt__row"><dt>Fecha</dt><dd>{new Date(purchase.paidAt).toLocaleDateString('es-UY')}</dd></div>}
             <div className="receipt__row receipt__row--spaces">
               <dt>Espacios incluidos</dt>
-              <dd>{includedSpaces.length ? <ul>{includedSpaces.map(space => <li key={space.id}>{space.institutionName} · {space.name}</li>)}</ul> : 'Sin espacios incluidos'}</dd>
+              <dd>{includedSpaces.length ? <ul>{includedSpaces.map(space => <li key={space.id}>{space.institutionName} · {space.name}</li>)}</ul> : `Podés crear hasta ${packageJson.planLimits[purchase.plan]} espacios desde Administración.`}</dd>
             </div>
             {purchase.amount != null && <div className="receipt__row receipt__row--total"><dt>Total simulado</dt><dd>{Number(purchase.amount).toLocaleString('es-UY')}</dd></div>}
           </dl>
         <button
           className="receipt__content-button"
-          onClick={() => navigate("/home")}
+          onClick={() => navigate("/admin-plan")}
         >
-          Volver al inicio
+          Administrar mis espacios
         </button>
         </section>
       </div>

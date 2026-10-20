@@ -7,7 +7,6 @@ import visa from '../../assets/visa.png';
 import mercadoPago from '../../assets/mercadoPago.png';
 import mastercard from '../../assets/mastercard.png';
 import './style.css';
-import GroupChoices from '../AdminPlan/GroupChoices';
 import '../AdminPlan/style.css';
 
 const methods = [{ name: 'Visa', image: visa }, { name: 'Mercado Pago', image: mercadoPago }, { name: 'Mastercard', image: mastercard }];
@@ -23,19 +22,23 @@ export default function PaymentPage() {
   const [method, setMethod] = useState('Visa');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [chosenGroups, setGroupCodes] = useState(null);
-  const spaceIds = chosenGroups ?? user?.purchase?.spaceIds ?? [];
-  const spaceOptions = (user?.managedSpaces || []).map(space => ({ id: space.id, label: `${space.institutionName} · ${space.name}` }));
-  const continuation = { from: '/payment-page', plan: selectedPlan };
+  const [chosenInstitution, setInstitution] = useState('');
+  const managedSpaces = user?.managedSpaces || [];
+  const institutions = user?.managedInstitutions || [...new Map(managedSpaces.map(space => [space.institutionId, { id: space.institutionId, name: space.institutionName, spaceCount: managedSpaces.filter(item => item.institutionId === space.institutionId).length }])).values()];
+  const institutionId = chosenInstitution || location.state?.institutionId || user?.purchase?.institutionId || institutions[0]?.id;
+  const institution = institutions.find(item => item.id === institutionId);
+  const spaceLimit = packageJson.planLimits[selectedPlan] || 0;
+  const exceedsLimit = (institution?.spaceCount || 0) > spaceLimit;
+  const continuation = { from: '/payment-page', plan: selectedPlan, institutionId };
 
   async function pay(event) {
     event.preventDefault();
-    if (!user?.canPurchase || !validPlan || loading || !spaceIds.length) return;
+    if (!user?.canPurchase || !validPlan || loading || !institution || exceedsLimit) return;
     setLoading(true);
     setError('');
     try {
-      await simulatePayment({ plan: selectedPlan, method, spaceIds });
-      navigate('/receipt', { replace: true });
+      await simulatePayment({ plan: selectedPlan, method, institutionId });
+      navigate('/receipt', { replace: true, state: { institutionId } });
     } catch (err) { setError(err.message); }
     finally { setLoading(false); }
   }
@@ -52,8 +55,12 @@ export default function PaymentPage() {
           <p className="payment-page__notice">Pago simulado: no se realizará ningún cobro.</p>
           {validPlan && <span className="payment-page__total">Total <strong>{price}</strong></span>}
         </div>
-        {user && !user.canPurchase ? <p className="payment-page__notice">Los planes los pagan los administradores. Necesitás que Thotem te autorice como administrador de un espacio para contratarlo. <Link to="/home">Volver al inicio</Link></p> : !validPlan ? <Link to="/available-packages">Elegir un paquete</Link> : <>
-          {user?.canPurchase && <GroupChoices value={spaceIds} onChange={setGroupCodes} options={spaceOptions} disabled={loading} />}
+        {user && !user.canPurchase ? <p className="payment-page__notice">Los planes los pagan los administradores. Necesitás que Thotem te autorice como administrador de una institución para contratarlo. <Link to="/home">Volver al inicio</Link></p> : !validPlan ? <Link to="/available-packages">Elegir un paquete</Link> : <>
+          {user?.canPurchase && <>
+            {institutions.length > 1 && <label className="payment-page__institution">Institución<select className="payment-page__content-boxBottom-input" value={institutionId} disabled={loading} onChange={event => setInstitution(event.target.value)}>{institutions.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>}
+            <p className="payment-page__notice">{institution?.name && <strong>{institution.name} · </strong>}Podrás crear hasta {spaceLimit} espacios con el nombre que quieras y 30 usuarios por espacio, después de contratar el plan.</p>
+            {exceedsLimit && <p role="alert">La institución ya tiene {institution.spaceCount} espacios. Eliminá los que no necesites antes de bajar a este plan.</p>}
+          </>}
           <div className="payment-page__content-boxCenter" role="group" aria-label="Método de pago">
             {methods.map(item => <button key={item.name} type="button" className="payment-page__method" aria-pressed={method === item.name} onClick={() => setMethod(item.name)} disabled={loading}>
               <img src={item.image} alt={item.name} />
@@ -68,10 +75,10 @@ export default function PaymentPage() {
           </div>}
           {method === 'Mercado Pago' && <p className="payment-page__notice">Se simulará un pago aprobado con Mercado Pago.</p>}
           {(error || sessionError) && <p role="alert">{error || sessionError}</p>}
-          {authLoading ? <p role="status">Cargando sesión…</p> : user ? <button className="payment-page__content-boxBottom-button" disabled={loading || !!sessionError || !spaceIds.length}>
+          {authLoading ? <p role="status">Cargando sesión…</p> : user ? <button className="payment-page__content-boxBottom-button" disabled={loading || !!sessionError || !institution || exceedsLimit}>
             {loading ? 'Procesando…' : 'Simular pago'}
           </button> : <div className="payment-page__notice payment-page__account">
-            <p>Para contratar un plan e incluir grupos, iniciá sesión con una cuenta administradora.</p>
+            <p>Para contratar un plan y crear espacios, iniciá sesión con una cuenta administradora.</p>
             <div className="payment-page__account-actions">
               <Link to="/login" state={continuation}>Iniciar sesión</Link>
             </div>

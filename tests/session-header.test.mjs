@@ -32,16 +32,17 @@ test('Ingresar depende del acceso habilitado y no de pagos individuales anterior
   assert.match(render({ user: { typeUser: 'user', groupCode: '3ro TIC', hasAccess: true, purchase: null } }, Home), />\s*Ingresar\s*</);
 });
 
-test('cada paquete solo permite pagar a administradores y pide los grupos', () => {
+test('cada paquete permite pagar a administradores sin elegir espacios predefinidos', () => {
   for (const plan of ['Small Plan', 'Medium Plan', 'Large Plan']) {
     const entries = [{ pathname: '/payment-page', state: { plan } }];
     assert.match(render({}, PaymentPage, entries), /cuenta administradora/);
-    const html = render({ user: { idUser: 'a', typeUser: 'admin', canPurchase: true, managedSpaces: [{id:'space1',name:'3ro TIC',institutionName:'�nima'}] } }, PaymentPage, entries);
+    const html = render({ user: { idUser: 'a', typeUser: 'admin', canPurchase: true, managedSpaces: [{id:'space1',name:'3ro TIC',institutionName:'�nima'}] } }, PaymentPage, entries);
     assert.match(html, /Simular pago/);
     assert.match(html, new RegExp(plan));
     assert.match(html, new RegExp(`<strong>${{ 'Small Plan': 250, 'Medium Plan': 500, 'Large Plan': 750 }[plan]}</strong>`));
     assert.doesNotMatch(html, /Código de seguridad/);
-    assert.match(html, /Espacios incluidos en el plan/);
+    assert.match(html, /Podrás crear hasta/);
+    assert.doesNotMatch(html, /Espacios incluidos en el plan|type="checkbox"/);
     assert.doesNotMatch(render({ user: { idUser: 'b', typeUser: 'user' } }, PaymentPage, entries), />Simular pago</);
   }
   assert.match(render({ user: { typeUser: 'admin', canPurchase: true, managedSpaces: [] } }, PaymentPage), /Elegir un paquete/);

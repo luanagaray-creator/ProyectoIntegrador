@@ -32,6 +32,11 @@
     "mediumPlan": 500,
     "largePlan": 750
   },
+  "planLimits": {
+    "Small Plan": 3,
+    "Medium Plan": 4,
+    "Large Plan": 6
+  },
   "planName": {
     "smallPlan": "Small Plan",
     "mediumPlan": "Medium Plan",

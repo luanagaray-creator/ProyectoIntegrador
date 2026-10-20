@@ -12,7 +12,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const destination = location.state?.from === '/payment-page' ? '/payment-page' : '/home';
-  const destinationState = destination === '/payment-page' ? { plan: location.state.plan } : undefined;
+  const destinationState = destination === '/payment-page' ? { plan: location.state.plan, institutionId: location.state.institutionId } : undefined;
   const { login, user, authLoading, sessionError } = useAuth();
   const [error, setError] = useState('');
 

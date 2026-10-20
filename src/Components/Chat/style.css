@@ -82,7 +82,6 @@
   display: flex;
   flex: 1 1 0;
   min-height: 0;
-  max-height: 248px;
   overflow-y: auto;
   flex-direction: column;
   gap: 12px;
@@ -99,7 +98,6 @@
   max-width: 70%;
   overflow-wrap: anywhere;
   padding: 8px 14px;
-  min-height: 64px;
   box-sizing: border-box;
   flex-shrink: 0;
   border-radius: 18px;
@@ -133,27 +131,27 @@
   width: 100%;
   padding: 0;
   box-sizing: border-box;
-  min-height: 52px;
+  min-height: 40px;
   flex-shrink: 0;
 }
 
 .chat__content-boxTextarea {
   flex: 1;
   min-width: 0;
-  height: 52px;
-  min-height: 52px;
+  height: 40px;
+  min-height: 40px;
   box-sizing: border-box;
-  max-height: 120px;
+  max-height: 40px;
   border: none;
   background: #f5faff;
   resize: none;
   outline: none;
   color: var(--text-body);
   font-family: "Montserrat", sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
-  padding: 14px 18px;
-  border-radius: 26px;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 10px 16px;
+  border-radius: 20px;
 }
 
 .chat__content-boxTextarea:focus-visible {
@@ -167,13 +165,13 @@
 }
 
 .chat__content-boxSend {
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   background: linear-gradient(135deg, #3a3d7a, #201d4c);
   color: #ffffff;
-  font-size: 30px;
+  font-size: 24px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -206,8 +204,8 @@
 
 .chat__content-boxBody { min-height: 0; }
 .chat__content-boxMessage p { white-space: pre-wrap; }
-.chat__message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; font-size: 12px; margin-bottom: 4px; opacity: 0.85; }
-.chat__message-meta time { font-size: 11px; }
+.chat__message-meta { display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px; row-gap: 2px; margin-top: 4px; font-size: 10px; line-height: 16px; opacity: 0.85; }
+.chat__message-meta time { font-size: 10px; }
 .chat__content-boxSend:disabled { opacity: 0.5; cursor: default; }
 .chat__feedback { color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; line-height: 1.6; }
 .chat__join { display: flex; flex-direction: column; align-self: center; gap: 16px; max-width: 460px; width: 100%; padding: 32px 0; color: var(--text-body); font-family: "Montserrat", sans-serif; }
@@ -223,3 +221,9 @@
 
 .chat__institution { display: block; font-family: "Montserrat",sans-serif; font-size: 13px; color: var(--text-muted); margin-bottom: 6px; }
 .chat__space-select { font: inherit; font-size: 18px; font-weight: 600; color: var(--text-title); padding: 10px; border: 1px solid rgba(141,197,255,0.5); border-radius: 12px; background: #f5faff; max-width: 100%; }
+.chat__delete-message { margin: 0 0 0 auto; padding: 2px 0; border: 0; border-radius: 2px; background: transparent; color: inherit; font: inherit; font-size: 10px; line-height: 16px; opacity: 0.75; cursor: pointer; }
+.chat__delete-message:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.chat__delete-message:disabled { opacity: 0.6; cursor: wait; }
+@media (hover: hover) {
+  .chat__delete-message:not(:disabled):hover { opacity: 1; text-decoration: underline; text-underline-offset: 2px; }
+}

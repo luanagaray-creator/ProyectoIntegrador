@@ -30,6 +30,42 @@
 .admin-member-row button { border: 0; color: var(--text-title); background: #edf7ff; border-radius: 10px; padding: 9px 12px; cursor: pointer; flex-shrink: 0; }
 .admin-member-row button:disabled { opacity: 0.5; cursor: default; }
 .admin-plan__link { display: block; text-align: center; text-decoration: none; margin-bottom: 16px; }
+.admin-plan__danger { display: block; margin-top: 20px; border: 1px solid #e4b8b8; background: #fff5f5; color: #963c3c; padding: 12px 16px; border-radius: 12px; font: inherit; font-size: 14px; cursor: pointer; }
+.admin-plan__danger:disabled { opacity: 0.6; cursor: default; }
+.admin-plan__cancellation { margin-top: 20px; padding: 16px; border: 1px solid #e4b8b8; border-radius: 16px; }
+.admin-plan__cancellation .admin-plan__primary { margin-top: 12px; }
 .plan-group-choices__options { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .plan-group-choices label { line-height: 1.5; align-items: flex-start; }
 .plan-group-choices input { flex-shrink: 0; }
+.admin-plan__spaces { max-width: 1200px; margin-top: 24px; }
+.admin-plan__institution { display: flex; flex-direction: column; gap: 8px; max-width: 640px; font-size: 14px; }
+.admin-plan__institution select { padding: 12px; border: 1px solid rgba(141,197,255,0.5); border-radius: 12px; background: #f5faff; color: var(--text-body); font: inherit; }
+.admin-space-settings form { gap: 10px; margin-bottom: 0; }
+.admin-space-settings .admin-plan__primary { align-self: flex-start; padding: 10px 16px; }
+.admin-plan__delete-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.admin-plan__delete-actions :is(.admin-plan__danger, .admin-plan__primary) { margin: 0; }
+.admin-plan__danger:focus-visible, .admin-plan__primary:focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
+.institution-platform__directory-link { display: inline-block; margin: 4px 0 8px; font-size: 14px; font-weight: 600; text-underline-offset: 4px; }
+.admin-directory { max-width: 1200px; margin-top: 24px; scroll-margin-top: 100px; }
+.admin-directory__heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.admin-directory__heading h2 { margin-bottom: 0; }
+.admin-directory__heading > span { flex-shrink: 0; border-radius: 20px; padding: 7px 12px; background: #edf7ff; font-size: 12px; }
+.admin-directory label { display: block; margin-bottom: 8px; }
+.admin-directory .admin-directory__count { font-size: 12px; }
+.admin-directory__list, .admin-directory__institutions ul { list-style: none; margin: 0; padding: 0; }
+.admin-directory__row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) auto; gap: 24px; padding: 18px 0; border-top: 1px solid rgba(141,197,255,0.4); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.admin-directory__account { display: flex; flex-direction: column; gap: 3px; }
+.admin-directory__account > span { font-size: 13px; }
+.admin-directory__institutions { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.admin-directory__role { border-radius: 8px; padding: 2px 8px; background: #edf7ff; color: var(--text-title); font-size: 11px; font-weight: 600; }
+.admin-directory__filters { display: grid; grid-template-columns: minmax(0,1fr) 180px; gap: 16px; }
+.admin-directory__filters label { display: flex; flex-direction: column; gap: 8px; margin: 0; }
+.admin-directory__account .admin-directory__status { align-self: flex-start; margin-top: 4px; padding: 2px 8px; border-radius: 8px; background: #e7f6ee; color: #236447; font-size: 11px; font-weight: 600; }
+.admin-directory__account .admin-directory__status--inactive { background: #fff2e2; color: #885b26; }
+.admin-directory__toggle { padding: 9px 12px; border: 1px solid rgba(141,197,255,0.5); border-radius: 10px; background: #edf7ff; color: var(--text-title); font: inherit; font-size: 13px; cursor: pointer; }
+.admin-directory__toggle:disabled { opacity: 0.6; cursor: wait; }
+.admin-directory__toggle:focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
+.admin-directory__confirmation { grid-column: 1 / -1; padding: 16px; border: 1px solid rgba(141,197,255,0.5); border-radius: 14px; background: #f5faff; }
+.admin-directory__confirmation p { margin-top: 0; }
+@media (max-width: 520px) { .admin-directory__row { grid-template-columns: 1fr; gap: 10px; } }
+@media (max-width: 640px) { .admin-directory__filters { grid-template-columns: 1fr; } }

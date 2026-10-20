@@ -61,7 +61,7 @@ function App() {
           <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
           <Route path="/default-page" element={<RequirePurchase><DefaultPage /></RequirePurchase>} />
           <Route path="/chat" element={<RequirePurchase><Chat /></RequirePurchase>} />
-          <Route path="receipt" element={<RequirePurchase><Receipt /></RequirePurchase>} />
+          <Route path="receipt" element={<Receipt />} />
           <Route path="/answer-message" element={<Navigate to="/default-page" replace />} />
           <Route path="/answer-message/:threadId" element={<RequirePurchase><AnswerMessage /></RequirePurchase>} />
         </Routes>
