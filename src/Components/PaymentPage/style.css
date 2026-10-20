@@ -191,13 +191,4 @@
   .payment-page__method:not(:disabled):hover, .payment-page__content-boxBottom-button:not(:disabled):hover { transform: none; }
 }
 
-@media (min-width: 900px) {
-  .payment-page__content-box--admin { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); column-gap: 24px; row-gap: 12px; max-width: 860px; }
-  .payment-page__content-box--admin .payment-page__content-boxTop, .payment-page__content-box--admin .payment-page__summary { grid-column: 1 / -1; }
-  .payment-page__content-box--admin .plan-group-choices { grid-column: 2; grid-row: 3 / 6; }
-  .payment-page__content-box--admin .payment-page__content-boxCenter { grid-column: 1; grid-row: 3; }
-  .payment-page__content-box--admin > .divider { grid-column: 1; grid-row: 4; }
-  .payment-page__content-box--admin .payment-page__content-boxBottom, .payment-page__content-box--admin > .payment-page__notice { grid-column: 1; grid-row: 5; }
-  .payment-page__content-box--admin > [role="alert"] { grid-column: 1 / -1; grid-row: 6; }
-  .payment-page__content-box--admin .payment-page__content-boxBottom-button { grid-column: 1 / -1; grid-row: 7; }
-}
+.payment-page__institution { display: flex; flex-direction: column; gap: 8px; color: var(--text-body); font-size: 14px; }

@@ -18,6 +18,7 @@ export default function AnswerMessage() {
   const { inputRef, insertEmoji } = useMessageEditor(responseText, setResponseText);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState('');
+  const [deletingMessageId, setDeletingMessageId] = useState('');
   const bodyRef = useRef(null);
   const stayAtBottom = useRef(true);
   const lastId = data?.messages.at(-1)?.idMesage;
@@ -39,6 +40,18 @@ export default function AnswerMessage() {
       if (err.status === 401) refreshSession();
     } finally { setSending(false); }
   }
+  async function deleteMessage(messageId) {
+    if (deletingMessageId || !window.confirm('¿Eliminar este mensaje? Esta acción no se puede deshacer.')) return;
+    setDeletingMessageId(messageId);
+    setSendError('');
+    try {
+      await apiRequest(`/messages/${threadId}/messages/${messageId}`, { method: 'DELETE' });
+      refresh();
+    } catch (err) {
+      setSendError(err.message);
+      if (err.status === 401 || err.status === 403) refreshSession();
+    } finally { setDeletingMessageId(''); }
+  }
   const other = data?.thread.senderId === user.idUser ? data?.thread.recipientName : data?.thread.senderName;
   return <div className="answer-message">
     <div className="answer-message__content">
@@ -52,8 +65,12 @@ export default function AnswerMessage() {
         <div ref={bodyRef} className="answer-message__content-body" onScroll={event => { const element = event.currentTarget; stayAtBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 60; }} aria-label="Mensajes de la conversación">
           {loading && <p role="status">Cargando conversación…</p>}
           {data?.messages.map(message => <div key={message.idMesage} className={`answer-message__content-message answer-message__content-message--${message.senderId === user.idUser ? 'outgoing' : 'incoming'}`}>
-            <div className="answer-message__message-meta"><strong>{message.senderName}</strong><time dateTime={message.sentAt}>{new Date(message.sentAt).toLocaleString('es-UY', { dateStyle: 'short', timeStyle: 'short' })}</time></div>
             <p>{message.content}</p>
+            <div className="answer-message__message-meta">
+              <strong>{message.senderName}</strong>
+              <time dateTime={message.sentAt}>{new Date(message.sentAt).toLocaleString('es-UY', { dateStyle: 'short', timeStyle: 'short' })}</time>
+              {message.senderId === user.idUser && <button type="button" className="answer-message__delete-message" disabled={!!deletingMessageId} onClick={() => deleteMessage(message.idMesage)}>{deletingMessageId === message.idMesage ? 'Eliminando…' : 'Eliminar'}</button>}
+            </div>
           </div>)}
         </div>
         <form className="answer-message__content-composer" onSubmit={sendResponse}>

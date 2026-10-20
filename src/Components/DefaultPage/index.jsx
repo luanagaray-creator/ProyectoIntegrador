@@ -35,13 +35,20 @@ export default function DefaultPage() {
   return <div className="default-page">
     <div className="default-page__content">
       <ViewNavigation />
-      <div className="default-page__content-menuOptions">
-        <button className="default-page__content-button" onClick={() => { setFeedback(''); setIsComposeOpen(true); }}>+ Redactar</button>
-        {filters.map(([label, icon, value]) => <button type="button" key={value} className={`default-page__content-link${filter === value ? ' default-page__content-link--active' : ''}`} aria-pressed={filter === value} onClick={() => { setFeedback(''); setStarError(''); setSearchParams({ filter: value }); }}>
-          <img src={icon} alt="" className="default-page__content-icon" />
-          <p className="default-page__content-textOptions">{label}</p>
-        </button>)}
-      </div>
+      <nav className="default-page__content-menuOptions" aria-label="Bandeja de mensajes">
+        <button type="button" className="default-page__content-button" onClick={() => { setFeedback(''); setIsComposeOpen(true); }}>
+          <span className="inbox-menu__compose-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z" /></svg>
+          </span>
+          Redactar
+        </button>
+        <div className="inbox-menu__filters">
+          {filters.map(([label, icon, value]) => <button type="button" key={value} className={`default-page__content-link${filter === value ? ' default-page__content-link--active' : ''}`} aria-pressed={filter === value} onClick={() => { setFeedback(''); setStarError(''); setSearchParams({ filter: value }); }}>
+            <span className="inbox-menu__filter-icon"><img src={icon} alt="" className="default-page__content-icon" /></span>
+            <span className="default-page__content-textOptions">{label}</span>
+          </button>)}
+        </div>
+      </nav>
       {isComposeOpen && <ComposeMessage onClose={() => setIsComposeOpen(false)} onSent={() => { setIsComposeOpen(false); setFeedback('Mensaje enviado.'); refresh(); }} />}
       <div className="default-page__content-messages" aria-label="Conversaciones">
         {feedback && <p role="status" className="message-feedback">{feedback}</p>}

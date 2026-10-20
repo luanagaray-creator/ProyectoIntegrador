@@ -88,7 +88,7 @@
 .answer-message__content-message {
   max-width: 70%;
   overflow-wrap: anywhere;
-  padding: 14px 18px;
+  padding: 8px 14px;
   border-radius: 18px;
   margin: 0;
   font-family: "Montserrat", sans-serif;
@@ -120,26 +120,26 @@
   width: 100%;
   padding: 0;
   box-sizing: border-box;
-  min-height: 52px;
+  min-height: 40px;
 }
 
 .answer-message__content-textarea {
   flex: 1;
   border: none;
   background-color: #f5faff;
-  padding: 14px 18px;
+  padding: 10px 16px;
   min-width: 0;
   box-sizing: border-box;
-  border-radius: 26px;
-  line-height: 1.5;
+  border-radius: 20px;
+  line-height: 20px;
   font-family: "Montserrat", sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--text-body);
   resize: none;
   outline: none;
-  height: 52px;
-  min-height: 52px;
-  max-height: 120px;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
 }
 
 .answer-message__content-textarea::placeholder {
@@ -156,13 +156,13 @@
   background: linear-gradient(135deg, #3a3d7a, #201d4c);
   border: none;
   color: #ffffff;
-  width: 52px;
-  height: 52px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   padding: 0;
   box-shadow: 0 4px 12px rgba(32, 29, 76, 0.25);
   cursor: pointer;
-  font-size: 30px;
+  font-size: 24px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -200,9 +200,28 @@
 .answer-message__conversation-heading { text-align: right; min-width: 0; color: var(--text-body); font-family: "Montserrat", sans-serif; }
 .answer-message__conversation-heading h1 { margin: 0 0 4px; font-size: 18px; overflow-wrap: anywhere; }
 .answer-message__conversation-heading span { font-size: 12px; }
-.answer-message__message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 12px; margin-bottom: 8px; font-size: 12px; opacity: 0.85; }
-.answer-message__message-meta time { font-size: 11px; }
+.answer-message__message-meta { display: flex; align-items: center; flex-wrap: wrap; column-gap: 8px; row-gap: 2px; margin-top: 4px; font-size: 10px; line-height: 16px; opacity: 0.85; }
+.answer-message__message-meta time { font-size: 10px; }
 .answer-message__content-message p { white-space: pre-wrap; }
 .answer-message__content-message--outgoing { align-self: flex-end; background: #8cc2ff; color: white; }
 .answer-message__content-send:disabled { opacity: 0.5; cursor: default; }
 .answer-message__feedback { color: var(--text-body); font-size: 14px; font-family: "Montserrat", sans-serif; }
+.answer-message__delete-message {
+  display: block;
+  margin: 0 0 0 auto;
+  padding: 2px 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 10px;
+  line-height: 16px;
+  opacity: 0.75;
+  cursor: pointer;
+}
+.answer-message__delete-message:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+.answer-message__delete-message:disabled { opacity: 0.6; cursor: wait; }
+@media (hover: hover) {
+  .answer-message__delete-message:not(:disabled):hover { opacity: 1; text-decoration: underline; text-underline-offset: 2px; }
+}

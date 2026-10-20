@@ -3,44 +3,36 @@ import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import { useLiveMessages } from '../../auth/useLiveMessages';
 import { apiRequest } from '../../auth/api';
-import GroupChoices from './GroupChoices';
 import './style.css';
-
-function EditSpaces({ purchase, options, onSaved }) {
-  const { updatePlanGroups } = useAuth();
-  const [ids, setIds] = useState(purchase.spaceIds);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState('');
-  async function save(event) {
-    event.preventDefault();
-    if (pending || !ids.length) return;
-    setPending(true); setError('');
-    try { await updatePlanGroups(ids); onSaved('Espacios del plan actualizados.'); }
-    catch (err) { setError(err.message); }
-    finally { setPending(false); }
-  }
-  return <form onSubmit={save}><GroupChoices value={ids} onChange={setIds} options={options} disabled={pending} />
-    {error && <p role="alert">{error}</p>}<button className="admin-plan__primary" disabled={pending || !ids.length}>{pending ? 'Guardando…' : 'Guardar espacios'}</button>
-  </form>;
-}
+import packageJson from '../../../package.json';
+import SpaceSettings from './SpaceSettings';
 
 export default function AdminPlan() {
-  const { user, authLoading, refreshSession } = useAuth();
+  const { user, authLoading, refreshSession, cancelPlan } = useAuth();
+  const [confirmCancellation, setConfirmCancellation] = useState(false);
   const [selectedId, setSelectedId] = useState('');
+  const [institutionId, setInstitutionId] = useState('');
+  const [spaceName, setSpaceName] = useState('');
   const [target, setTarget] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [feedback, setFeedback] = useState('');
-  const managed = user?.managedSpaces || [];
+  const allManaged = user?.managedSpaces || [];
+  const institutions = user?.managedInstitutions || [...new Map(allManaged.map(space => [space.institutionId, { id: space.institutionId, name: space.institutionName, plan: user?.purchase?.plan, amount: user?.purchase?.amount, spaceCount: allManaged.filter(item => item.institutionId === space.institutionId).length }])).values()];
+  const institution = institutions.find(item => item.id === institutionId) || institutions[0];
+  const managed = allManaged.filter(space => space.institutionId === institution?.id);
+  const spaceLimit = packageJson.planLimits[institution?.plan] || 0;
+  const spaceCount = institution?.spaceCount || 0;
+  const canCreate = !!spaceLimit && spaceCount < spaceLimit;
   const selectedSpace = managed.find(space => space.id === selectedId);
   const selected = selectedSpace?.id;
   const { data, error: loadError, refresh } = useLiveMessages(user?.canPurchase && selected ? `/admin/spaces/${selected}/members` : null);
-  const options = managed.map(space => ({ id: space.id, label: `${space.institutionName} · ${space.name}` }));
+  const options = managed.map(space => ({ id: space.id, institutionId: space.institutionId, label: `${space.institutionName} · ${space.name}` }));
   async function run(task, message) {
     if (pending) return;
     setPending(true); setError(''); setFeedback('');
-    try { await task(); setFeedback(message); setTarget(''); refresh(); }
-    catch (err) { setError(err.message); if (err.status === 403) refreshSession(); }
+    try { await task(); await refreshSession(); setFeedback(message); setTarget(''); refresh(); return true; }
+    catch (err) { setError(err.message); if (err.status === 403) refreshSession(); return false; }
     finally { setPending(false); }
   }
   if (authLoading) return <p role="status">Cargando sesión…</p>;
@@ -48,24 +40,51 @@ export default function AdminPlan() {
   if (user.typeUser === 'superadmin') return <Navigate to="/platform" replace />;
   if (!user.canPurchase) return <Navigate to="/spaces" replace />;
   return <div className="admin-plan institution-platform"><h1>Administración de mi institución</h1>
+    {institutions.length > 1 && <label className="admin-plan__institution">Institución<select value={institution?.id || ''} disabled={pending} onChange={event => { setInstitutionId(event.target.value); setSelectedId(''); setSpaceName(''); setConfirmCancellation(false); setError(''); }}>{institutions.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>}
     {feedback && <p role="status">{feedback}</p>}{(error || loadError) && <p role="alert">{error || loadError}</p>}
     <div className="institution-platform__grid">
-      <section className="admin-plan__card"><h2>Mi plan</h2>
-        {user.purchase ? <><p><strong>{user.purchase.plan}</strong> · Importe simulado: {user.purchase.amount}</p>
-          <EditSpaces key={user.purchase.spaceIds.join('|')} purchase={user.purchase} options={options} onSaved={setFeedback} />
-          <Link to="/available-packages">Cambiar de plan</Link></> : <><p>Podés contratar un plan para los espacios que Thotem te autorizó a administrar.</p><Link to="/available-packages">Elegir un plan</Link></>}
+      <section className="admin-plan__card"><h2>{institution?.plan ? 'Plan Actual' : 'Mi plan'}</h2>
+        {institution?.plan ? <><p><strong>{institution.plan}</strong> · Importe simulado: {institution.amount}</p>
+          <p>Hasta {spaceLimit} espacios personalizados · 30 usuarios por espacio.</p>
+          <p>{spaceCount} de {spaceLimit} espacios creados.</p>
+          {spaceCount > spaceLimit && <p role="alert">Tu institución supera el cupo actual. Eliminá los espacios que no necesites o elegí un plan mayor.</p>}
+          <Link to="/available-packages" state={{ institutionId: institution.id }}>Cambiar de plan</Link>
+          {confirmCancellation ? <div className="admin-plan__cancellation">
+            <p>Al cancelar, los espacios de este plan perderán su cobertura. Sus nombres, usuarios y mensajes se conservarán.</p>
+            <button className="admin-plan__danger" disabled={pending} onClick={() => run(async () => { await cancelPlan(institution.id); setConfirmCancellation(false); }, 'Plan cancelado.')}>Confirmar cancelación</button>
+            <button className="admin-plan__primary" disabled={pending} onClick={() => setConfirmCancellation(false)}>Conservar plan</button>
+          </div> : <button className="admin-plan__danger" disabled={pending} onClick={() => setConfirmCancellation(true)}>Cancelar plan</button>}
+          </> : <><p>Contratá un plan para empezar a crear los espacios de tu institución.</p><Link to="/available-packages" state={{ institutionId: institution?.id }}>Elegir un plan</Link></>}
       </section>
-      <section className="admin-plan__card"><h2>Asignar espacio a un usuario</h2>
-        <p>Elegí el curso y escribí el usuario al que querés asignárselo. Ese será su único chat grupal. Para cambiarlo de curso, retirá primero su acceso anterior.</p>
-        <label htmlFor="managedSpace">Espacio que le vas a asignar</label><select id="managedSpace" value={selected || ''} onChange={event => { setSelectedId(event.target.value); setTarget(''); setError(''); setFeedback(''); }} disabled={pending}><option value="" disabled>Elegí un espacio, por ejemplo 1ro TIC</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select>
+      <section className="admin-plan__card"><h2>Crear espacio</h2>
+        <p>Escribí el nombre de tu nueva clase. Cada espacio tendrá lugar para 30 usuarios.</p>
+        {spaceLimit ? <p role="status">{spaceCount} de {spaceLimit} espacios creados · {Math.max(0, spaceLimit - spaceCount)} disponibles.</p> : <p>Primero contratá un plan para crear tus espacios.</p>}
+        <form onSubmit={event => { event.preventDefault(); if (!canCreate || pending) return; run(async () => { const result = await apiRequest('/admin/spaces', { method: 'POST', body: JSON.stringify({ institutionId: institution.id, name: spaceName }) }); setSpaceName(''); setSelectedId(result.id); }, 'Espacio creado. Ya podés agregar usuarios.'); }}>
+          <label htmlFor="newSpaceName">Nombre del nuevo espacio</label><input id="newSpaceName" value={spaceName} onChange={event => setSpaceName(event.target.value)} placeholder="Ej.: Desarrollo web" required maxLength={30} disabled={pending || !canCreate} />
+          <button className="admin-plan__primary" disabled={pending || !canCreate || !spaceName.trim()}>{pending ? 'Guardando…' : spaceLimit && !canCreate ? 'Límite de espacios alcanzado' : 'Crear espacio'}</button>
+        </form>
+      </section>
+      <section className="admin-plan__card"><h2>Agregar usuarios a un espacio</h2>
+        <p>Elegí uno de los espacios que creaste y agregá una cuenta registrada. Cada usuario puede tener un solo chat grupal.</p>
+        {!managed.length && <p>Cuando crees tu primer espacio, podrás agregarle usuarios acá.</p>}
+        <label htmlFor="managedSpace">Espacio creado</label><select id="managedSpace" value={selected || ''} onChange={event => { setSelectedId(event.target.value); setTarget(''); setError(''); setFeedback(''); }} disabled={pending || !managed.length}><option value="" disabled>Elegí uno de tus espacios</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select>
+        {data && <p role="status">{data.members.length} / {data.capacity} usuarios · {data.available} lugares disponibles.</p>}
         <form onSubmit={event => { event.preventDefault(); if (!selected) return; run(() => apiRequest(`/admin/spaces/${selected}/members`, { method: 'POST', body: JSON.stringify({ user: target }) }), `Espacio ${selectedSpace.name} asignado a ${target.trim()}.`); }}>
           <label htmlFor="memberUser">Usuario o email registrado</label><input id="memberUser" value={target} onChange={event => setTarget(event.target.value)} placeholder="Ej.: Juanito" required maxLength={30} disabled={pending} />
-          <button className="admin-plan__primary" disabled={pending || !selected || !target.trim()}>{pending ? 'Guardando…' : 'Asignar espacio'}</button>
+          <button className="admin-plan__primary" disabled={pending || !selected || !target.trim() || !data || data.available <= 0}>{pending ? 'Guardando…' : data?.available === 0 ? 'Espacio completo' : 'Asignar espacio'}</button>
         </form>
         {selectedSpace && <h3>Usuarios de {selectedSpace.name}</h3>}
         {data?.members.length === 0 && <p>Todavía no hay usuarios habilitados en este espacio.</p>}
         {data?.members.map(member => <div className="admin-member-row" key={member.idUser}><span><strong>{member.name}</strong><small>{member.email}</small><small>Chat asignado: {selectedSpace.name}</small></span><button disabled={pending} onClick={() => run(() => apiRequest(`/admin/spaces/${selected}/members/${member.idUser}`, { method: 'DELETE' }), 'Acceso del usuario retirado.')}>Retirar acceso</button></div>)}
       </section>
     </div>
+    <section className="admin-plan__card admin-plan__spaces"><h2>Mis espacios</h2>
+      <p>Estos son los espacios de tu institución. Podés cambiarles el nombre o eliminar los que ya no necesites.</p>
+      {!managed.length && <p>Todavía no creaste espacios.</p>}
+      {managed.map(space => <div className="admin-space-row" key={space.id}>
+        <p>{space.institutionName}</p><h3>{space.name}</h3>
+        <SpaceSettings key={`${space.id}-${space.name}`} space={space} pending={pending} onAction={run} />
+      </div>)}
+    </section>
   </div>;
 }

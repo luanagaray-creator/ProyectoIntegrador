@@ -1,4 +1,4 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import packageJson from "../../../package.json";
 
@@ -7,8 +7,12 @@ import { useAuth } from "../../auth/AuthContext";
 
 const AvailablePackages = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useAuth();
   const canBuy = !user || user.canPurchase;
+  const institutionId = location.state?.institutionId || user?.purchase?.institutionId || user?.managedInstitutions?.[0]?.id;
+  const institution = user?.managedInstitutions?.find(item => item.id === institutionId);
+  const currentPlan = institution ? institution.plan : user?.purchase?.plan;
 
   const planName = packageJson.planName;
   if (user && !user.canPurchase) return <Navigate to={user.typeUser === 'superadmin' ? '/platform' : '/spaces'} replace />;
@@ -17,7 +21,7 @@ const AvailablePackages = () => {
     <div className="available-packages">
       <div className="available-packages__heading">
         <h1>Elegí tu paquete</h1>
-        <p>Planes para administradores: incluí tus espacios autorizados y habilitá a sus usuarios.</p>
+        <p>Contratá un plan para tu institución y creá tus espacios con el nombre que quieras.</p>
       </div>
       <div className="available-packages__content">
 
@@ -28,19 +32,19 @@ const AvailablePackages = () => {
           <span className="available-packages__price">{packageJson.planPrices.smallPlan}</span>
 
           <p className="available-packages__content-boxText">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Hasta 3 espacios personalizables para tu institución, con 30 usuarios por espacio.
           </p>
 
           <button
-            disabled={!canBuy}
+            disabled={!canBuy || currentPlan === planName.smallPlan}
             className="available-packages__content-boxButton"
             onClick={() =>
               navigate("/payment-page", {
-                state: { plan: planName.smallPlan }
+                state: { plan: planName.smallPlan, institutionId }
               })
             }
           >
-            ¡Lo Quiero!
+            {currentPlan === planName.smallPlan ? 'Plan Actual' : 'Elegir plan'}
           </button>
         </div>
 
@@ -51,19 +55,19 @@ const AvailablePackages = () => {
           <span className="available-packages__price">{packageJson.planPrices.mediumPlan}</span>
 
           <p className="available-packages__content-boxText">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Hasta 4 espacios personalizables para tu institución, con 30 usuarios por espacio.
           </p>
 
           <button
-            disabled={!canBuy}
+            disabled={!canBuy || currentPlan === planName.mediumPlan}
             className="available-packages__content-boxButton"
             onClick={() =>
               navigate("/payment-page", {
-                state: { plan: planName.mediumPlan }
+                state: { plan: planName.mediumPlan, institutionId }
               })
             }
           >
-            ¡Lo Quiero!
+            {currentPlan === planName.mediumPlan ? 'Plan Actual' : 'Elegir plan'}
           </button>
         </div>
 
@@ -74,19 +78,19 @@ const AvailablePackages = () => {
           <span className="available-packages__price">{packageJson.planPrices.largePlan}</span>
 
           <p className="available-packages__content-boxText">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Hasta 6 espacios personalizables para tu institución, con 30 usuarios por espacio.
           </p>
 
           <button
-            disabled={!canBuy}
+            disabled={!canBuy || currentPlan === planName.largePlan}
             className="available-packages__content-boxButton"
             onClick={() =>
               navigate("/payment-page", {
-                state: { plan: planName.largePlan }
+                state: { plan: planName.largePlan, institutionId }
               })
             }
           >
-            ¡Lo Quiero!
+            {currentPlan === planName.largePlan ? 'Plan Actual' : 'Elegir plan'}
           </button>
         </div>
 

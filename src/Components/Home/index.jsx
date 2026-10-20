@@ -12,9 +12,9 @@ const Home = () => {
       <div className="home__content">
         {(!user || user.canPurchase) && <button
           className="home__content-button"
-          onClick={() => navigate("/available-packages")}
+          onClick={() => navigate(user?.purchase ? '/admin-plan' : '/available-packages')}
         >
-          ¡Paquetes Disponibles!
+          {user?.purchase ? 'Plan Actual' : '¡Paquetes Disponibles!'}
         </button>}
         {!authLoading && !sessionError && user?.hasAccess && <button
           className="home__content-button"
