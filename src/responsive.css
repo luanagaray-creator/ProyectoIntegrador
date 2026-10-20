@@ -1,0 +1,156 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { min-width: 320px; }
+.app { min-height: 100dvh; }
+.app__main, .app__main > *, .admin-plan__card, .message-preview { min-width: 0; }
+.app--no-scroll { height: var(--messages-viewport-height, 100dvh); min-height: var(--messages-viewport-height, 100dvh); max-height: var(--messages-viewport-height, 100dvh); }
+.admin-plan :is(h1, h2, h3, p), .recovery-card, .payment-page__notice { overflow-wrap: anywhere; }
+.answer-message { min-height: 0; overflow: hidden; }
+.answer-message__content-box { min-height: 0; overflow: hidden; }
+.answer-message__content-header, .answer-message__content-composer, .answer-message__content-box > .divider { flex-shrink: 0; }
+.answer-message__content-body { min-height: 0; overscroll-behavior-y: contain; }
+.answer-message__content-message { flex-shrink: 0; }
+.footer__content, .footer__content-social { min-width: 0; flex-wrap: wrap; }
+.login__content-form, .register__content-form { width: min(460px, calc(100% - 120px)); height: auto; margin-bottom: 32px; }
+.login__content { padding-bottom: 24px; }
+.about { padding: 112px 24px 40px; }
+.about__content { width: min(1200px, 100%); margin: 0; gap: 24px; }
+.about__content-box { flex: 1; min-width: 0; }
+
+@media (min-width: 801px) and (max-width: 1150px) {
+  .header__sections { gap: 18px; padding: 24px; }
+  .header-sections-text { font-size: 16px; }
+  .header__sections .profile__content-title { max-width: 120px; }
+  .thotem-button { padding-left: 24px; }
+  .thotem-img { height: 54px; }
+  .default-page__content { gap: 20px; padding-right: 24px; }
+  .default-page .view-navigation, .chat .view-navigation { top: auto; bottom: 90px; right: 24px; }
+  .chat__content { padding-right: 24px; }
+  .default-page__content, .chat__content { padding-bottom: 100px; }
+}
+
+@media (max-width: 800px) {
+  .header--solid { height: 72px; z-index: 120; background: rgba(245, 250, 255, 0.96); }
+  .header__navigation { z-index: 120; top: 12px; right: 16px; left: auto; width: auto; display: block; }
+  .header__menu-toggle { display: grid; place-items: center; width: 44px; height: 44px; margin-left: auto; padding: 10px; border: 1px solid rgba(141,197,255,0.5); border-radius: 14px; color: var(--text-title); background: #f5faff; cursor: pointer; }
+  .header__menu-toggle svg { width: 24px; height: 24px; }
+  .header__menu-toggle:focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
+  .header__sections { display: none; position: absolute; top: 52px; right: 0; width: min(300px, calc(100vw - 32px)); max-height: calc(100dvh - 88px); overflow-y: auto; padding: 16px; gap: 8px; flex-direction: column; align-items: stretch; border-radius: 20px; border: 1px solid #d6eaff; background: #fff; box-shadow: 0 12px 32px rgba(72,70,143,0.16); text-shadow: none; }
+  .header__sections--open { display: flex; }
+  .header__sections .header-sections-text { display: flex; align-items: center; min-height: 44px; padding: 10px 12px; font-size: 16px; text-align: left; text-shadow: none; border-radius: 10px; }
+  .header__sections .profile { order: -1; margin-bottom: 8px; }
+  .header__sections .profile__content-title { max-width: 190px; }
+  .header__session-error { position: static; margin: 0; width: 100%; }
+  .thotem-button { padding: 0 16px; }
+  .banner-container { overflow: visible; z-index: 130; }
+  .banner-container .header__navigation { position: absolute; }
+  .home__content { margin: 0; padding: 24px 16px 0; gap: 12px; flex-wrap: wrap; }
+  .home__content-button { margin-top: 0; padding: 14px 20px; font-size: 16px; min-height: 48px; }
+  .home__access-notice { margin-top: 0; width: 100%; }
+  .home-about__title { font-size: 28px; margin: 48px 16px 24px; }
+  .home-about__card-trigger { padding: 20px; min-height: 72px; }
+  .home-about__card-title { font-size: 20px; }
+  .home-about__card-body { padding: 20px; }
+  .home-about__content { margin-bottom: 32px; }
+  .login__content, .register__content { padding: 88px 16px 24px; justify-content: center; }
+  .login__content-form, .register__content-form { width: min(100%, 460px); margin: 0; padding: 24px; border-radius: 24px; }
+  .login__content-form-header { padding-bottom: 16px; gap: 12px; flex-wrap: wrap; }
+  .login__content-form-title, .register__content-form-title { font-size: 26px; }
+  .login__content-form-input, .login__content-form .password-input { margin-bottom: 16px; }
+  .login__content-form .password-input__field { margin-bottom: 0; }
+  .about { padding: 88px 16px 24px; }
+  .about__content { flex-direction: column; gap: 16px; }
+  .about__content-box { padding: 24px; border-radius: 24px; }
+  .about__content-box-title { font-size: 24px; }
+  .available-packages, .admin-plan, .recovery-page { padding: 88px 16px 24px; }
+  .payment-page__content, .receipt__content { padding: 88px 16px 24px; }
+  .admin-plan__card { padding: 20px; border-radius: 22px; }
+  .admin-plan__institution, .admin-plan__card :is(input, select), .chat__space-select { min-width: 0; max-width: 100%; }
+  .institution-platform__grid { gap: 16px; }
+  .admin-member-row { flex-wrap: wrap; }
+  .admin-member-row > :first-child { min-width: 0; flex: 1 1 160px; }
+  .admin-directory__heading { flex-wrap: wrap; }
+  .admin-directory-drawer { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .footer { padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .footer__content { justify-content: center; gap: 16px; }
+  .footer__content-social { justify-content: center; gap: 8px; }
+  .footer-social { padding: 0; gap: 6px; }
+  .footer-social-icon { width: 40px; height: 40px; }
+  .footer-text { font-size: 12px; }
+  .footer-thotem-img { max-width: 160px; height: auto; }
+  .app--no-scroll > .footer { flex: 0 0 auto; padding: 6px 16px calc(6px + env(safe-area-inset-bottom, 0px)); }
+  .app--no-scroll .footer__content { justify-content: flex-end; }
+  .app--no-scroll .footer__content-social { gap: 6px; }
+  .app--no-scroll .footer-text { display: none; }
+  .app--no-scroll .footer-social-icon { width: 32px; height: 32px; }
+  .app--no-scroll .footer-social-img { width: 23px; height: 23px; }
+  .view-navigation { top: auto; bottom: calc(4px + env(safe-area-inset-bottom, 0px)); left: 12px; right: auto; transform: none; gap: 4px; padding: 4px 8px; border-radius: 24px; }
+  .view-navigation__link { width: 40px; height: 36px; }
+  .view-navigation__icon { width: 28px; height: 28px; }
+  .default-page__content, .chat__content, .answer-message__content { padding: 80px 12px 8px; gap: 10px; }
+  .default-page__content { flex-direction: column; }
+  .default-page__content-menuOptions { width: 100%; padding: 10px; gap: 8px; border-radius: 20px; }
+  .default-page__content-button { min-height: 40px; padding: 8px 44px; font-size: 15px; }
+  .inbox-menu__filters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding-top: 8px; }
+  .default-page__content-link { flex-direction: column; justify-content: center; gap: 4px; min-height: 54px; padding: 4px 0; border-radius: 12px; }
+  .inbox-menu__filter-icon { width: 24px; height: 24px; border-radius: 8px; }
+  .inbox-menu__filter-icon .default-page__content-icon { width: 18px; height: 18px; }
+  .default-page__content-textOptions { font-size: 11px; }
+  .default-page__content-link--active::before, .default-page__content-link--active::after { display: none; }
+  .default-page__content-messages { min-height: 0; padding: 10px; border-radius: 20px; }
+  .default-page__content-messages-box { padding: 12px 10px; gap: 8px; }
+  .default-page__contet-messagesboxContent { gap: 8px; }
+  .message-row__link > .default-page__content-icon { width: 18px; height: 18px; }
+  .message-star { width: 32px; min-height: 40px; }
+  .message-preview__heading { flex-direction: column; gap: 4px; }
+  .chat__content-box, .answer-message__content-box { padding: 12px; gap: 10px; border-radius: 22px; max-height: none; }
+  .chat__content-boxHeader > :first-child { min-width: 0; flex: 1; }
+  .chat__content-boxHeader .profile__content { display: none; }
+  .chat__content-boxHeader .profile__icon { width: 32px; height: 32px; }
+  .chat__content-boxTitle { font-size: 20px; overflow-wrap: anywhere; }
+  .chat__space-select { width: 100%; font-size: 16px; padding: 8px; }
+  .chat__institution { overflow-wrap: anywhere; }
+  .chat__content-boxBody, .answer-message__content-body { padding: 10px; border-radius: 16px; }
+  .chat__content-boxMessage, .answer-message__content-message { max-width: 92%; padding: 8px 12px; }
+  .answer-message__content-header { gap: 8px; }
+  .answer-message__conversation-heading h1 { font-size: 16px; }
+  .answer-message__conversation-heading span { display: block; overflow-wrap: anywhere; }
+  .chat__content-boxComposer, .answer-message__content-composer { gap: 8px; }
+  .chat__content-boxTextarea, .answer-message__content-textarea { padding-left: 12px; padding-right: 12px; }
+  .compose-dialog { width: calc(100vw - 24px); max-width: 760px; max-height: calc(100dvh - 24px); padding: 0; }
+  .compose-dialog .compose-modal { padding: 20px; gap: 16px; }
+  .compose-modal__heading { gap: 12px; flex-wrap: wrap; }
+  .compose-modal__heading h2 { font-size: 20px; }
+  .compose-dialog .compose-modal-overlay__button { width: auto; min-width: 76px; min-height: 40px; padding: 8px 14px; }
+  .compose-dialog .compose-modal__top { flex-direction: column; }
+  .compose-dialog :is(input, select, textarea) { min-width: 0; max-width: 100%; }
+  .receipt__row { flex-wrap: wrap; }
+  .receipt__row dd { flex: 1; }
+  .receipt__row--spaces dd { flex-basis: 100%; }
+  .app input:not([type="checkbox"]):not([type="radio"]), .app select, .app textarea, .compose-dialog :is(input, select, textarea), .admin-directory-drawer .admin-plan__card :is(input, select) { font-size: 16px; }
+  .app input:not([type="checkbox"]):not([type="radio"]), .app select, .admin-directory-drawer :is(input, select) { min-height: 44px; }
+  .password-input__toggle { width: 40px; height: 40px; right: 2px; }
+  .emoji-picker__grid button { height: 40px; }
+}
+
+@media (max-width: 380px) {
+  .footer__content-social { gap: 8px 16px; }
+  .footer-social { flex-direction: column; }
+  .app--no-scroll .footer-social { flex-direction: row; }
+  .app--no-scroll .footer__content-social { gap: 8px; }
+  .institution-platform__directory-trigger { width: 100%; gap: 8px; font-size: 13px; }
+  .institution-platform__directory-trigger > span { margin-left: auto; }
+  .admin-plan__delete-actions { align-items: stretch; flex-direction: column; }
+  .payment-page__content-box, .receipt__box, .recovery-card { padding: 20px; }
+}
+
+@media (max-width: 800px) and (max-height: 500px) {
+  .header--solid { height: 56px; }
+  .header__navigation { top: 6px; }
+  .thotem-img { height: 36px; }
+  .default-page__content, .chat__content, .answer-message__content { padding-top: 60px; }
+  .default-page__content-menuOptions { flex-direction: row; align-items: center; gap: 8px; padding: 6px; }
+  .default-page__content-button { width: 130px; flex-shrink: 0; }
+  .inbox-menu__filters { flex: 1; padding-top: 0; border-top: 0; }
+  .default-page__content-link { min-height: 44px; }
+}

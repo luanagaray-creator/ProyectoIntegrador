@@ -20,7 +20,29 @@ const Header = ({ home, onContactClick }) => {
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
   const [bannerIndex, setBannerIndex] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const menuButtonRef = useRef(null);
   const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOutside = (event) => {
+      if (!menuRef.current?.contains(event.target)) setMenuOpen(false);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     if (!home) return;
@@ -40,6 +62,7 @@ const Header = ({ home, onContactClick }) => {
 
   const handleContactNavigation = (event) => {
     event.preventDefault();
+    setMenuOpen(false);
 
     if (onContactClick) {
       onContactClick();
@@ -53,6 +76,7 @@ const Header = ({ home, onContactClick }) => {
   };
 
   const handleLogout = async () => {
+    setMenuOpen(false);
     setLoggingOut(true);
     setLogoutError("");
     try {
@@ -97,8 +121,13 @@ const Header = ({ home, onContactClick }) => {
         />
       </button>
     )}
-    <nav className="header">
-      <div className="header__sections">
+    <nav className="header__navigation" aria-label="Navegación principal" ref={menuRef}>
+      <button ref={menuButtonRef} type="button" className="header__menu-toggle" aria-expanded={menuOpen} aria-controls="header-menu" aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setMenuOpen(!menuOpen)}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+          {menuOpen ? <path d="m6 6 12 12M6 18 18 6" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+        </svg>
+      </button>
+      <div id="header-menu" className={`header__sections${menuOpen ? ' header__sections--open' : ''}`} onClick={(event) => { if (event.target.closest('a')) setMenuOpen(false); }}>
         {authLoading ? (
           <span className="header-sections-text" role="status">Cargando sesión…</span>
         ) : user ? (

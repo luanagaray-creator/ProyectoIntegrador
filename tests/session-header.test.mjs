@@ -55,6 +55,15 @@ test('header sin sesión muestra registro y login', () => {
   assert.doesNotMatch(html, /Cerrar sesión/);
 });
 
+test('el menú móvil identifica su panel y comienza cerrado sin ocultar enlaces del escritorio', () => {
+  const html = render({});
+  assert.match(html, /aria-label="Navegación principal"/);
+  assert.match(html, /class="header__menu-toggle" aria-expanded="false" aria-controls="header-menu" aria-label="Abrir menú"/);
+  assert.match(html, /id="header-menu" class="header__sections"/);
+  assert.doesNotMatch(html, /header__sections--open/);
+  assert.match(html, /href="\/home#footer"/);
+});
+
 test('header con sesión sustituye registro/login por logout y el componente Profile', () => {
   const html = render({ user: { name: 'Ana', typeUser: 'admin' } });
   assert.match(html, /Cerrar sesión/);
