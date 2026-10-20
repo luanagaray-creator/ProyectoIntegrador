@@ -21,6 +21,8 @@ import RequirePurchase from './auth/RequirePurchase';
 import AdminPlan from './Components/AdminPlan';
 import Spaces from './Components/Spaces';
 import InstitutionPlatform from './Components/InstitutionPlatform';
+import UserProfile from './Components/UserProfile';
+import CurrentPlan from './Components/CurrentPlan';
 
 function App() {
   const { pathname } = useLocation();
@@ -69,17 +71,19 @@ function App() {
           <Route path="/available-packages" element={<AvailablePackages />} />
           <Route path="/payment-page" element={<PaymentPage />} />
           <Route path="/admin-plan" element={<AdminPlan />} />
+          <Route path="/current-plan" element={<CurrentPlan />} />
           <Route path="/select-group" element={<Navigate to="/spaces" replace />} />
           <Route path="/spaces" element={<Spaces />} />
           <Route path="/platform" element={<InstitutionPlatform />} />
+          <Route path="/profile" element={<UserProfile />} />
           <Route path="/restore-password" element={<RestorePassword />} />
           <Route path="/restore-password-code" element={<RestorePasswordCode />} />
           <Route path="/restore-password-confirm" element={<RestorePasswordConfirm />} />
-          <Route path="/default-page" element={<RequirePurchase><DefaultPage /></RequirePurchase>} />
+          <Route path="/default-page" element={<RequirePurchase allowAdminInbox><DefaultPage /></RequirePurchase>} />
           <Route path="/chat" element={<RequirePurchase><Chat /></RequirePurchase>} />
           <Route path="receipt" element={<Receipt />} />
           <Route path="/answer-message" element={<Navigate to="/default-page" replace />} />
-          <Route path="/answer-message/:threadId" element={<RequirePurchase><AnswerMessage /></RequirePurchase>} />
+          <Route path="/answer-message/:threadId" element={<RequirePurchase allowAdminInbox><AnswerMessage /></RequirePurchase>} />
         </Routes>
       </main>
       <Footer ref={footerRef} isActive={socialPulse} home={isHome} />

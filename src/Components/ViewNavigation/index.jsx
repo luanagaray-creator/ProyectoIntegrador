@@ -10,10 +10,10 @@ const ViewNavigation = () => {
   const chatPath = activeSpaces.length === 1 ? `/chat?spaceId=${activeSpaces[0].id}` : '/chat';
   return (
   <nav className="view-navigation" aria-label="Vistas de mensajes">
-    <NavLink to={chatPath} className="view-navigation__link" aria-label="Chat" title="Chat">
+    {user?.typeUser !== 'superadmin' && <NavLink to={chatPath} className="view-navigation__link" aria-label="Chat" title="Chat">
       <span className="view-navigation__icon" style={{ "--view-icon": `url("${chat}")` }} aria-hidden="true" />
-    </NavLink>
-    <NavLink to="/default-page" className="view-navigation__link" aria-label="Bandeja de mensajes" title="Bandeja de mensajes">
+    </NavLink>}
+    <NavLink to="/default-page" className="view-navigation__link" aria-label={user?.typeUser === 'superadmin' ? 'Mensajes a administradores' : 'Bandeja de mensajes'} title={user?.typeUser === 'superadmin' ? 'Mensajes a administradores' : 'Bandeja de mensajes'}>
       <span className="view-navigation__icon" style={{ "--view-icon": `url("${folder}")` }} aria-hidden="true" />
     </NavLink>
   </nav>

@@ -46,7 +46,7 @@
   box-sizing: border-box;
   min-height: 0;
   height: 100%;
-  max-height: 560px;
+  max-height: none;
   overflow: hidden;
   border: 1px solid rgba(141, 197, 255, 0.35);
 }

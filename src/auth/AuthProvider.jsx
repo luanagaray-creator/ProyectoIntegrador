@@ -56,6 +56,7 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     const revision = version;
+    try { localStorage.removeItem('anima-demo-session'); } catch { /* El backend sigue siendo la fuente de sesión. */ }
     const initialRefresh = window.setTimeout(refreshSession, 0);
     const sync = event => { if (event.key === SESSION_EVENT) refreshSession(); };
     window.addEventListener('storage', sync);

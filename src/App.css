@@ -25,6 +25,11 @@
   flex-direction: column;
   min-height: 0;
   width: 100%;
+  position: relative;
+}
+
+.app__main:has(> .admin-plan) {
+  background: linear-gradient(to bottom, #ffffff, #bbe4ff);
 }
 
 .app__main--no-scroll {
