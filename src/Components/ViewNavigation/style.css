@@ -1,6 +1,6 @@
 :root {
-  --messages-edge-space: clamp(24px, 6vw, 112px);
-  --messages-navigation-space: 186px;
+  --messages-edge-space: clamp(24px, 5vw, 88px);
+  --messages-navigation-space: 180px;
 }
 
 .view-navigation {

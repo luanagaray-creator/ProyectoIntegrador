@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import Profile from '../Profile';
 import ViewNavigation from '../ViewNavigation';
 import { useAuth } from '../../auth/AuthContext';
@@ -62,6 +62,7 @@ function Conversation({ space, options, changeSpace }) {
 export default function Chat() {
   const { user } = useAuth();
   const [params, setParams] = useSearchParams();
+  if (user?.typeUser === 'superadmin') return <Navigate to="/default-page" replace />;
   const options = (user?.spaces || []).filter(space => space.isActive);
   const space = options.find(option => option.id === params.get('spaceId')) || options[0];
   return <div className="chat"><div className="chat__content"><ViewNavigation />{space ? <Conversation key={space.id} space={space} options={options} changeSpace={id => setParams({ spaceId: id })} /> : <p className="chat__feedback">No tenés espacios habilitados. <Link to="/spaces">Ver mis espacios</Link></p>}</div></div>;

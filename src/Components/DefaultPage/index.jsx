@@ -12,7 +12,12 @@ import { apiRequest } from '../../auth/api';
 import './style.css';
 
 const filters = [['Destacados', star, 'starred'], ['Enviados', cloudUp, 'sent'], ['Recibidos', cloudDown, 'received'], ['General', clock, 'all']];
-const emptyMessages = { all: 'Todavía no tenés mensajes. Usá «Redactar» para iniciar una conversación.', sent: 'Todavía no enviaste mensajes.', received: 'Todavía no recibiste mensajes.', starred: 'No tenés conversaciones destacadas. Marcá una con la estrella para verla acá.' };
+const emptyMessages = {
+  all: { emoji: '💬', title: '¡Empezá una conversación!', description: 'Aquí aparecerán todos tus mensajes. ¿Te animás a iniciar la primera?' },
+  sent: { emoji: '📤', title: 'Todavía no enviaste mensajes', description: 'Cuando envíes tu primer mensaje, vas a encontrarlo acá.' },
+  received: { emoji: '📬', title: 'Todavía no recibiste mensajes', description: 'Cuando alguien te escriba, la conversación aparecerá acá.' },
+  starred: { emoji: '⭐', title: 'Guardá acá lo importante', description: 'Marcá con la estrella las conversaciones que quieras encontrar rápidamente.' },
+};
 
 export default function DefaultPage() {
   const [isComposeOpen, setIsComposeOpen] = useState(false);
@@ -21,6 +26,7 @@ export default function DefaultPage() {
   const [starError, setStarError] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = filters.some(item => item[2] === searchParams.get('filter')) ? searchParams.get('filter') : 'all';
+  const emptyState = emptyMessages[filter];
   const { user, refreshSession } = useAuth();
   const { data, loading, error, refresh } = useLiveMessages(`/messages?filter=${filter}`);
   async function markStar(thread) {
@@ -55,7 +61,11 @@ export default function DefaultPage() {
         {starError && <p role="alert" className="message-feedback">{starError}</p>}
         {loading && <p role="status" className="message-feedback">Cargando mensajes…</p>}
         {error && <div className="message-feedback" role="alert">{error} <button type="button" onClick={refresh}>Reintentar</button></div>}
-        {data?.threads.length === 0 && <p className="message-feedback">{emptyMessages[filter]}</p>}
+        {data?.threads.length === 0 && <section className="inbox-empty-state" aria-live="polite">
+          <span className="inbox-empty-state__emoji" aria-hidden="true">{emptyState.emoji}</span>
+          <h2>{emptyState.title}</h2>
+          <p>{emptyState.description}</p>
+        </section>}
         {data?.threads.map(thread => {
           const outgoing = thread.latestSenderId === user.idUser;
           const other = thread.senderId === user.idUser ? thread.recipientName : thread.senderName;
@@ -68,7 +78,7 @@ export default function DefaultPage() {
               <img src={outgoing ? cloudUp : cloudDown} alt={outgoing ? 'Enviado' : 'Recibido'} className="default-page__content-icon" />
               <div className="message-preview">
                 <div className="message-preview__heading"><strong>{thread.subject}</strong><time dateTime={thread.sentAt}>{new Date(thread.sentAt).toLocaleString('es-UY', { dateStyle: 'short', timeStyle: 'short' })}</time></div>
-                <span className="message-preview__participant">{space?.institutionName} · Con: {other}</span>
+            <span className="message-preview__participant">{thread.institutionName || space?.institutionName} · Con: {other}</span>
                 <p className="default-page__content-text message-preview__text">{thread.content}</p>
               </div>
             </Link>

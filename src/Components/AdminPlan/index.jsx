@@ -47,6 +47,7 @@ export default function AdminPlan() {
         {institution?.plan ? <><p><strong>{institution.plan}</strong> · Importe simulado: {institution.amount}</p>
           <p>Hasta {spaceLimit} espacios personalizados · 30 usuarios por espacio.</p>
           <p>{spaceCount} de {spaceLimit} espacios creados.</p>
+          <Link className="admin-plan__details-link" to="/current-plan" state={{ institutionId: institution.id }}>Ver detalles del plan</Link>
           {spaceCount > spaceLimit && <p role="alert">Tu institución supera el cupo actual. Eliminá los espacios que no necesites o elegí un plan mayor.</p>}
           <Link to="/available-packages" state={{ institutionId: institution.id }}>Cambiar de plan</Link>
           {confirmCancellation ? <div className="admin-plan__cancellation">
@@ -60,17 +61,17 @@ export default function AdminPlan() {
         <p>Escribí el nombre de tu nueva clase. Cada espacio tendrá lugar para 30 usuarios.</p>
         {spaceLimit ? <p role="status">{spaceCount} de {spaceLimit} espacios creados · {Math.max(0, spaceLimit - spaceCount)} disponibles.</p> : <p>Primero contratá un plan para crear tus espacios.</p>}
         <form onSubmit={event => { event.preventDefault(); if (!canCreate || pending) return; run(async () => { const result = await apiRequest('/admin/spaces', { method: 'POST', body: JSON.stringify({ institutionId: institution.id, name: spaceName }) }); setSpaceName(''); setSelectedId(result.id); }, 'Espacio creado. Ya podés agregar usuarios.'); }}>
-          <label htmlFor="newSpaceName">Nombre del nuevo espacio</label><input id="newSpaceName" value={spaceName} onChange={event => setSpaceName(event.target.value)} placeholder="Ej.: Desarrollo web" required maxLength={30} disabled={pending || !canCreate} />
+          <div className="admin-plan__field"><label htmlFor="newSpaceName">Nombre del nuevo espacio</label><input id="newSpaceName" value={spaceName} onChange={event => setSpaceName(event.target.value)} placeholder="Ej.: Desarrollo web" required maxLength={30} disabled={pending || !canCreate} /></div>
           <button className="admin-plan__primary" disabled={pending || !canCreate || !spaceName.trim()}>{pending ? 'Guardando…' : spaceLimit && !canCreate ? 'Límite de espacios alcanzado' : 'Crear espacio'}</button>
         </form>
       </section>
       <section className="admin-plan__card"><h2>Agregar usuarios a un espacio</h2>
         <p>Elegí uno de los espacios que creaste y agregá una cuenta registrada. Cada usuario puede tener un solo chat grupal.</p>
         {!managed.length && <p>Cuando crees tu primer espacio, podrás agregarle usuarios acá.</p>}
-        <label htmlFor="managedSpace">Espacio creado</label><select id="managedSpace" value={selected || ''} onChange={event => { setSelectedId(event.target.value); setTarget(''); setError(''); setFeedback(''); }} disabled={pending || !managed.length}><option value="" disabled>Elegí uno de tus espacios</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select>
+        <div className="admin-plan__field"><label htmlFor="managedSpace">Espacio creado</label><select id="managedSpace" value={selected || ''} onChange={event => { setSelectedId(event.target.value); setTarget(''); setError(''); setFeedback(''); }} disabled={pending || !managed.length}><option value="" disabled>Elegí uno de tus espacios</option>{options.map(option => <option key={option.id} value={option.id}>{option.label}</option>)}</select></div>
         {data && <p role="status">{data.members.length} / {data.capacity} usuarios · {data.available} lugares disponibles.</p>}
         <form onSubmit={event => { event.preventDefault(); if (!selected) return; run(() => apiRequest(`/admin/spaces/${selected}/members`, { method: 'POST', body: JSON.stringify({ user: target }) }), `Espacio ${selectedSpace.name} asignado a ${target.trim()}.`); }}>
-          <label htmlFor="memberUser">Usuario o email registrado</label><input id="memberUser" value={target} onChange={event => setTarget(event.target.value)} placeholder="Ej.: Juanito" required maxLength={30} disabled={pending} />
+          <div className="admin-plan__field"><label htmlFor="memberUser">Usuario o email registrado</label><input id="memberUser" value={target} onChange={event => setTarget(event.target.value)} placeholder="Ej.: Juanito" required maxLength={30} disabled={pending} /></div>
           <button className="admin-plan__primary" disabled={pending || !selected || !target.trim() || !data || data.available <= 0}>{pending ? 'Guardando…' : data?.available === 0 ? 'Espacio completo' : 'Asignar espacio'}</button>
         </form>
         {selectedSpace && <h3>Usuarios de {selectedSpace.name}</h3>}

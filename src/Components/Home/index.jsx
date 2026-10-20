@@ -7,18 +7,19 @@ const Home = () => {
   const navigate = useNavigate();
   const { user, authLoading, sessionError } = useAuth();
   const activeSpaces = user?.spaces?.filter(space => space.isActive) || [];
+  const canEnterInbox = user?.typeUser === 'superadmin' || (user?.typeUser === 'admin' && user?.managedInstitutions?.length > 0);
   return (
     <div className="home">
       <div className="home__content">
         {(!user || user.canPurchase) && <button
           className="home__content-button"
-          onClick={() => navigate(user?.purchase ? '/admin-plan' : '/available-packages')}
+          onClick={() => navigate(user?.purchase ? '/current-plan' : '/available-packages')}
         >
           {user?.purchase ? 'Plan Actual' : '¡Paquetes Disponibles!'}
         </button>}
-        {!authLoading && !sessionError && user?.hasAccess && <button
+        {!authLoading && !sessionError && (user?.hasAccess || canEnterInbox) && <button
           className="home__content-button"
-          onClick={() => navigate(activeSpaces.length === 1 ? '/default-page' : '/spaces')}
+          onClick={() => navigate(canEnterInbox && (user?.typeUser === 'superadmin' || !user?.hasAccess || activeSpaces.length === 1) ? '/default-page' : activeSpaces.length === 1 ? '/default-page' : '/spaces')}
         >
           Ingresar
         </button>}
