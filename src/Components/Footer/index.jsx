@@ -53,7 +53,6 @@ const Footer = forwardRef(({ isActive = false, home = false }, ref) => {
         </div>
         {home === true && (
           <img
-            className="footer-thotem"
             src={thotem}
             alt="Thotem"
             className="footer-thotem-img"

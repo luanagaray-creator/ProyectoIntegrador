@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './App.css';
 import Home from './Components/Home';
@@ -25,10 +25,26 @@ import InstitutionPlatform from './Components/InstitutionPlatform';
 function App() {
   const { pathname } = useLocation();
   const footerRef = useRef(null);
+  const appRef = useRef(null);
   const [socialPulse, setSocialPulse] = useState(false);
   const isHome = pathname === '/' || pathname === '/home';
   const isDefaultPage = pathname === '/default-page';
   const isMessagesPage = isDefaultPage || pathname === '/chat' || pathname.startsWith('/answer-message/');
+
+  useEffect(() => {
+    const viewport = window.visualViewport;
+    const app = appRef.current;
+    if (!isMessagesPage || !viewport || !app) return;
+    const updateHeight = () => {
+      if (viewport.scale === 1) app.style.setProperty('--messages-viewport-height', `${viewport.height}px`);
+    };
+    updateHeight();
+    viewport.addEventListener('resize', updateHeight);
+    return () => {
+      viewport.removeEventListener('resize', updateHeight);
+      app.style.removeProperty('--messages-viewport-height');
+    };
+  }, [isMessagesPage]);
 
   const triggerSocialPulse = () => {
     setSocialPulse(true);
@@ -41,7 +57,7 @@ function App() {
   };
 
   return (
-    <div className={`app ${isMessagesPage ? 'app--no-scroll' : ''}`}>
+    <div ref={appRef} className={`app ${isMessagesPage ? 'app--no-scroll' : ''}`}>
       <Header home={isHome} onContactClick={handleContactClick} />
       <main className={`app__main ${isMessagesPage ? 'app__main--no-scroll' : ''}`}>
         <Routes>
