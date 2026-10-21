@@ -6,6 +6,7 @@ import { apiRequest } from '../../auth/api';
 import './style.css';
 import packageJson from '../../../package.json';
 import SpaceSettings from './SpaceSettings';
+import { memberCapacityForPlan } from '../../auth/planCapacity';
 
 export default function AdminPlan() {
   const { user, authLoading, refreshSession, cancelPlan } = useAuth();
@@ -24,7 +25,7 @@ export default function AdminPlan() {
   const spaceLimit = packageJson.planLimits[institution?.plan] || 0;
   const spaceCount = institution?.spaceCount || 0;
   const canCreate = !!spaceLimit && spaceCount < spaceLimit;
-  const selectedSpace = managed.find(space => space.id === selectedId);
+  const selectedSpace = managed.find(space => space.id === selectedId) || managed[0];
   const selected = selectedSpace?.id;
   const { data, error: loadError, refresh } = useLiveMessages(user?.canPurchase && selected ? `/admin/spaces/${selected}/members` : null);
   const options = managed.map(space => ({ id: space.id, institutionId: space.institutionId, label: `${space.institutionName} · ${space.name}` }));
@@ -45,7 +46,7 @@ export default function AdminPlan() {
     <div className="institution-platform__grid">
       <section className="admin-plan__card"><h2>{institution?.plan ? 'Plan Actual' : 'Mi plan'}</h2>
         {institution?.plan ? <><p><strong>{institution.plan}</strong> · Importe simulado: {institution.amount} USD</p>
-          <p>Hasta {spaceLimit} espacios personalizados · {packageJson.planMemberLimits[institution.plan]} usuarios por espacio.</p>
+          <p>Hasta {spaceLimit} espacios personalizados · {memberCapacityForPlan(institution.plan)} usuarios por espacio ({packageJson.planTotalUsers[institution.plan]} en total).</p>
           <p>{spaceCount} de {spaceLimit} espacios creados.</p>
           <Link className="admin-plan__details-link" to="/current-plan" state={{ institutionId: institution.id }}>Ver detalles del plan</Link>
           {spaceCount > spaceLimit && <p role="alert">Tu institución supera el cupo actual. Eliminá los espacios que no necesites o elegí un plan mayor.</p>}
@@ -58,10 +59,14 @@ export default function AdminPlan() {
           </> : <><p>Contratá un plan para empezar a crear los espacios de tu institución.</p><Link to="/available-packages" state={{ institutionId: institution?.id }}>Elegir un plan</Link></>}
       </section>
       <section className="admin-plan__card"><h2>Crear espacio</h2>
-        <p>Escribí el nombre de tu nueva clase. Cada espacio tendrá lugar para {packageJson.planMemberLimits[institution?.plan] || 0} usuarios.</p>
+        <p>Escribí el nombre de tu nueva clase. Cada espacio tendrá lugar para {memberCapacityForPlan(institution?.plan)} usuarios.</p>
         {spaceLimit ? <p role="status">{spaceCount} de {spaceLimit} espacios creados · {Math.max(0, spaceLimit - spaceCount)} disponibles.</p> : <p>Primero contratá un plan para crear tus espacios.</p>}
-        <form onSubmit={event => { event.preventDefault(); if (!canCreate || pending) return; run(async () => { const result = await apiRequest('/admin/spaces', { method: 'POST', body: JSON.stringify({ institutionId: institution.id, name: spaceName }) }); setSpaceName(''); setSelectedId(result.id); }, 'Espacio creado. Ya podés agregar usuarios.'); }}>
-          <div className="admin-plan__field"><label htmlFor="newSpaceName">Nombre del nuevo espacio</label><input id="newSpaceName" value={spaceName} onChange={event => setSpaceName(event.target.value)} placeholder="Ej.: Desarrollo web" required maxLength={30} disabled={pending || !canCreate} /></div>
+        <form onSubmit={event => { event.preventDefault(); if (!canCreate || pending) return; run(async () => {
+          const result = await apiRequest('/admin/spaces', { method: 'POST', body: JSON.stringify({ institutionId: institution.id, name: spaceName }) });
+          setSpaceName('');
+          setSelectedId(result.id);
+        }, 'Espacio creado. Ya podés agregar usuarios.'); }}>
+          <div className="admin-plan__field"><label htmlFor="newSpaceName">Nombre del nuevo espacio</label><input id="newSpaceName" value={spaceName} onChange={event => setSpaceName(event.target.value)} placeholder="Ej.: UTU 1234" required maxLength={30} disabled={pending || !canCreate} /></div>
           <button className="admin-plan__primary" disabled={pending || !canCreate || !spaceName.trim()}>{pending ? 'Guardando…' : spaceLimit && !canCreate ? 'Límite de espacios alcanzado' : 'Crear espacio'}</button>
         </form>
       </section>

@@ -8,6 +8,7 @@ import mercadoPago from '../../assets/mercadoPago.png';
 import mastercard from '../../assets/mastercard.png';
 import './style.css';
 import '../AdminPlan/style.css';
+import { memberCapacityForPlan } from '../../auth/planCapacity';
 
 const methods = [{ name: 'Visa', image: visa }, { name: 'Mercado Pago', image: mercadoPago }, { name: 'Mastercard', image: mastercard }];
 
@@ -58,7 +59,7 @@ export default function PaymentPage() {
         {user && !user.canPurchase ? <p className="payment-page__notice">Los planes los pagan los administradores. Necesitás que Thotem te autorice como administrador de una institución para contratarlo. <Link to="/home">Volver al inicio</Link></p> : !validPlan ? <Link to="/available-packages">Elegir un paquete</Link> : <>
           {user?.canPurchase && <>
             {institutions.length > 1 && <label className="payment-page__institution">Institución<select className="payment-page__content-boxBottom-input" value={institutionId} disabled={loading} onChange={event => setInstitution(event.target.value)}>{institutions.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>}
-            <p className="payment-page__notice">{institution?.name && <strong>{institution.name} · </strong>}Podrás crear hasta {spaceLimit} espacios con el nombre que quieras y {packageJson.planMemberLimits[selectedPlan]} usuarios por espacio, después de contratar el plan.</p>
+            <p className="payment-page__notice">{institution?.name && <strong>{institution.name} · </strong>}Podrás crear hasta {spaceLimit} espacios con el nombre que quieras y {memberCapacityForPlan(selectedPlan)} usuarios por espacio ({packageJson.planTotalUsers[selectedPlan]} en total), después de contratar el plan.</p>
             {exceedsLimit && <p role="alert">La institución ya tiene {institution.spaceCount} espacios. Eliminá los que no necesites antes de bajar a este plan.</p>}
           </>}
           <div className="payment-page__content-boxCenter" role="group" aria-label="Método de pago">

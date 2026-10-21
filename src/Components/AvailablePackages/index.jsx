@@ -4,6 +4,7 @@ import packageJson from "../../../package.json";
 
 import "./style.css";
 import { useAuth } from "../../auth/AuthContext";
+import { memberCapacityForPlan } from '../../auth/planCapacity';
 
 const AvailablePackages = () => {
   const navigate = useNavigate();
@@ -14,7 +15,9 @@ const AvailablePackages = () => {
   const institution = user?.managedInstitutions?.find(item => item.id === institutionId);
   const currentPlan = institution ? institution.plan : user?.purchase?.plan;
 
-  const planName = packageJson.planName;
+  const planName = packageJson?.planName || { smallPlan: 'Small Plan', mediumPlan: 'Medium Plan', largePlan: 'Large Plan' };
+  const planLimits = packageJson?.planLimits || { 'Small Plan': 10, 'Medium Plan': 20, 'Large Plan': 30 };
+  const planPrices = packageJson?.planPrices || { smallPlan: 200, mediumPlan: 350, largePlan: 450 };
   if (user && !user.canPurchase) return <Navigate to={user.typeUser === 'superadmin' ? '/platform' : '/spaces'} replace />;
 
   return (
@@ -29,10 +32,10 @@ const AvailablePackages = () => {
           <span className="available-packages__content-boxTitle">
             {planName.smallPlan}
           </span>
-          <span className="available-packages__price">{packageJson.planPrices.smallPlan} USD</span>
+          <span className="available-packages__price">{planPrices.smallPlan} USD</span>
 
           <p className="available-packages__content-boxText">
-            Hasta {packageJson.planLimits[planName.smallPlan]} espacios personalizables para tu institución, con {packageJson.planMemberLimits[planName.smallPlan]} usuarios por espacio.
+            Hasta {planLimits[planName.smallPlan]} espacios personalizables para tu institución, con {memberCapacityForPlan(planName.smallPlan)} usuarios por espacio.
           </p>
 
           <button
@@ -52,10 +55,10 @@ const AvailablePackages = () => {
           <span className="available-packages__content-boxTitle">
             {planName.mediumPlan}
           </span>
-          <span className="available-packages__price">{packageJson.planPrices.mediumPlan} USD</span>
+          <span className="available-packages__price">{planPrices.mediumPlan} USD</span>
 
           <p className="available-packages__content-boxText">
-            Hasta {packageJson.planLimits[planName.mediumPlan]} espacios personalizables para tu institución, con {packageJson.planMemberLimits[planName.mediumPlan]} usuarios por espacio.
+            Hasta {planLimits[planName.mediumPlan]} espacios personalizables para tu institución, con {memberCapacityForPlan(planName.mediumPlan)} usuarios por espacio.
           </p>
 
           <button
@@ -75,10 +78,10 @@ const AvailablePackages = () => {
           <span className="available-packages__content-boxTitle">
             {planName.largePlan}
           </span>
-          <span className="available-packages__price">{packageJson.planPrices.largePlan} USD</span>
+          <span className="available-packages__price">{planPrices.largePlan} USD</span>
 
           <p className="available-packages__content-boxText">
-            Hasta {packageJson.planLimits[planName.largePlan]} espacios personalizables para tu institución, con {packageJson.planMemberLimits[planName.largePlan]} usuarios por espacio.
+            Hasta {planLimits[planName.largePlan]} espacios personalizables para tu institución, con {memberCapacityForPlan(planName.largePlan)} usuarios por espacio.
           </p>
 
           <button
