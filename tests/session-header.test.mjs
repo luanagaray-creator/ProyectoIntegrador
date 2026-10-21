@@ -39,7 +39,7 @@ test('cada paquete permite pagar a administradores sin elegir espacios predefini
     const html = render({ user: { idUser: 'a', typeUser: 'admin', canPurchase: true, managedSpaces: [{id:'space1',name:'3ro TIC',institutionName:'�nima'}] } }, PaymentPage, entries);
     assert.match(html, /Simular pago/);
     assert.match(html, new RegExp(plan));
-    assert.match(html, new RegExp(`<strong>${{ 'Small Plan': 250, 'Medium Plan': 500, 'Large Plan': 750 }[plan]}</strong>`));
+    assert.match(html, new RegExp(`<strong>${{ 'Small Plan': 200, 'Medium Plan': 350, 'Large Plan': 450 }[plan]} USD</strong>`));
     assert.doesNotMatch(html, /Código de seguridad/);
     assert.match(html, /Podrás crear hasta/);
     assert.doesNotMatch(html, /Espacios incluidos en el plan|type="checkbox"/);

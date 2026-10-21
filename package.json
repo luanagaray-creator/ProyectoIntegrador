@@ -28,14 +28,19 @@
     "watch": "^0.13.0"
   },
   "planPrices": {
-    "smallPlan": 250,
-    "mediumPlan": 500,
-    "largePlan": 750
+    "smallPlan": 200,
+    "mediumPlan": 350,
+    "largePlan": 450
   },
   "planLimits": {
-    "Small Plan": 3,
-    "Medium Plan": 4,
-    "Large Plan": 6
+    "Small Plan": 10,
+    "Medium Plan": 20,
+    "Large Plan": 30
+  },
+  "planMemberLimits": {
+    "Small Plan": 250,
+    "Medium Plan": 500,
+    "Large Plan": 750
   },
   "planName": {
     "smallPlan": "Small Plan",

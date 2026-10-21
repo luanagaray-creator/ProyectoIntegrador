@@ -44,7 +44,7 @@ body { min-width: 320px; }
   .thotem-button { padding: 0 16px; }
   .banner-container { overflow: visible; z-index: 130; }
   .banner-container .header__navigation { position: absolute; }
-  .home__content { margin: 0; padding: 24px 16px 0; gap: 12px; flex-wrap: wrap; }
+  .home__content { margin: 0; padding: 24px 16px 0; gap: 20px 24px; flex-wrap: wrap; }
   .home__content-button { margin-top: 0; padding: 14px 20px; font-size: 16px; min-height: 48px; }
   .home__access-notice { margin-top: 0; width: 100%; }
   .home-about__title { font-size: 28px; margin: 48px 16px 24px; }

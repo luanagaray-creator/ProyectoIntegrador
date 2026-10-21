@@ -53,12 +53,12 @@ export default function PaymentPage() {
         </div>
         <div className="payment-page__summary">
           <p className="payment-page__notice">Pago simulado: no se realizará ningún cobro.</p>
-          {validPlan && <span className="payment-page__total">Total <strong>{price}</strong></span>}
+          {validPlan && <span className="payment-page__total">Total <strong>{price} USD</strong></span>}
         </div>
         {user && !user.canPurchase ? <p className="payment-page__notice">Los planes los pagan los administradores. Necesitás que Thotem te autorice como administrador de una institución para contratarlo. <Link to="/home">Volver al inicio</Link></p> : !validPlan ? <Link to="/available-packages">Elegir un paquete</Link> : <>
           {user?.canPurchase && <>
             {institutions.length > 1 && <label className="payment-page__institution">Institución<select className="payment-page__content-boxBottom-input" value={institutionId} disabled={loading} onChange={event => setInstitution(event.target.value)}>{institutions.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>}
-            <p className="payment-page__notice">{institution?.name && <strong>{institution.name} · </strong>}Podrás crear hasta {spaceLimit} espacios con el nombre que quieras y 30 usuarios por espacio, después de contratar el plan.</p>
+            <p className="payment-page__notice">{institution?.name && <strong>{institution.name} · </strong>}Podrás crear hasta {spaceLimit} espacios con el nombre que quieras y {packageJson.planMemberLimits[selectedPlan]} usuarios por espacio, después de contratar el plan.</p>
             {exceedsLimit && <p role="alert">La institución ya tiene {institution.spaceCount} espacios. Eliminá los que no necesites antes de bajar a este plan.</p>}
           </>}
           <div className="payment-page__content-boxCenter" role="group" aria-label="Método de pago">

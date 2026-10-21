@@ -32,7 +32,7 @@ const Receipt = () => {
               <dt>Espacios incluidos</dt>
               <dd>{includedSpaces.length ? <ul>{includedSpaces.map(space => <li key={space.id}>{space.institutionName} · {space.name}</li>)}</ul> : `Podés crear hasta ${packageJson.planLimits[purchase.plan]} espacios desde Administración.`}</dd>
             </div>
-            {purchase.amount != null && <div className="receipt__row receipt__row--total"><dt>Total simulado</dt><dd>{Number(purchase.amount).toLocaleString('es-UY')}</dd></div>}
+            {purchase.amount != null && <div className="receipt__row receipt__row--total"><dt>Total simulado</dt><dd>{Number(purchase.amount).toLocaleString('es-UY')} USD</dd></div>}
           </dl>
         <button
           className="receipt__content-button"

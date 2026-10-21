@@ -13,6 +13,7 @@ let AdminPlan;
 let Home;
 let GroupChoices;
 let PaymentPage;
+let CurrentPlan;
 let AdminDirectory;
 before(async () => {
   vite = await createServer({ server: { middlewareMode: true, hmr: false, watch: null } });
@@ -22,6 +23,7 @@ before(async () => {
   Home = (await vite.ssrLoadModule('/src/Components/Home/index.jsx')).default;
   GroupChoices = (await vite.ssrLoadModule('/src/Components/AdminPlan/GroupChoices.jsx')).default;
   PaymentPage = (await vite.ssrLoadModule('/src/Components/PaymentPage/index.jsx')).default;
+  CurrentPlan = (await vite.ssrLoadModule('/src/Components/CurrentPlan/index.jsx')).default;
   AdminDirectory = (await vite.ssrLoadModule('/src/Components/InstitutionPlatform/AdminDirectory.jsx')).default;
 });
 after(async () => { await vite?.close(); });
@@ -33,7 +35,7 @@ function render(Component, user, entries) {
 const user = {
   idUser: 'admin', typeUser: 'admin', canPurchase: true,
   managedSpaces: [{ id: 'space', name: 'Mi clase', institutionId: 'institution', institutionName: 'Institución' }],
-  purchase: { plan: 'Small Plan', spaceIds: ['space'], amount: 250 },
+  purchase: { plan: 'Small Plan', spaceIds: ['space'], amount: 200 },
 };
 
 test('planes contratados muestran Plan Actual y ofrecen cancelar desde administración', () => {
@@ -49,8 +51,24 @@ test('paquetes informan los cupos reales y la configuración coincide con el ser
   const backend = JSON.parse(readFileSync(new URL('../../../ServidorProyectoBackend/servidor-proyecto/config/planLimits.json', import.meta.url), 'utf8'));
   assert.deepEqual(frontend.planLimits, backend);
   const html = render(Packages, user);
-  for (const limit of [3, 4, 6]) assert.match(html, new RegExp(`Hasta ${limit} espacios`));
-  assert.equal((html.match(/30 usuarios por espacio/g) || []).length, 3);
+  for (const limit of [10, 20, 30]) assert.match(html, new RegExp(`Hasta ${limit} espacios`));
+  for (const limit of [250, 500, 750]) assert.match(html, new RegExp(`${limit} usuarios por espacio`));
+  for (const price of [200, 350, 450]) assert.match(html, new RegExp(`${price} USD`));
+  const memberLimits = JSON.parse(readFileSync(new URL('../../../ServidorProyectoBackend/servidor-proyecto/config/planMemberLimits.json', import.meta.url), 'utf8'));
+  assert.deepEqual(frontend.planMemberLimits, memberLimits);
+  const prices = JSON.parse(readFileSync(new URL('../../../ServidorProyectoBackend/servidor-proyecto/config/plans.json', import.meta.url), 'utf8'));
+  for (const [key, name] of Object.entries(frontend.planName)) assert.equal(frontend.planPrices[key], prices[name]);
+});
+
+test('cada plan muestra su capacidad por espacio en administración, detalles y pago', () => {
+  for (const [plan, price, spaces, members] of [['Small Plan', 200, 10, 250], ['Medium Plan', 350, 20, 500], ['Large Plan', 450, 30, 750]]) {
+    const admin = { ...user, purchase: { plan, amount: price }, managedInstitutions: [{ id: 'institution', name: 'Institución', plan, amount: price, maxSpaces: spaces, spaceCount: 1 }] };
+    assert.match(render(AdminPlan, admin), new RegExp(`${members} usuarios por espacio`));
+    assert.match(render(CurrentPlan, admin), new RegExp(`<strong>${members}</strong><span>usuarios comunes por espacio`));
+    const payment = render(PaymentPage, admin, [{ pathname: '/payment-page', state: { plan, institutionId: 'institution' } }]);
+    assert.match(payment, new RegExp(`${members} usuarios por espacio`));
+    assert.match(payment, new RegExp(`${price} USD`));
+  }
 });
 
 test('selector bloquea nuevas selecciones al llegar al cupo, conservando la opción de quitar', () => {
@@ -67,15 +85,15 @@ test('el administrador sin espacios puede pagar primero y ve el formulario para 
   const payment = render(PaymentPage, emptyAdmin, [{ pathname: '/payment-page', state: { plan: 'Small Plan', institutionId: 'institution' } }]);
   assert.match(payment, /<button class="payment-page__content-boxBottom-button">Simular pago<\/button>/);
   assert.doesNotMatch(payment, /type="checkbox"/);
-  const paidAdmin = { ...emptyAdmin, purchase: { plan: 'Small Plan', spaceIds: [] }, managedInstitutions: [{ ...emptyAdmin.managedInstitutions[0], plan: 'Small Plan', amount: 250, maxSpaces: 3 }] };
+  const paidAdmin = { ...emptyAdmin, purchase: { plan: 'Small Plan', spaceIds: [] }, managedInstitutions: [{ ...emptyAdmin.managedInstitutions[0], plan: 'Small Plan', amount: 200, maxSpaces: 10 }] };
   const dashboard = render(AdminPlan, paidAdmin);
   assert.match(dashboard, /Nombre del nuevo espacio/);
-  assert.match(dashboard, /0 de 3 espacios creados/);
+  assert.match(dashboard, /0 de 10 espacios creados/);
   assert.doesNotMatch(dashboard, /1ro TIC|Guardar espacios|type="checkbox"/);
 });
 
 test('al completar el cupo de espacios la interfaz bloquea la creación', () => {
-  const full = { ...user, managedInstitutions: [{ id: 'institution', name: 'Mi institución', plan: 'Small Plan', amount: 250, spaceCount: 3, maxSpaces: 3 }] };
+  const full = { ...user, managedInstitutions: [{ id: 'institution', name: 'Mi institución', plan: 'Small Plan', amount: 200, spaceCount: 10, maxSpaces: 10 }] };
   assert.match(render(AdminPlan, full), /<button class="admin-plan__primary" disabled="">Límite de espacios alcanzado<\/button>/);
 });
 
