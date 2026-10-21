@@ -29,10 +29,10 @@ const AvailablePackages = () => {
           <span className="available-packages__content-boxTitle">
             {planName.smallPlan}
           </span>
-          <span className="available-packages__price">{packageJson.planPrices.smallPlan}</span>
+          <span className="available-packages__price">{packageJson.planPrices.smallPlan} USD</span>
 
           <p className="available-packages__content-boxText">
-            Hasta 3 espacios personalizables para tu institución, con 30 usuarios por espacio.
+            Hasta {packageJson.planLimits[planName.smallPlan]} espacios personalizables para tu institución, con {packageJson.planMemberLimits[planName.smallPlan]} usuarios por espacio.
           </p>
 
           <button
@@ -52,10 +52,10 @@ const AvailablePackages = () => {
           <span className="available-packages__content-boxTitle">
             {planName.mediumPlan}
           </span>
-          <span className="available-packages__price">{packageJson.planPrices.mediumPlan}</span>
+          <span className="available-packages__price">{packageJson.planPrices.mediumPlan} USD</span>
 
           <p className="available-packages__content-boxText">
-            Hasta 4 espacios personalizables para tu institución, con 30 usuarios por espacio.
+            Hasta {packageJson.planLimits[planName.mediumPlan]} espacios personalizables para tu institución, con {packageJson.planMemberLimits[planName.mediumPlan]} usuarios por espacio.
           </p>
 
           <button
@@ -75,10 +75,10 @@ const AvailablePackages = () => {
           <span className="available-packages__content-boxTitle">
             {planName.largePlan}
           </span>
-          <span className="available-packages__price">{packageJson.planPrices.largePlan}</span>
+          <span className="available-packages__price">{packageJson.planPrices.largePlan} USD</span>
 
           <p className="available-packages__content-boxText">
-            Hasta 6 espacios personalizables para tu institución, con 30 usuarios por espacio.
+            Hasta {packageJson.planLimits[planName.largePlan]} espacios personalizables para tu institución, con {packageJson.planMemberLimits[planName.largePlan]} usuarios por espacio.
           </p>
 
           <button

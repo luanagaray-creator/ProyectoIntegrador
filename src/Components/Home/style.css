@@ -10,12 +10,16 @@
 }
 
 .home__content {
+  --home-action-height: 48px;
   display: flex;
   justify-content: center;
-  margin-top: -240px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: calc(var(--home-action-height) / -2);
+  padding: 0 24px;
   position: relative;
   z-index: 10;
-  gap: 80px;
+  gap: 24px clamp(32px, 5vw, 80px);
 }
 
 /* .home__content-button {
@@ -32,34 +36,36 @@
 } */
 
 .home__content-button {
-  background-color: var(--anima-blue-700);
+  background-color: transparent;
   border: none;
   color: #5f5db4;
-  padding: 16px 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: fit-content;
+  min-height: var(--home-action-height);
+  padding: 12px 22px;
   font-weight: 600;
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   cursor: pointer;
-  border-radius: 30px;
+  border-radius: 22px;
   box-shadow: 0 2px 8px rgba(12, 68, 124, 0.18);
-  margin-top: 13rem;
+  margin-top: 0;
   transition:
     background-color 0.2s ease,
     transform 0.2s ease,
     box-shadow 0.2s ease;
-  font-size: 18px;
+  font-size: 16px;
+  line-height: 1.4;
 }
 
 .home__content-button:hover {
-  background-color: var(--anima-blue-900);
-  transform: translateY(-2px);
+  background-color: #a7d2ff;
+  transform: translateY(-8px);
   box-shadow: 0 6px 14px rgba(12, 68, 124, 0.22);
   color: #ffffff;
-}
-
-.home__content-button:hover {
-  background-color: #a7d2ff; 
-  transform: translateY(-8px);
 }
 
 .home-about {
@@ -151,6 +157,6 @@
 @media (prefers-reduced-motion: reduce) { .home-about__card, .home-about__card-chevron { transition: none; } .home-about__card[open] .home-about__card-body { animation: none; } }
 
 .home__plan-link { text-decoration: none; display: flex; align-items: center; }
-.home__access-notice { margin-top: 13rem; max-width: 560px; padding: 18px 24px; background: rgba(255,255,255,0.94); border: 1px solid rgba(141,197,255,0.4); border-radius: 20px; color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; line-height: 1.6; box-shadow: 0 4px 16px rgba(72,70,143,0.08); }
+.home__access-notice { margin-top: 0; max-width: 560px; padding: 18px 24px; background: rgba(255,255,255,0.94); border: 1px solid rgba(141,197,255,0.4); border-radius: 20px; color: var(--text-body); font-family: "Montserrat", sans-serif; font-size: 14px; line-height: 1.6; box-shadow: 0 4px 16px rgba(72,70,143,0.08); }
 .home__access-notice p { margin: 0; }
 .home__access-notice a { color: var(--text-title); }

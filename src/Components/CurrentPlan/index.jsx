@@ -53,7 +53,7 @@ export default function CurrentPlan() {
         <div className="current-plan__stats">
           <article><strong>{spacesUsed} de {maxSpaces}</strong><span>espacios utilizados</span></article>
           <article><strong>{spacesAvailable}</strong><span>espacios disponibles</span></article>
-          <article><strong>30</strong><span>usuarios comunes por espacio</span></article>
+          <article><strong>{packageJson.planMemberLimits[plan]}</strong><span>usuarios comunes por espacio</span></article>
         </div>
       </section>
 
@@ -62,7 +62,7 @@ export default function CurrentPlan() {
           <h2 id="planLimitsTitle">Límites y disponibilidad</h2>
           <ul className="current-plan__limits">
             <li><span>Máximo de espacios</span><strong>{maxSpaces}</strong></li>
-            <li><span>Usuarios comunes por espacio</span><strong>30</strong></li>
+            <li><span>Usuarios comunes por espacio</span><strong>{packageJson.planMemberLimits[plan]}</strong></li>
             <li><span>Espacios ya creados</span><strong>{spacesUsed}</strong></li>
             <li><span>Lugares disponibles</span><strong>{spacesAvailable}</strong></li>
           </ul>
@@ -71,7 +71,7 @@ export default function CurrentPlan() {
           <h2 id="planPaymentTitle">Datos del plan</h2>
           <dl className="current-plan__payment">
             <div><dt>Institución</dt><dd>{institution?.name || 'No disponible'}</dd></div>
-            <div><dt>Importe simulado</dt><dd>{amount == null ? 'No disponible' : amount}</dd></div>
+            <div><dt>Importe simulado</dt><dd>{amount == null ? 'No disponible' : `${amount} USD`}</dd></div>
             <div><dt>Método</dt><dd>{method || 'No disponible'}</dd></div>
             <div><dt>Fecha de contratación</dt><dd>{formatDate(paidAt)}</dd></div>
           </dl>
