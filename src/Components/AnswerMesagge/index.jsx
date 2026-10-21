@@ -21,7 +21,7 @@ export default function AnswerMessage() {
   const [deletingMessageId, setDeletingMessageId] = useState('');
   const bodyRef = useRef(null);
   const stayAtBottom = useRef(true);
-  const lastId = data?.messages.at(-1)?.idMesage;
+  const lastId = data?.messages?.at(-1)?.idMesage;
   useEffect(() => {
     const body = bodyRef.current;
     if (body && stayAtBottom.current) body.scrollTop = body.scrollHeight;
@@ -64,7 +64,7 @@ export default function AnswerMessage() {
         {(error || sendError) && <div role="alert" className="answer-message__feedback">{sendError || error} <button type="button" onClick={refresh}>Reintentar</button></div>}
         <div ref={bodyRef} className="answer-message__content-body" onScroll={event => { const element = event.currentTarget; stayAtBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 60; }} aria-label="Mensajes de la conversación">
           {loading && <p role="status">Cargando conversación…</p>}
-          {data?.messages.map(message => <div key={message.idMesage} className={`answer-message__content-message answer-message__content-message--${message.senderId === user.idUser ? 'outgoing' : 'incoming'}`}>
+          {data?.messages?.map(message => <div key={message.idMesage} className={`answer-message__content-message answer-message__content-message--${message.senderId === user.idUser ? 'outgoing' : 'incoming'}`}>
             <p>{message.content}</p>
             <div className="answer-message__message-meta">
               <strong>{message.senderName}</strong>

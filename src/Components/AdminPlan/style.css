@@ -11,7 +11,8 @@
 .plan-group-choices input { accent-color: var(--text-title); width: 16px; height: 16px; }
 .plan-group-choices button { display: block; border: none; background: transparent; color: var(--text-title); cursor: pointer; font: inherit; font-size: 13px; padding: 14px 0 8px; text-decoration: underline; }
 .plan-group-choices span { font-size: 12px; line-height: 1.6; display: block; }
-.admin-plan__primary { background: #8cc2ff; border: 0; border-radius: 14px; padding: 14px; color: var(--text-body); font: inherit; font-weight: 600; cursor: pointer; }
+.admin-plan__primary { background: #8cc2ff; border: 0; border-radius: 14px; padding: 14px; color: var(--text-body); font: inherit; font-weight: 600; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease; }
+.admin-plan__primary:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(12, 68, 124, 0.22); color: #fff; }
 .admin-plan__primary:disabled { opacity: 0.6; cursor: default; }
 .plan-group-choices :is(input, button):focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
 @media (max-width: 520px) { .admin-plan { padding: 96px 16px 24px; } .admin-plan__card { padding: 24px; } .plan-group-choices__options { grid-template-columns: repeat(2, 1fr); } }
@@ -137,6 +138,7 @@
 .admin-plan__delete-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
 .admin-plan__delete-actions :is(.admin-plan__danger, .admin-plan__primary) { margin: 0; }
 .admin-plan__danger:focus-visible, .admin-plan__primary:focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .admin-plan__primary { transition: none; } .admin-plan__primary:not(:disabled):hover { transform: none; } }
 @media (max-width: 1200px) {
   .institution-platform form.institution-platform__access-form { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
   .institution-platform__authorize-button { grid-column: 1 / -1; justify-self: end; }

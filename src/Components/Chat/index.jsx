@@ -19,7 +19,7 @@ function Conversation({ space, options, changeSpace }) {
   const [actionError, setActionError] = useState('');
   const bodyRef = useRef(null);
   const stayAtBottom = useRef(true);
-  const lastId = data?.messages.at(-1)?.id;
+  const lastId = data?.messages?.at(-1)?.id;
   useEffect(() => { const body = bodyRef.current; if (body && stayAtBottom.current) body.scrollTop = body.scrollHeight; }, [lastId]);
   async function send(event) {
     event?.preventDefault();
@@ -46,8 +46,8 @@ function Conversation({ space, options, changeSpace }) {
     <hr className="divider" />
     {(error || actionError) && <div className="chat__feedback" role="alert">{actionError || error} <button type="button" onClick={() => { setActionError(''); refresh(); }}>Reintentar</button></div>}
     <div ref={bodyRef} className="chat__content-boxBody" role="region" tabIndex={0} aria-label={`Chat de ${space.institutionName}, ${space.name}`} onScroll={event => { const element = event.currentTarget; stayAtBottom.current = element.scrollHeight - element.scrollTop - element.clientHeight < 60; }}>
-      {loading && <p role="status">Cargando chat…</p>}{data?.messages.length === 0 && <p className="chat__feedback">Todavía no hay mensajes en este espacio.</p>}
-      {data?.messages.map(message => <div key={message.id} className={`chat__content-boxMessage chat__content-boxMessage--${message.senderId === user.idUser ? 'outgoing' : 'incoming'}`}>
+      {loading && <p role="status">Cargando chat…</p>}{data?.messages?.length === 0 && <p className="chat__feedback">Todavía no hay mensajes en este espacio.</p>}
+      {data?.messages?.map(message => <div key={message.id} className={`chat__content-boxMessage chat__content-boxMessage--${message.senderId === user.idUser ? 'outgoing' : 'incoming'}`}>
         <p>{message.content}</p>
         <div className="chat__message-meta">
           <strong>{message.senderName}</strong>

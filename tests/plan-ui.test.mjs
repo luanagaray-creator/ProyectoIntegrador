@@ -48,25 +48,24 @@ test('planes contratados muestran Plan Actual y ofrecen cancelar desde administr
 
 test('paquetes informan los cupos reales y la configuración coincide con el servidor', () => {
   const frontend = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
-  const backend = JSON.parse(readFileSync(new URL('../../../ServidorProyectoBackend/servidor-proyecto/config/planLimits.json', import.meta.url), 'utf8'));
+  const backend = JSON.parse(readFileSync(new URL('../../proyectoIntegrador-servidor/config/planLimits.json', import.meta.url), 'utf8'));
   assert.deepEqual(frontend.planLimits, backend);
   const html = render(Packages, user);
   for (const limit of [10, 20, 30]) assert.match(html, new RegExp(`Hasta ${limit} espacios`));
-  for (const limit of [250, 500, 750]) assert.match(html, new RegExp(`${limit} usuarios por espacio`));
+  assert.equal((html.match(/25 usuarios por espacio/g) || []).length, 3);
+  for (const total of [250, 500, 750]) assert.doesNotMatch(html, new RegExp(`\\(${total} en total\\)`));
   for (const price of [200, 350, 450]) assert.match(html, new RegExp(`${price} USD`));
-  const memberLimits = JSON.parse(readFileSync(new URL('../../../ServidorProyectoBackend/servidor-proyecto/config/planMemberLimits.json', import.meta.url), 'utf8'));
-  assert.deepEqual(frontend.planMemberLimits, memberLimits);
-  const prices = JSON.parse(readFileSync(new URL('../../../ServidorProyectoBackend/servidor-proyecto/config/plans.json', import.meta.url), 'utf8'));
-  for (const [key, name] of Object.entries(frontend.planName)) assert.equal(frontend.planPrices[key], prices[name]);
+  const totals = JSON.parse(readFileSync(new URL('../../proyectoIntegrador-servidor/config/plans.json', import.meta.url), 'utf8'));
+  assert.deepEqual(frontend.planTotalUsers, totals);
 });
 
-test('cada plan muestra su capacidad por espacio en administración, detalles y pago', () => {
-  for (const [plan, price, spaces, members] of [['Small Plan', 200, 10, 250], ['Medium Plan', 350, 20, 500], ['Large Plan', 450, 30, 750]]) {
+test('cada plan muestra su capacidad calculada por espacio en administración, detalles y pago', () => {
+  for (const [plan, price, spaces, members, total] of [['Small Plan', 200, 10, 25, 250], ['Medium Plan', 350, 20, 25, 500], ['Large Plan', 450, 30, 25, 750]]) {
     const admin = { ...user, purchase: { plan, amount: price }, managedInstitutions: [{ id: 'institution', name: 'Institución', plan, amount: price, maxSpaces: spaces, spaceCount: 1 }] };
-    assert.match(render(AdminPlan, admin), new RegExp(`${members} usuarios por espacio`));
+    assert.match(render(AdminPlan, admin), new RegExp(`${members} usuarios por espacio \\(${total} en total\\)`));
     assert.match(render(CurrentPlan, admin), new RegExp(`<strong>${members}</strong><span>usuarios comunes por espacio`));
     const payment = render(PaymentPage, admin, [{ pathname: '/payment-page', state: { plan, institutionId: 'institution' } }]);
-    assert.match(payment, new RegExp(`${members} usuarios por espacio`));
+    assert.match(payment, new RegExp(`${members} usuarios por espacio \\(${total} en total\\)`));
     assert.match(payment, new RegExp(`${price} USD`));
   }
 });

@@ -1,12 +1,24 @@
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import packageJson from '../../../package.json';
+import { memberCapacityForPlan } from '../../auth/planCapacity';
 import './style.css';
 
 function formatDate(value) {
   if (!value) return 'No disponible';
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? 'No disponible' : date.toLocaleDateString('es-UY', { dateStyle: 'long' });
+}
+
+function nextMonthlyRenewal(value) {
+  if (!value) return null;
+  const paidAt = new Date(value);
+  if (Number.isNaN(paidAt.getTime())) return null;
+
+  const renewal = new Date(paidAt.getFullYear(), paidAt.getMonth() + 1, 1, 12);
+  const lastDayOfMonth = new Date(renewal.getFullYear(), renewal.getMonth() + 1, 0).getDate();
+  renewal.setDate(Math.min(paidAt.getDate(), lastDayOfMonth));
+  return renewal;
 }
 
 export default function CurrentPlan() {
@@ -31,6 +43,7 @@ export default function CurrentPlan() {
   const amount = institution?.amount ?? user.purchase?.amount;
   const method = institution?.method || user.purchase?.method;
   const paidAt = institution?.paidAt || user.purchase?.paidAt;
+  const renewalAt = nextMonthlyRenewal(paidAt);
 
   return <div className="current-plan">
     <div className="current-plan__inner">
@@ -53,16 +66,25 @@ export default function CurrentPlan() {
         <div className="current-plan__stats">
           <article><strong>{spacesUsed} de {maxSpaces}</strong><span>espacios utilizados</span></article>
           <article><strong>{spacesAvailable}</strong><span>espacios disponibles</span></article>
-          <article><strong>{packageJson.planMemberLimits[plan]}</strong><span>usuarios comunes por espacio</span></article>
+          <article><strong>{memberCapacityForPlan(plan)}</strong><span>usuarios comunes por espacio · {packageJson.planTotalUsers[plan]} en total</span></article>
         </div>
       </section>
+
+      {renewalAt && <aside className="current-plan__renewal" aria-label="Aviso de renovación del plan">
+        <span className="current-plan__renewal-icon" aria-hidden="true">↻</span>
+        <div>
+          <strong>Próxima renovación: {formatDate(renewalAt)}</strong>
+          <p>Ese día se simulará un nuevo pago de {amount == null ? 'el importe del plan' : `${amount} USD`}{method ? ` con ${method}` : ''}. No se realizará un cobro real.</p>
+        </div>
+      </aside>}
 
       <div className="current-plan__details-grid">
         <section className="current-plan__card" aria-labelledby="planLimitsTitle">
           <h2 id="planLimitsTitle">Límites y disponibilidad</h2>
           <ul className="current-plan__limits">
             <li><span>Máximo de espacios</span><strong>{maxSpaces}</strong></li>
-            <li><span>Usuarios comunes por espacio</span><strong>{packageJson.planMemberLimits[plan]}</strong></li>
+            <li><span>Usuarios comunes por espacio</span><strong>{memberCapacityForPlan(plan)}</strong></li>
+            <li><span>Usuarios incluidos en el plan</span><strong>{packageJson.planTotalUsers[plan]}</strong></li>
             <li><span>Espacios ya creados</span><strong>{spacesUsed}</strong></li>
             <li><span>Lugares disponibles</span><strong>{spacesAvailable}</strong></li>
           </ul>

@@ -6,6 +6,10 @@
 .current-plan__selector select { width: 100%; box-sizing: border-box; padding: 12px; border: 1px solid rgba(141,197,255,.5); border-radius: 12px; background: #f5faff; color: var(--text-body); font: inherit; }
 .current-plan__summary, .current-plan__card, .current-plan__spaces { border: 1px solid rgba(141,197,255,.4); border-radius: 24px; background: rgba(255,255,255,.96); box-shadow: 0 8px 24px rgba(72,70,143,.08); }
 .current-plan__summary { margin-top: 24px; padding: clamp(22px, 3vw, 32px); }
+.current-plan__renewal { display: flex; align-items: flex-start; gap: 14px; margin-top: 16px; padding: 18px 20px; border: 1px solid rgba(141,197,255,.45); border-radius: 18px; background: rgba(255,255,255,.78); color: var(--text-body); }
+.current-plan__renewal-icon { display: grid; flex: 0 0 34px; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: #e8f4ff; color: var(--text-title); font-size: 22px; }
+.current-plan__renewal strong { display: block; color: var(--text-title); font-size: 14px; }
+.current-plan__renewal p { margin: 5px 0 0; color: var(--text-muted); font-size: 13px; line-height: 1.5; }
 .current-plan__summary-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
 .current-plan__summary h2 { margin: 0; color: var(--text-title); font-size: clamp(24px, 3vw, 32px); }
 .current-plan__badge { padding: 7px 12px; border-radius: 999px; background: #e8f6ef; color: #236447; font-size: 13px; font-weight: 600; }
@@ -36,4 +40,4 @@
 .current-plan__actions :is(a):focus-visible, .current-plan__selector select:focus-visible { outline: 2px solid var(--text-title); outline-offset: 3px; }
 .current-plan__status { padding: 112px 24px; color: var(--text-body); }
 @media (max-width: 800px) { .current-plan { padding: 88px 16px 24px; } .current-plan__details-grid { grid-template-columns: 1fr; gap: 14px; } }
-@media (max-width: 560px) { .current-plan__stats { grid-template-columns: 1fr; } .current-plan__summary-heading, .current-plan__spaces-heading { align-items: flex-start; } .current-plan__limits li, .current-plan__payment > div { flex-direction: column; gap: 4px; } .current-plan__limits strong, .current-plan__payment dd { text-align: left; } }
+@media (max-width: 560px) { .current-plan__stats { grid-template-columns: 1fr; } .current-plan__summary-heading, .current-plan__spaces-heading { align-items: flex-start; } .current-plan__limits li, .current-plan__payment > div { flex-direction: column; gap: 4px; } .current-plan__limits strong, .current-plan__payment dd { text-align: left; } .current-plan__renewal { padding: 15px; } }
