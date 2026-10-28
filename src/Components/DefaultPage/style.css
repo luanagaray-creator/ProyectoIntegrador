@@ -371,6 +371,11 @@
 .message-star--active { color: #ffcc39; }
 .message-star:focus-visible { outline: 2px solid var(--text-title); outline-offset: 2px; }
 .message-star:disabled { cursor: wait; opacity: 0.65; }
+.message-delete { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; padding: 8px; border: 0; border-radius: 10px; background: transparent; color: var(--text-muted); cursor: pointer; }
+.message-delete svg { width: 22px; height: 22px; }
+.message-delete:hover { color: #b42338; background: #fff0f2; }
+.message-delete:focus-visible { outline: 2px solid var(--text-title); outline-offset: 2px; }
+.message-delete:disabled { cursor: wait; opacity: 0.65; }
 @media (hover: hover) { .default-page__content-link:hover { background: #edf7ff; } .message-star:hover { background: #f5faff; } }
 @media (prefers-reduced-motion: reduce) {
   .default-page__content-link, .default-page__content-button { transition: none; }
