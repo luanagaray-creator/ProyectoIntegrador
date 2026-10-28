@@ -24,19 +24,32 @@ export default function DefaultPage() {
   const [feedback, setFeedback] = useState('');
   const [savingStar, setSavingStar] = useState('');
   const [starError, setStarError] = useState('');
+  const [deletingThread, setDeletingThread] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const filter = filters.some(item => item[2] === searchParams.get('filter')) ? searchParams.get('filter') : 'all';
   const emptyState = emptyMessages[filter];
   const { user, refreshSession } = useAuth();
   const { data, loading, error, refresh } = useLiveMessages(`/messages?filter=${filter}`);
   async function markStar(thread) {
-    if (savingStar) return;
+    if (savingStar || deletingThread) return;
     setSavingStar(thread.id); setStarError('');
     try {
       await apiRequest(`/messages/${thread.id}/star`, { method: 'POST', body: JSON.stringify({ starred: !thread.isStarred }) });
       refresh();
     } catch (err) { setStarError(err.message); if (err.status === 401) refreshSession(); }
     finally { setSavingStar(''); }
+  }
+  async function deleteConversation(thread) {
+    if (deletingThread || savingStar || !window.confirm(`¿Eliminar la conversación «${thread.subject}»? Se borrarán todos sus mensajes para ambos participantes. Esta acción no se puede deshacer.`)) return;
+    setDeletingThread(thread.id); setStarError(''); setFeedback('');
+    try {
+      await apiRequest(`/messages/${thread.id}`, { method: 'DELETE' });
+      setFeedback('Conversación eliminada.');
+      refresh();
+    } catch (err) {
+      setStarError(err.message);
+      if (err.status === 401 || err.status === 403) refreshSession();
+    } finally { setDeletingThread(''); }
   }
   return <div className="default-page">
     <div className="default-page__content">
@@ -71,7 +84,7 @@ export default function DefaultPage() {
           const other = thread.senderId === user.idUser ? thread.recipientName : thread.senderName;
           const space = user.spaces.find(item => item.institutionId === thread.institutionId);
           return <div key={thread.id} className="default-page__content-messages-box message-row">
-            <button className={`message-star${thread.isStarred ? ' message-star--active' : ''}`} type="button" aria-label={thread.isStarred ? 'Quitar de destacados' : 'Marcar como destacado'} aria-pressed={thread.isStarred} disabled={!!savingStar} onClick={() => markStar(thread)}>
+            <button className={`message-star${thread.isStarred ? ' message-star--active' : ''}`} type="button" aria-label={thread.isStarred ? 'Quitar de destacados' : 'Marcar como destacado'} aria-pressed={thread.isStarred} disabled={!!savingStar || !!deletingThread} onClick={() => markStar(thread)}>
               <span aria-hidden="true">{thread.isStarred ? '★' : '☆'}</span>
             </button>
             <Link className="default-page__contet-messagesboxContent message-row__link" to={`/answer-message/${thread.id}`} state={{ inboxFilter: filter }}>
@@ -82,6 +95,9 @@ export default function DefaultPage() {
                 <p className="default-page__content-text message-preview__text">{thread.content}</p>
               </div>
             </Link>
+            <button className="message-delete" type="button" aria-label={`Eliminar conversación: ${thread.subject}`} title={deletingThread === thread.id ? 'Eliminando…' : 'Eliminar conversación'} aria-busy={deletingThread === thread.id} disabled={!!deletingThread || !!savingStar} onClick={() => deleteConversation(thread)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg>
+            </button>
           </div>;
         })}
       </div>
